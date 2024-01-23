@@ -1,0 +1,1 @@
+declare type TCallback<A extends any[], R = any> = (...args: A) => R;

@@ -1,0 +1,44 @@
+.content
+  display: contents
+
+.debug
+  display: flex
+  flex-direction: column
+  gap: 10px
+  position: fixed
+  top: 10px
+  background-color: #000
+  color: #fff
+  padding: 10px
+  border-radius: 5px
+  opacity: .7
+  max-height: 50vh
+  font-family: monospace
+  user-select: none
+  right: 10px
+  transition: transform 0.3s
+  transform: translateX(calc(100% + 10px))
+  border-radius: 10px
+  overflow: auto
+
+  &[data-show]
+    transform: translateX(0px)
+
+  .item
+    display: flex
+    flex-direction: column
+
+    .head
+      border-bottom: 1px solid #999
+
+    .contents
+      padding-left: 20px
+      display: grid
+      grid-template-columns: auto auto
+
+      span:nth-child(odd)
+        padding-right: 20px
+        text-align: left
+
+      span:nth-child(even)
+        text-align: right
