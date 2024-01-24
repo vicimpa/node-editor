@@ -37,13 +37,14 @@ export type NodeMapCtx = {
   width: number;
   height: number;
   calculateRect(): DOMRect;
+  offset(vec: Vec2, rect?: DOMRect): Vec2;
 };
 
-const [NodeMapProvider, useNodeMap] = (
-  objectContext<NodeMapCtx>()
+const [NodeMapProvider, useNodeMap, NodeMapCtx] = (
+  objectContext<NodeMapCtx>('NodeMap')
 );
 
-export { useNodeMap };
+export { useNodeMap, NodeMapCtx };
 
 export const NodeMap: FC<NodeMapProps> = forward<'div', NodeMapProps>(
   (
@@ -88,6 +89,15 @@ export const NodeMap: FC<NodeMapProps> = forward<'div', NodeMapProps>(
         sizeVec.y
       );
     }, []);
+
+    const offset = useCallback(
+      (vec: Vec2, rect?: DOMRect) => {
+        if (!divRef.current || (!rect && !svgRef.current))
+          return vec.clone();
+
+        return offsetSvgVec(divRef.current, rect! ?? svgRef.current!, vec);
+      }, [divRef, svgRef]
+    );
 
     useLayoutEffect(() => { posX.value = startX; }, [startX]);
     useLayoutEffect(() => { posY.value = startY; }, [startY]);
@@ -150,9 +160,9 @@ export const NodeMap: FC<NodeMapProps> = forward<'div', NodeMapProps>(
 
       batch(() => {
         const mouse = Vec2.fromPageXY(e);
-        const delta = offsetSvgVec(div, svg, mouse);
+        const delta = offset(mouse);
         scale.value -= e.deltaY * .001;
-        delta.minus(offsetSvgVec(div, calculateRect(), mouse));
+        delta.minus(offset(mouse, calculateRect()));
         posX.value += delta.x;
         posY.value += delta.y;
       });
@@ -166,8 +176,9 @@ export const NodeMap: FC<NodeMapProps> = forward<'div', NodeMapProps>(
       svgRef,
       width,
       height,
-      calculateRect
-    }), [posX, posY, scale, svgRef, width, height, divRef]);
+      calculateRect,
+      offset,
+    }), [posX, posY, scale, svgRef, width, height, divRef, offset]);
 
     return (
       <div
@@ -195,8 +206,8 @@ export const NodeMap: FC<NodeMapProps> = forward<'div', NodeMapProps>(
               PosX: <>{fixed(posX)}</>,
               PosY: <>{fixed(posY)}</>,
               Scale: <>{fixed(scale)}</>,
-              Width: <>{fixed(size.width)}</>,
-              Height: <>{fixed(size.height)}</>,
+              Width: <>{compute(() => size.width)}</>,
+              Height: <>{compute(() => size.height)}</>,
             }}
           </Debug>
         </svg>

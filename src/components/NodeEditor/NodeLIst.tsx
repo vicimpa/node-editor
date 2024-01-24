@@ -1,4 +1,4 @@
-import { FC, ReactNode, RefObject, useEffect, useId, useMemo } from "react";
+import { FC, ReactNode, RefObject, useContext, useEffect, useMemo } from "react";
 
 import { useClass } from "@/hooks/useClass";
 import { useDrag } from "@/hooks/useDrag";
@@ -9,24 +9,25 @@ import { ReactiveMap } from "@/library/ReactiveMap";
 import { Vec2 } from "@/library/Vec2";
 import { attribute } from "@/utils/attribute";
 import { fixed } from "@/utils/fixed";
-import { looper } from "@/utils/looper";
 import { cropSize } from "@/utils/math";
 import { objectContext } from "@/utils/objectContext";
-import { offsetSvgVec } from "@/utils/offsetVec";
 import { Signal, useSignal, useSignalEffect } from "@preact/signals-react";
 
 import { Debug } from "../Debug";
 import { useNodeMap } from "./";
-import { NodeItem } from "./NodeItem";
+import { NodeItem, NodeItemContext } from "./NodeItem";
 
-export type NodeListCtx = ReactiveMap<string, {
+export type NodeListItem = {
+  id: string;
   x: Signal<number>;
   y: Signal<number>;
   width: Signal<number>;
   height: Signal<number>;
   target: RefObject<SVGForeignObjectElement>;
   focus(): void;
-}>;
+};
+
+export type NodeListCtx = ReactiveMap<string, NodeListItem>;
 
 export type NodeListProps = {
   children?: ReactNode;
@@ -36,47 +37,34 @@ const [NodeListProvider, useNodeListCtx] = (
   objectContext<NodeListCtx>('NodeList')
 );
 
-export const useNodeItem = (startX?: number, startY?: number) => {
-  const id = useId();
-  const { width: w, height: h, svgRef, divRef } = useNodeMap();
+export const useNodeItem = (id: string, startX?: number, startY?: number) => {
+  const topCtx = useContext(NodeItemContext);
+
+  if (topCtx)
+    return topCtx;
+
+  const { width: w, height: h } = useNodeMap();
   const x = useSignalCorrect(startX ?? 0, v => cropSize(v, w, .5));
   const y = useSignalCorrect(startY ?? 0, v => cropSize(v, h, .5));
   const width = useSignal(0);
   const height = useSignal(0);
   const target = useSignalRef<SVGForeignObjectElement>(null);
   const list = useNodeListCtx();
-  const elem = useMemo(() => ({
+  const elem = useMemo<NodeListItem>(() => ({
     x, y, width, height, target, id, focus() {
       list.delete(id);
       list.set(id, elem);
     }
   }), [x, y, width, height, id]);
 
-  const offset = (vec: Vec2) => {
-    if (!divRef.current || !svgRef.current)
-      return vec.clone();
-
-    return offsetSvgVec(divRef.current, svgRef.current, vec);
-  };
-
-  const drag = useDrag(({ current, target }) => {
+  const drag = useDrag(({ target }) => {
     focus();
     attribute(target, { moved: true });
+    const start = Vec2.fromSignals(x, y);
 
-    const correct = offset(current).minus(x, y);
-
-    const dispose = looper(() => {
-      offset(current)
-        .cminus(correct)
-        .toSignals(x, y);
-    });
-
-    return ({ current: newCurrent }) => (
-      current.set(newCurrent),
-      () => {
-        dispose();
-        attribute(target, { moved: false });
-      }
+    return ({ offsetDelta }) => (
+      start.cminus(offsetDelta).toSignals(x, y),
+      () => { attribute(target, { moved: false }); }
     );
   }, 0);
 
@@ -137,6 +125,7 @@ export const NodeList: FC<NodeListProps> = ({ children }) => {
       {
         map.map((ref, key) => (
           <NodeItem
+            id={`n${key}`}
             key={key}
             ref={ref.target} />
         ))

@@ -12,8 +12,9 @@ export const objectContext = <T extends object>(name?: string) => {
     return ctx;
   };
 
-  return [Provider, useCurrentContext] as [
+  return [Provider, useCurrentContext, CTX] as [
     typeof Provider,
-    typeof useCurrentContext
+    typeof useCurrentContext,
+    typeof CTX
   ];
 }; 

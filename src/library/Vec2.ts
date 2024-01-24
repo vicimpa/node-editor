@@ -33,6 +33,14 @@ export class Vec2 {
     yield this.y;
   }
 
+  [Symbol.toStringTag]() {
+    return this.toString();
+  }
+
+  toString() {
+    return `${this.x} ${this.y}`;
+  }
+
   get tuple(): TTupleVec2 {
     return [this.x, this.y];
   }
