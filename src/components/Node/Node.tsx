@@ -1,52 +1,52 @@
-import { FC, ReactNode } from "react";
-import { createPortal } from "react-dom";
-import { useDrag } from "~/hooks/useDrag";
-import { Vec2 } from "~/library/Vec2";
+import { ReactNode, useId } from "react";
 
-import { useViewMapCTX } from "../ViewMap";
-import { useNodeElement } from "../ViewNodeList";
+import { makeNodeItem } from "../NodeEditor";
+import { Point, TPointParam } from "../Point";
 import s from "./Node.module.sass";
 
 export type TNodeProps = {
   title?: string;
+  input?: TPointParam[];
+  output?: TPointParam[];
   children?: ReactNode;
 };
 
-export const Node: FC<TNodeProps> = ({
-  title = 'Unnamed',
-  children,
-}) => {
-  const { posX, posY, element, focus } = useNodeElement();
-  const { scale, lock, moved } = useViewMapCTX();
+export const Node = makeNodeItem<TNodeProps>(
+  (
+    {
+      title = 'Unnamed',
+      input = [],
+      output = [],
+      children,
+    }
+  ) => {
+    const id = useId();
 
-  const drag = useDrag(({ start }) => (
-    moved.value ? undefined : (
-      focus(),
-      lock.value = true,
-      start = Vec2.fromSignals(posX, posY),
-      ({ delta }) => {
-
-        delta
-          .div(scale)
-          .plus(start)
-          .toSignals(posX, posY);
-
-        return () => {
-          lock.value = false;
-        };
-      }
-    )
-  ));
-
-  return createPortal(
-    <div className={s.node} onMouseDown={focus}>
-      <div className={s.head} onMouseDown={drag}>
-        {title}
+    return (
+      <div id={id} className={s.node}>
+        <div data-drag className={s.head}>
+          {title}
+        </div>
+        <div className={s.content}>
+          <div className={s.left}>
+            {
+              input.map((e, i) => (
+                <Point id={id} {...e} key={i} />
+              ))
+            }
+          </div>
+          <div className={s.center}>
+            {children}
+          </div>
+          <div className={s.right}>
+            {
+              output.map((e, i) => (
+                <Point output id={id} {...e} key={i} />
+              ))
+            }
+          </div>
+        </div>
       </div>
-      <div className={s.content}>
-        {children}
-      </div>
-    </div>,
-    element
-  );
-};
+    );
+  }
+);

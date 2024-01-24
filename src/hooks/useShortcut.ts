@@ -1,7 +1,8 @@
 import { useEffect, useLayoutEffect } from "react";
 import { Handler } from "shosho";
-import { castArray } from "~/utils/castArray";
-import { shortcut } from "~/utils/keyboard";
+
+import { castArray } from "@/utils/castArray";
+import { shortcut } from "@/utils/keyboard";
 
 import { useClass } from "./useClass";
 

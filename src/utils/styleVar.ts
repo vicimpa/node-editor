@@ -1,0 +1,1 @@
+export const v = (template: TemplateStringsArray) => '--' + template.join('');

@@ -1,5 +1,4 @@
-import { cos, hypot, max, min, rem, rems, sin } from "~/utils/math";
-
+import { cos, hypot, max, min, rem, rems, sin } from "@/utils/math";
 import { batch, Signal } from "@preact/signals-react";
 
 export type TMutation = (this: Vec2, x: number, y: number) => any;

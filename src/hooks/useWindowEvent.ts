@@ -1,5 +1,6 @@
 import { useLayoutEffect } from "react";
-import { TListener, WEM, windowEvent } from "~/utils/events";
+
+import { TListener, WEM, windowEvent } from "@/utils/events";
 
 import { useEvent } from "./useEvent";
 

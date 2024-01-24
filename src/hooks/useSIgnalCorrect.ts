@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import { signalCorrect } from "~/utils/signalCorrect";
 
+import { signalCorrect } from "@/utils/signalCorrect";
 import { useSignal } from "@preact/signals-react";
 
 import { useEvent } from "./useEvent";

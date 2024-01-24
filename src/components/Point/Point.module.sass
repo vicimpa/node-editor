@@ -1,0 +1,42 @@
+.point
+  --color: #999
+  display: flex
+  font-size: 14px
+  font-weight: normal
+  align-items: center
+  background-color: color-mix(in srgb, var(--color) 30%, #000)
+  border-radius: 50px
+  border: 1px solid var(--color)
+  user-select: none
+  max-height: 20px
+
+  .dot
+    width: 25px
+    height: 25px
+    border-radius: 100%
+    border: 3px solid color-mix(in srgb, var(--color) 70%, #000)
+    background-color: color-mix(in srgb, var(--color) 30%, #000)
+    box-shadow: 0 0 4px #000
+    cursor: pointer
+
+  .text
+    flex-grow: 1
+
+  &:not(&[data-output])
+    .text
+      text-align: left
+      padding-left: 10px
+      padding-right: 8px
+
+    .dot
+      margin-left: -8px
+
+  &[data-output]
+    flex-direction: row-reverse
+    .text
+      text-align: right
+      padding-right: 10px
+      padding-left: 8px
+
+    .dot
+      margin-right: -8px

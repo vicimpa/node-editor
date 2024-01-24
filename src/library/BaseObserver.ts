@@ -1,4 +1,4 @@
-import { looper, runLoop, TLoop } from "~/utils/looper";
+import { looper, runLoop, TLoop } from "@/utils/looper";
 
 export class BaseObserver<T, R, E> {
   #map = new Map<T, R | null>();

@@ -1,3 +1,4 @@
+import unplugin from "unplugin-fonts/vite";
 import { defineConfig } from "vite";
 import paths from "vite-tsconfig-paths";
 
@@ -18,5 +19,13 @@ export default defineConfig({
   plugins: [
     react({ plugins: [], devTarget: 'esnext' }),
     paths({ root: '../' }),
+    unplugin({
+      google: {
+        families: [
+          'Roboto Mono',
+          'JetBrains Mono'
+        ]
+      }
+    })
   ],
 });

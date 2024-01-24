@@ -3,10 +3,11 @@ import {
     useLayoutEffect
 } from "react";
 import { boolean } from "valibot";
-import { useClass } from "~/hooks/useClass";
-import { useShortcut } from "~/hooks/useShortcut";
-import { useValistore } from "~/hooks/useValistore";
-import { ReactiveMap } from "~/library/ReactiveMap";
+
+import { useClass } from "@/hooks/useClass";
+import { useShortcut } from "@/hooks/useShortcut";
+import { useValistore } from "@/hooks/useValistore";
+import { ReactiveMap } from "@/library/ReactiveMap";
 
 import s from "./Debug.module.sass";
 
@@ -60,7 +61,7 @@ export const DebugProvider: FC<{ children?: ReactNode; }> = ({ children }) => {
         <div className={s.debug} data-show={showDebug.value || undefined}>
           {
             list.size ? (
-              list.map(([key, value]) => (
+              list.map((value, key) => (
                 <div key={key} className={s.item}>
                   <h4 className={s.head}>
                     {titles.get(key) ?? 'Unnamed'}:

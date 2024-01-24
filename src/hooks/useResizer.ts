@@ -1,6 +1,6 @@
 import { RefObject, useEffect, useMemo } from "react";
-import { resizer } from "~/utils/resizer";
 
+import { resizer } from "@/utils/resizer";
 import { batch, useSignal } from "@preact/signals-react";
 
 export const useResizer = <T extends Element>(ref: RefObject<T>, offset = false) => {
@@ -21,10 +21,20 @@ export const useResizer = <T extends Element>(ref: RefObject<T>, offset = false)
         });
       }
     )) : undefined
-  ), [ref]);
+  ));
 
   return useMemo(() => ({
-    width,
-    height
+    get width() {
+      return width.value;
+    },
+    peekWidth() {
+      return width.peek();
+    },
+    get height() {
+      return height.value;
+    },
+    peekHeight() {
+      return height.peek();
+    },
   }), []);
 };

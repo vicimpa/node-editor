@@ -1,7 +1,8 @@
 import { useLayoutEffect, useMemo } from "react";
 import { BaseSchema } from "valibot";
-import { subscribe } from "~/utils/reactive";
-import { valistore } from "~/utils/valistore";
+
+import { subscribe } from "@/utils/reactive";
+import { valistore } from "@/utils/valistore";
 
 import { useRerender } from "./useRerender";
 

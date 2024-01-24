@@ -68,3 +68,7 @@ export const cropSize = (v: number, size: number, anchor?: number) => (
   size = abs(size),
   minMax(v, -size * (1 - anchor), size * anchor)
 );
+
+export const rec = (v: number) => (
+  v ? 1 / v : v
+);

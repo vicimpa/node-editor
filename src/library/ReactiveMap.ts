@@ -1,7 +1,8 @@
 import { useLayoutEffect, useMemo } from "react";
-import { useEvent } from "~/hooks/useEvent";
-import { useRerender } from "~/hooks/useRerender";
-import { emit, subscribe } from "~/utils/reactive";
+
+import { useEvent } from "@/hooks/useEvent";
+import { useRerender } from "@/hooks/useRerender";
+import { emit, subscribe } from "@/utils/reactive";
 
 export class ReactiveMap<K, V> extends Map<K, V> {
   set(key: K, value: V): this {
@@ -28,8 +29,10 @@ export class ReactiveMap<K, V> extends Map<K, V> {
     }
   }
 
-  map<E>(fn: (e: [K, V], i: number) => E) {
-    return Array.from(this, fn);
+  map<E>(fn: (e: V, i: K, m: this) => E) {
+    var j = 0, output = new Array<E>(this.size);
+    this.forEach((e, i) => output[j++] = fn(e, i, this));
+    return output;
   }
 
   use() {
