@@ -9,8 +9,10 @@ import { ReactiveMap } from "@/library/ReactiveMap";
 import { Vec2 } from "@/library/Vec2";
 import { attribute } from "@/utils/attribute";
 import { fixed } from "@/utils/fixed";
+import { looper } from "@/utils/looper";
 import { cropSize } from "@/utils/math";
 import { objectContext } from "@/utils/objectContext";
+import { offsetSvgVec } from "@/utils/offsetVec";
 import { Signal, useSignal, useSignalEffect } from "@preact/signals-react";
 
 import { Debug } from "../Debug";
@@ -36,14 +38,13 @@ const [NodeListProvider, useNodeListCtx] = (
 
 export const useNodeItem = (startX?: number, startY?: number) => {
   const id = useId();
-  const { width: w, height: h, posX, posY, scale } = useNodeMap();
+  const { width: w, height: h, svgRef, divRef } = useNodeMap();
   const x = useSignalCorrect(startX ?? 0, v => cropSize(v, w, .5));
   const y = useSignalCorrect(startY ?? 0, v => cropSize(v, h, .5));
   const width = useSignal(0);
   const height = useSignal(0);
   const target = useSignalRef<SVGForeignObjectElement>(null);
   const list = useNodeListCtx();
-  const startPage = useClass(Vec2);
   const elem = useMemo(() => ({
     x, y, width, height, target, id, focus() {
       list.delete(id);
@@ -51,23 +52,33 @@ export const useNodeItem = (startX?: number, startY?: number) => {
     }
   }), [x, y, width, height, id]);
 
-  const drag = useDrag(({ start, target }) => (
-    focus(),
-    attribute(target, { moved: true }),
-    Vec2.fromSignals(posX, posY, startPage),
-    start = Vec2.fromSignals(x, y),
-    ({ delta }) => {
-      delta
-        .div(scale)
-        .times(-1)
-        .minus(startPage.cminus(posX, posY))
-        .plus(start)
+  const offset = (vec: Vec2) => {
+    if (!divRef.current || !svgRef.current)
+      return vec.clone();
+
+    return offsetSvgVec(divRef.current, svgRef.current, vec);
+  };
+
+  const drag = useDrag(({ current, target }) => {
+    focus();
+    attribute(target, { moved: true });
+
+    const correct = offset(current).minus(x, y);
+
+    const dispose = looper(() => {
+      offset(current)
+        .cminus(correct)
         .toSignals(x, y);
-      return () => {
+    });
+
+    return ({ current: newCurrent }) => (
+      current.set(newCurrent),
+      () => {
+        dispose();
         attribute(target, { moved: false });
-      };
-    }
-  ), 0);
+      }
+    );
+  }, 0);
 
   const mouseDown = useEvent(
     (e: MouseEvent) => {

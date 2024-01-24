@@ -29,12 +29,14 @@ export type NodeMapProps = {
 };
 
 export type NodeMapCtx = {
+  divRef: RefObject<HTMLDivElement>;
   svgRef: RefObject<SVGSVGElement>;
   posX: Signal<number>;
   posY: Signal<number>;
   scale: Signal<number>;
   width: number;
   height: number;
+  calculateRect(): DOMRect;
 };
 
 const [NodeMapProvider, useNodeMap] = (
@@ -157,13 +159,15 @@ export const NodeMap: FC<NodeMapProps> = forward<'div', NodeMapProps>(
     });
 
     const ctx = useMemo(() => ({
+      divRef,
       posX,
       posY,
       scale,
       svgRef,
       width,
-      height
-    }), [posX, posY, scale, svgRef, width, height]);
+      height,
+      calculateRect
+    }), [posX, posY, scale, svgRef, width, height, divRef]);
 
     return (
       <div
