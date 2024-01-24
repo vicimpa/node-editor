@@ -8,6 +8,8 @@ import { useSignalRef } from "@/hooks/useSignalRef";
 import { ReactiveSet } from "@/library/ReactiveSet";
 import { useSignals } from "@preact/signals-react/runtime";
 
+import s from "./NodeEditor.module.sass";
+
 type NodeLayersCtx = ReactiveSet<RefObject<SVGGElement>>;
 
 const BeforeCTX = createContext<NodeLayersCtx | null>(null);
@@ -25,7 +27,7 @@ const useLayer = (type: NodeLayerType = 'after') => {
   useEffect(() => (
     list.add(ref),
     () => { list.delete(ref); }
-  ), [list, ref]);
+  ), [list]);
 
   return ref;
 };
@@ -58,7 +60,7 @@ export const NodeLayers: FC<{ children?: ReactNode; }> = ({ children }) => {
         createElement(() => (
           beforeSet.use(),
           beforeSet.map((el, i) => (
-            <g ref={el} key={i} />
+            <g className={s.layer} ref={el} key={i} />
           ))
         ))
       }
@@ -73,7 +75,7 @@ export const NodeLayers: FC<{ children?: ReactNode; }> = ({ children }) => {
         createElement(() => (
           afterSet.use(),
           afterSet.map((el, i) => (
-            <g ref={el} key={i} />
+            <g className={s.layer} ref={el} key={i} />
           ))
         ))
       }

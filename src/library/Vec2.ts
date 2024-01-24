@@ -38,7 +38,7 @@ export class Vec2 {
   }
 
   toString() {
-    return `${this.x} ${this.y}`;
+    return `${this.x},${this.y}`;
   }
 
   get tuple(): TTupleVec2 {

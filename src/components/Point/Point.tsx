@@ -10,7 +10,7 @@ import { useSignal } from "@preact/signals-react";
 import { useSignals } from "@preact/signals-react/runtime";
 
 import { Line } from "../Line";
-import { NodeLayerPortal, NodeListItem, useNodeMap } from "../NodeEditor";
+import { NodeListItem, useNodeMap } from "../NodeEditor";
 import s from "./Point.module.sass";
 
 export type TPointParam = {
@@ -76,19 +76,16 @@ export const Point = forward<'div', TPointProps>(
             id={parent.id + '_' + id}
             className={s.dot}
             onMouseDown={drag}
+            onMouseUp={e => console.log(e.target)}
             ref={spanRef}
           />
           <span className={s.text}>{name}</span>
         </div>
         {
-          <NodeLayerPortal>
-            {
-              createElement(() => (
-                useSignals(),
-                <Line from={{ parent, point: spanRef, call: output ? 1 : -1 }} to={to.value ?? undefined} />
-              ))
-            }
-          </NodeLayerPortal>
+          createElement(() => (
+            useSignals(),
+            <Line from={{ parent, point: spanRef, call: output ? 1 : -1 }} to={to.value ?? undefined} />
+          ))
         }
       </>
     );
