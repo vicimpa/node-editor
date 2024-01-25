@@ -35,6 +35,10 @@ export const App = () => {
               <h1>Hi 123123 123 123123 123123</h1>
               <h1>Hi 123123 123 123123 123123</h1>
             </Node>
+
+            <Node >
+              <textarea />
+            </Node>
           </NodeList>
         </NodeMap>
       </DebugProvider>

@@ -1,5 +1,6 @@
 .foregin
   color: inherit
+  pointer-events: none
   &:not(:last-child)
     user-select: none
 
@@ -9,6 +10,9 @@
 
   .resizer
     display: inline-block
+
+    *
+      pointer-events: all
 
     [data-drag]
       cursor: grab
