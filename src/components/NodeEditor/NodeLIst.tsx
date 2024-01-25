@@ -58,7 +58,7 @@ export const useNodeItem = (id: string, startX?: number, startY?: number) => {
   }), [x, y, width, height, id]);
 
   const drag = useDrag(({ target }) => {
-    focus();
+    elem.focus();
     attribute(target, { moved: true });
     const start = Vec2.fromSignals(x, y);
 

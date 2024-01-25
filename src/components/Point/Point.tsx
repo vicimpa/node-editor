@@ -51,10 +51,11 @@ export const Point = forward<'div', TPointProps>(
     const drag = useDrag(() => {
 
       return ({ offsetCurrent }) => {
-        to.value = offsetCurrent;
+        if (!(to.value instanceof Vec2) || !to.value.equal(offsetCurrent))
+          to.value = offsetCurrent;
 
         return () => {
-          // to.value = null;
+          to.value = null;
         };
       };
     }, 0, offset);
@@ -76,7 +77,7 @@ export const Point = forward<'div', TPointProps>(
             id={parent.id + '_' + id}
             className={s.dot}
             onMouseDown={drag}
-            onMouseUp={e => console.log(e.target)}
+            onMouseUp={e => console.log(parent, id)}
             ref={spanRef}
           />
           <span className={s.text}>{name}</span>

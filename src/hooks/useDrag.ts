@@ -3,6 +3,7 @@ import { MouseEvent as ReactMouseEvent, useCallback, useContext } from "react";
 import { NodeMapCtx } from "@/components/NodeEditor";
 import { Vec2 } from "@/library/Vec2";
 import { windowEvent } from "@/utils/events";
+import { looper } from "@/utils/looper";
 
 import { useEvent } from "./useEvent";
 
@@ -43,6 +44,8 @@ export const useDrag = (
       const offsetCurrent = offsetStart.clone();
       const delta = new Vec2(0);
       const offsetDelta = new Vec2(0);
+      const isMain = offset === mapCtx?.offset;
+
       const event = {
         get start() { return start.clone(); },
         get current() { return current.clone(); },
@@ -53,8 +56,17 @@ export const useDrag = (
         target: e.target
       };
 
+      const update = () => {
+        offsetCurrent.set(offset(current));
+        offsetDelta.set(offsetStart).minus(offsetCurrent);
+        if (!move) return;
+        stop = move(event);
+      };
+
       let move = dragStart(event);
-      let stop: TDragStop | void = move?.(event);
+      let stop: TDragStop | void;
+
+      update();
 
       const unsub = [
         windowEvent(['mouseup', 'blur'], (e) => {
@@ -62,19 +74,18 @@ export const useDrag = (
             return;
 
           stop?.(event);
-          unsub.forEach(u => u());
+          unsub.forEach(u => u?.());
         }),
         windowEvent('mousemove', (e) => {
           Vec2.fromPageXY(e, current);
           delta.set(start).minus(current);
-          offsetCurrent.set(offset(current));
-          offsetDelta.set(offsetStart).minus(offsetCurrent);
-          stop = move?.(event);
+          if (!isMain) update();
         }),
         () => {
           move = undefined;
           stop = undefined;
         },
+        isMain ? looper(update) : undefined
       ];
     },
     []

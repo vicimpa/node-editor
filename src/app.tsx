@@ -16,17 +16,27 @@ export const App = () => {
             id="#0"
             title="TestNode"
             input={[
-              { id: '0', name: 'test' }
+              { id: '0', name: 'test' },
+
+              { id: '2', name: 'test' }
+            ]}
+            output={[
+              { id: '1', name: 'test' }
             ]}
           >
+            Content 1
           </Node>
           <Node
             id="#2"
             title="TestNode"
-            output={[
+            input={[
               { id: '0', name: 'test' }
             ]}
+            output={[
+              { id: '1', name: 'test' }
+            ]}
           >
+            Content 2
           </Node>
         </NodeList>
       </NodeLayers>

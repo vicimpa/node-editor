@@ -27,22 +27,25 @@ export const Node = makeNodeItem<TNodeProps>(
         {title}
       </div>
       <div className={s.content}>
-        <div className={s.left}>
-          {
-            input.map((e, i) => (
-              <Point parent={elem} {...e} key={i} />
-            ))
-          }
-        </div>
         <div className={s.center}>
           {children}
         </div>
-        <div className={s.right}>
-          {
-            output.map((e, i) => (
-              <Point parent={elem} output {...e} key={i} />
-            ))
-          }
+
+        <div className={s.pins}>
+          <div className={s.left}>
+            {
+              input.map((e, i) => (
+                <Point parent={elem} {...e} key={i} />
+              ))
+            }
+          </div>
+          <div className={s.right}>
+            {
+              output.map((e, i) => (
+                <Point parent={elem} output {...e} key={i} />
+              ))
+            }
+          </div>
         </div>
       </div>
     </div>
