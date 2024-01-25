@@ -2,7 +2,7 @@ import { useVariID } from "@/hooks/useVariId";
 import { Vec2 } from "@/library/Vec2";
 import { compute } from "@/utils/compute";
 
-import { NodeMapCtx } from "../../";
+import { useNodeMap } from "../../";
 import { CircleBack } from "./lib/CircleBack";
 import { CustomBack } from "./lib/CustomBack";
 
@@ -50,7 +50,7 @@ export const NodeBack = <T extends PATTERN_KEY>({
   back,
   ...params
 }: NodeBackProps<T>) => {
-  const ctx = NodeMapCtx.use();
+  const ctx = useNodeMap();
   const { xLimit: width, yLimit: height } = ctx;
   const id = useVariID('back');
   const { x, y } = new Vec2(width, height).times(-anchorX);

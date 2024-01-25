@@ -1,5 +1,4 @@
-import { createContext, useContext, useId, useLayoutEffect, useMemo } from "react";
-
+import { classContext } from "@/utils/classContext";
 import { cropSize } from "@/utils/math";
 import { signalCorrect } from "@/utils/signalCorrect";
 import { signalRef } from "@/utils/signalRef";
@@ -7,10 +6,9 @@ import { computed, signal } from "@preact/signals-react";
 
 import { NodeListCtx, NodeMapCtx } from "../../";
 import { computedRect } from "./lib/computedRect";
+import { detectDrag } from "./lib/detectDrag";
 import { detectRect } from "./lib/detectRect";
 import { detectResize } from "./lib/detectResize";
-
-const Context = createContext<NodeItemCtx | null>(null);
 
 export class NodeItemCtx {
   ref = signalRef<SVGForeignObjectElement>();
@@ -37,38 +35,17 @@ export class NodeItemCtx {
   connect() {
     const dispose: Array<() => void> = [
       detectResize(this),
-      detectRect(this)
+      detectRect(this),
+      detectDrag(this),
     ];
 
     return () => {
       dispose.forEach(dis => dis());
     };
   }
-
-  static Provider = Context.Provider;
-
-  static use(id?: string) {
-    var reserveId = useId();
-    id = id ?? reserveId;
-    var ctx = useContext(Context);
-    var list = NodeListCtx.use();
-    var map = NodeMapCtx.use();
-
-    if (!ctx && list.list.has(id))
-      ctx = list.list.get(id)!;
-
-    ctx = useMemo(() => (
-      ctx ?? new this(id, map, list)
-    ), [id, ctx, map, list])!;
-
-    useLayoutEffect(() => {
-      if (list.list.has(id))
-        return;
-
-      list.list.set(id, ctx!);
-      return () => { list.list.delete(id); };
-    }, [ctx]);
-
-    return ctx!;
-  }
 }
+
+export const [
+  NodeItemProvider,
+  useNodeItem
+] = classContext(NodeItemCtx);

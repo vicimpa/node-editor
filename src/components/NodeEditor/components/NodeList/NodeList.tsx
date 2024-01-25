@@ -1,30 +1,44 @@
-import { createElement, FC, ReactNode } from "react";
+import { Component, createElement, ReactNode, useEffect } from "react";
 
 import { NodeItem } from "../NodeItem";
-import { NodeListCtx } from "./";
+import { NodeMapCtx, useNodeMap } from "../NodeMap";
+import { NodeListCtx, NodeListProvider } from "./";
 
 export type NodeListProps = {
   children?: ReactNode;
 };
 
-export const NodeList: FC<NodeListProps> = ({ children }) => {
-  const ctx = NodeListCtx.use(true);
+export class NodeList extends Component<NodeListProps> {
+  map!: NodeMapCtx;
+  ctx = new NodeListCtx(this);
 
-  return (
-    <NodeListCtx.Provider value={ctx}>
-      {children}
+  render(): ReactNode {
+    const { ctx, props } = this;
+    const { children } = props;
 
-      <g ref={ctx.ref}>
+    return (
+      <NodeListProvider value={ctx}>
         {
           createElement(() => (
-            ctx.list.use()
-              .map((ctx, key) => (
-                <NodeItem key={key} ctx={ctx} />
-              ))
+            this.map = useNodeMap(),
+            useEffect(() => ctx.connect(), [ctx]),
+            <>
+              {children}
+
+              <g ref={ctx.ref}>
+                {
+                  createElement(() => (
+                    ctx.list.use()
+                      .map((ctx, key) => (
+                        <NodeItem key={key} ctx={ctx} />
+                      ))
+                  ))
+                }
+              </g>
+            </>
           ))
         }
-      </g>
-    </NodeListCtx.Provider>
-
-  );
+      </NodeListProvider>
+    );
+  }
 };

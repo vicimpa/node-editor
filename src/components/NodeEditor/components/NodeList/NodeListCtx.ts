@@ -1,18 +1,19 @@
-import { createContext, useContext, useLayoutEffect, useMemo } from "react";
+import { useEffect, useId, useMemo } from "react";
 
 import { ReactiveMap } from "@/library/ReactiveMap";
+import { classContext } from "@/utils/classContext";
 import { signalRef } from "@/utils/signalRef";
 import { computed, signal } from "@preact/signals-react";
 
-import { NodeMapCtx } from "../..";
 import { NodeItemCtx } from "../NodeItem";
+import { NodeList } from "./";
 import { computedRect } from "./lib/computedRect";
 import { detectResize } from "./lib/detectResize";
 
-const Context = createContext<NodeListCtx | null>(null);
-
 export class NodeListCtx {
   ref = signalRef<SVGGElement>();
+
+  get map() { return this.listElem.map; }
 
   list = new ReactiveMap<string, NodeItemCtx>();
 
@@ -24,9 +25,7 @@ export class NodeListCtx {
 
   rect = computed(() => computedRect(this));
 
-  constructor(
-    public map: NodeMapCtx
-  ) { }
+  constructor(public listElem: NodeList) { }
 
   connect() {
     const dispose: Array<() => void> = [
@@ -50,22 +49,24 @@ export class NodeListCtx {
     }
   }
 
-  static Provider = Context.Provider;
+  useItem(id?: string) {
+    const reserveId = useId();
+    id = id ?? reserveId;
 
-  static use(isCreate = false) {
-    var ctx = useContext(Context);
-    var map = NodeMapCtx.use();
-    var newCtx = useMemo(() => ctx ?? new this(map), [map]);
+    const item = useMemo(() => (
+      new NodeItemCtx(id, this.map, this)
+    ), [id]);
 
-    useLayoutEffect(() => (
-      isCreate ? (
-        newCtx.connect()
-      ) : undefined
-    ), [newCtx]);
+    useEffect(() => (
+      this.list.set(id, item),
+      () => { this.list.delete(id); }
+    ), [id, item]);
 
-    if (ctx) return ctx;
-    if (!isCreate) throw new Error('You need NodeList context');
-
-    return ctx ?? newCtx;
+    return item;
   }
-}  
+}
+
+export const [
+  NodeListProvider,
+  useNodeList
+] = classContext(NodeListCtx);

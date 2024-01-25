@@ -8,7 +8,7 @@ export type NodeItemProps = {
 };
 
 export const NodeItem: FC<NodeItemProps> = ({ ctx }) => (
-  useLayoutEffect(() => ctx.connect(), []),
+  useLayoutEffect(() => ctx.connect(), [ctx]),
   <foreignObject id={ctx.id} ref={ctx.ref} className={s.foregin}>
     <div className={s.container}>
       <div ref={ctx.div} className={s.resizer} />

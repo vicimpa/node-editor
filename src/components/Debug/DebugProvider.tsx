@@ -9,6 +9,7 @@ import { useShortcut } from "@/hooks/useShortcut";
 import { useValistore } from "@/hooks/useValistore";
 import { ReactiveMap } from "@/library/ReactiveMap";
 
+import { useNodeHud } from "../NodeEditor";
 import s from "./Debug.module.sass";
 
 export type TDebugCTXValue = Record<string, ReactNode>;
@@ -47,6 +48,7 @@ export const DebugProvider: FC<{ children?: ReactNode; }> = ({ children }) => {
 
   const list = useClass(ReactiveMap<string, TDebugCTXValue>).use();
   const titles = useClass(ReactiveMap<string, string>).use();
+  const hud = useNodeHud();
 
   useShortcut('`', () => {
     showDebug.value = !showDebug.value;
@@ -59,8 +61,8 @@ export const DebugProvider: FC<{ children?: ReactNode; }> = ({ children }) => {
           {children}
         </DebugTitleCTX.Provider>
       </DebugCTX.Provider>
-      {
-        <div className={s.debug} data-show={showDebug.value || undefined}>
+      <hud.Portal>
+        <div className={s.debug} key="debug" data-show={showDebug.value || undefined}>
           {
             list.size ? (
               list.map((value, key) => (
@@ -86,7 +88,7 @@ export const DebugProvider: FC<{ children?: ReactNode; }> = ({ children }) => {
             )
           }
         </div>
-      }
+      </hud.Portal>
     </>
   );
 };

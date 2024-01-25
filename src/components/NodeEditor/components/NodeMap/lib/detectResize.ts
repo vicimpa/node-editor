@@ -6,12 +6,13 @@ import { NodeMapCtx } from "../";
 export const detectResize = (map: NodeMapCtx) => (
   effect(() => (
     map.div.current &&
-    resizer(map.div.current, ({ contentRect }) => (
+    resizer(map.div.current, () => (
       batch(() => {
-        map.left.value = contentRect.left;
-        map.top.value = contentRect.top;
-        map.width.value = contentRect.width;
-        map.height.value = contentRect.height;
+        const rect = map.div.current!.getBoundingClientRect();
+        map.left.value = rect.left;
+        map.top.value = rect.top;
+        map.width.value = rect.width;
+        map.height.value = rect.height;
       })
     ))
   ))

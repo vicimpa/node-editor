@@ -1,0 +1,46 @@
+$marginA: 30px
+$marginB: 10px
+$size: 10px
+
+.top, .left,.right,.bottom
+  position: absolute
+  background-color: rgb(34, 34, 34)
+  border-radius: 10px
+  pointer-events: all
+  overflow: hidden
+
+.left, .right
+  top: $marginA
+  bottom: $marginA
+  width: $size
+  flex-direction: column
+
+  .item
+    left: 0
+    right: 0
+
+.top, .bottom
+  left: $marginA
+  right: $marginA
+  height: $size
+
+  .item
+    top: 0
+    bottom: 0
+
+.top
+  top: $marginB
+
+.left
+  left: $marginB
+
+.right
+  right: $marginB
+
+.bottom
+  bottom: $marginB
+
+.item
+  position: absolute
+  background-color: #444
+  cursor: pointer

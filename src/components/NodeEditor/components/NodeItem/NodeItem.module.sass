@@ -1,5 +1,7 @@
 .foregin
   color: inherit
+  &:not(:last-child)
+    user-select: none
 
 .container
   width: 100vw
@@ -7,3 +9,9 @@
 
   .resizer
     display: inline-block
+
+    [data-drag]
+      cursor: grab
+
+      &[data-drag='moved']
+        cursor: grabbing

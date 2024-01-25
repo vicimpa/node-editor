@@ -1,8 +1,9 @@
-import { createElement, FC, ReactNode, useId } from "react";
+import { createElement, FC, ReactNode } from "react";
 import { createPortal } from "react-dom";
 
 import { useSignals } from "@preact/signals-react/runtime";
 
+import { useNodeList } from "../NodeList";
 import { NodeItemCtx } from "./";
 
 export type BaseNodeItemProps = {
@@ -22,8 +23,7 @@ export const makeNodeItem = <T extends object>(
   y = 0,
   ...props
 }) => {
-    const reserveId = useId();
-    const ctx = NodeItemCtx.use(id ?? reserveId);
+    const ctx = useNodeList().useItem(id);
 
     return (
       createElement(() => (

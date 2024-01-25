@@ -1,6 +1,7 @@
-import { createContext, useContext, useLayoutEffect, useMemo } from "react";
+import { MouseEvent as ReactMouseEvent } from "react";
 
 import { Vec2 } from "@/library/Vec2";
+import { classContext } from "@/utils/classContext";
 import { cropSize, minMax } from "@/utils/math";
 import { signalCorrect } from "@/utils/signalCorrect";
 import { signalRef } from "@/utils/signalRef";
@@ -11,8 +12,6 @@ import { computedViewRect } from "./lib/computedViewRect";
 import { detectCursor } from "./lib/detectCursor";
 import { detectMoved } from "./lib/detectMoved";
 import { detectResize } from "./lib/detectResize";
-
-const Context = createContext<NodeMapCtx | null>(null);
 
 export class NodeMapCtx {
   xLimit = 10000;
@@ -35,7 +34,10 @@ export class NodeMapCtx {
 
   cursor = signal('default');
 
-  offset(vec: Vec2) {
+  offset(vec: Vec2 | MouseEvent | ReactMouseEvent): Vec2 {
+    if (!(vec instanceof Vec2))
+      return this.offset(Vec2.fromPageXY(vec));
+
     const { value: rect } = this.rect;
     const { value: viewRect } = this.viewRect;
     const size = Vec2.fromSize(rect);
@@ -55,17 +57,9 @@ export class NodeMapCtx {
       dispose.forEach(dis => dis());
     };
   }
-
-  static Provider = Context.Provider;
-
-  static use(isCreate = false) {
-    var ctx = useContext(Context);
-
-    if (ctx) return ctx;
-    if (!isCreate) throw new Error('You need NodeMap context');
-
-    ctx = useMemo(() => new this(), []);
-    useLayoutEffect(() => ctx?.connect(), []);
-    return ctx;
-  }
 }
+
+export const [
+  NodeMapProvider,
+  useNodeMap
+] = classContext(NodeMapCtx);
