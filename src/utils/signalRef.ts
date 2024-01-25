@@ -1,8 +1,8 @@
 import { RefObject } from "react";
 
-import { Signal, signal } from "@preact/signals-react";
+import { signal } from "@preact/signals-react";
 
-export const signalRef = <T>(): RefObject<T> & Signal<T | null> => {
+export const signalRef = <T>(): RefObject<T> => {
   const ref = signal<T | null>(null);
 
   return {
@@ -11,7 +11,6 @@ export const signalRef = <T>(): RefObject<T> & Signal<T | null> => {
     },
     set current(v) {
       ref.value = v;
-    },
-    __proto__: ref
-  } as any;
+    }
+  };
 };

@@ -6,5 +6,5 @@ export const offsetSvgVec = (base: Element, svg: DOMRect | SVGSVGElement, vec: V
 
   const rect = base.getBoundingClientRect();
   const scale = Vec2.fromSize(rect).div(svg.width, svg.height);
-  return vec.cminus(rect).div(scale).cplus(svg);
+  return vec.cminus(rect).div(scale).plus(svg);
 };

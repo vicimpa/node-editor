@@ -1,36 +1,46 @@
-import { ReactNode } from "react";
-
 import { useVariID } from "@/hooks/useVariId";
 import { Vec2 } from "@/library/Vec2";
+import { compute } from "@/utils/compute";
 
-import { useNodeMap } from "./";
+import { NodeMapCtx } from "../../";
+import { CircleBack } from "./lib/CircleBack";
+import { CustomBack } from "./lib/CustomBack";
 
 const patterns = {
-  'circle': ({ r = 2, fill = '#fff' }) => (
-    <circle {...{ r, fill }} />
-  ),
-  'custom': ({ children }: { children?: ReactNode; }) => (
-    children
-  )
+  'circle': CircleBack,
+  'custom': CustomBack
 } as const;
 
 type PATTERNS = typeof patterns;
+
 type PATTERN_KEY = keyof PATTERNS;
-type PARAMS_OBJECT<T extends PATTERN_KEY> = Parameters<PATTERNS[T]>[0];
-type PARAMS<T extends PATTERN_KEY> = PARAMS_OBJECT<T> extends object ? PARAMS_OBJECT<T> : {};
+
+type PARAMS_OBJECT<T extends PATTERN_KEY> = (
+  Parameters<PATTERNS[T]>[0]
+);
+
+type PARAMS<T extends PATTERN_KEY> = (
+  PARAMS_OBJECT<T> extends object ? (
+    PARAMS_OBJECT<T>
+  ) : {}
+);
+
 type BASE_PROPS = {
   width?: number;
   height?: number;
   anchorX?: number;
   anchorY?: number;
-  back?: Omit<JSX.IntrinsicElements['rect'], 'x' | 'y' | 'width' | 'height'>;
+  back?: Omit<
+    JSX.IntrinsicElements['rect'],
+    'x' | 'y' | 'width' | 'height'
+  >;
 };
 
-export type NodeMapBackProps<T extends PATTERN_KEY> = {
-  type: T;
-} & BASE_PROPS & PARAMS<T>;
+export type NodeBackProps<T extends PATTERN_KEY> = (
+  { type: T; } & BASE_PROPS & PARAMS<T>
+);
 
-export const NodeMapBack = <T extends PATTERN_KEY>({
+export const NodeBack = <T extends PATTERN_KEY>({
   type, width:
   pw = 50,
   height:
@@ -39,8 +49,9 @@ export const NodeMapBack = <T extends PATTERN_KEY>({
   anchorY = 0.5,
   back,
   ...params
-}: NodeMapBackProps<T>) => {
-  const { width, height } = useNodeMap();
+}: NodeBackProps<T>) => {
+  const ctx = NodeMapCtx.use();
+  const { xLimit: width, yLimit: height } = ctx;
   const id = useVariID('back');
   const { x, y } = new Vec2(width, height).times(-anchorX);
   const { x: px, y: py } = new Vec2(pw, ph).times(-anchorY);
@@ -55,12 +66,14 @@ export const NodeMapBack = <T extends PATTERN_KEY>({
           height={ph}
           patternUnits="userSpaceOnUse"
         >
-          {patterns[type](params)}
+          {compute(() => patterns[type](params))}
         </pattern>
       </defs>
+
       {back && (
         <rect x={x} y={y} width={width} height={height} {...back} />
       )}
+
       <rect x={x} y={y} width={width} height={height} fill={`url(#${id})`} />
     </>
   );
