@@ -85,7 +85,26 @@ export const useDrag = (
           move = undefined;
           stop = undefined;
         },
-        isMain ? looper(update) : undefined
+        isMain ? looper((_, dtime) => {
+          if (mapCtx && mapCtx.svgRef.current) {
+            const size = 50;
+            const { posX, posY } = mapCtx;
+            const rect = mapCtx.svgRef.current.getBoundingClientRect();
+
+            console.log(rect.width, rect.height);
+            Vec2.fromSignals(posX, posY)
+              .plus(
+                current.cminus(rect.width, rect.height).cropMin(-50)
+                  .plus(current.clone().cropMax(size))
+                  .div(size)
+                  .times(dtime * .5)
+              )
+              .toSignals(posX, posY);
+
+          }
+
+          update();
+        }) : undefined
       ];
     },
     []

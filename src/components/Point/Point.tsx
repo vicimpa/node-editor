@@ -77,7 +77,7 @@ export const Point = forward<'div', TPointProps>(
             id={parent.id + '_' + id}
             className={s.dot}
             onMouseDown={drag}
-            onMouseUp={e => console.log(parent, id)}
+            onMouseUp={() => console.log(parent, id)}
             ref={spanRef}
           />
           <span className={s.text}>{name}</span>

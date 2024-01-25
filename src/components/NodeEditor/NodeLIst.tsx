@@ -1,4 +1,4 @@
-import { FC, ReactNode, RefObject, useContext, useEffect, useMemo } from "react";
+import { FC, ReactNode, RefObject, useEffect, useMemo } from "react";
 
 import { useClass } from "@/hooks/useClass";
 import { useDrag } from "@/hooks/useDrag";
@@ -15,7 +15,7 @@ import { Signal, useSignal, useSignalEffect } from "@preact/signals-react";
 
 import { Debug } from "../Debug";
 import { useNodeMap } from "./";
-import { NodeItem, NodeItemContext } from "./NodeItem";
+import { NodeItem } from "./NodeItem";
 
 export type NodeListItem = {
   id: string;
@@ -38,10 +38,11 @@ const [NodeListProvider, useNodeListCtx] = (
 );
 
 export const useNodeItem = (id: string, startX?: number, startY?: number) => {
-  const topCtx = useContext(NodeItemContext);
+  const list = useNodeListCtx();
 
-  if (topCtx)
-    return topCtx;
+
+  if (list.has(id))
+    return list.get(id)!;
 
   const { width: w, height: h } = useNodeMap();
   const x = useSignalCorrect(startX ?? 0, v => cropSize(v, w, .5));
@@ -49,7 +50,6 @@ export const useNodeItem = (id: string, startX?: number, startY?: number) => {
   const width = useSignal(0);
   const height = useSignal(0);
   const target = useSignalRef<SVGForeignObjectElement>(null);
-  const list = useNodeListCtx();
   const elem = useMemo<NodeListItem>(() => ({
     x, y, width, height, target, id, focus() {
       list.delete(id);
