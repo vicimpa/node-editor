@@ -1,7 +1,6 @@
 import { DebugProvider } from "./components/Debug";
 import { Node } from "./components/Node";
-import { NodeBack, NodeList, NodeMap } from "./components/NodeEditor";
-import { NodeHud } from "./components/NodeEditor/components/NodeHud/NodeHud";
+import { NodeBack, NodeHud, NodeList, NodeMap } from "./components/NodeEditor";
 import { Scroll } from "./components/Scroll";
 
 export const App = () => {
