@@ -16,13 +16,12 @@ export const Node = makeNodeItem<TNodeProps>(
     }
   ) => (
     <div className={s.node}>
-      <div className={s.head}>
+      <div data-drag className={s.head}>
         {title}
       </div>
       <div className={s.content}>
         <div className={s.center}>
           {children}
-          <button data-drag>Drag And Drop</button>
         </div>
 
         <div className={s.pins}>
