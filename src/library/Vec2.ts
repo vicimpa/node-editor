@@ -183,6 +183,11 @@ export class Vec2 {
     return this;
   }
 
+  inverse() {
+    [this.x, this.y] = [this.y, this.x];
+    return this;
+  }
+
   clone() {
     return new Vec2(this);
   }

@@ -91,7 +91,6 @@ export const useDrag = (
             const { posX, posY } = mapCtx;
             const rect = mapCtx.svgRef.current.getBoundingClientRect();
 
-            console.log(rect.width, rect.height);
             Vec2.fromSignals(posX, posY)
               .plus(
                 current.cminus(rect.width, rect.height).cropMin(-50)
