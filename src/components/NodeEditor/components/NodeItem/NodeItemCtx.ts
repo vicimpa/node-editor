@@ -48,28 +48,27 @@ export class NodeItemCtx {
   static Provider = Context.Provider;
 
   static use(id?: string) {
-    var ctx = useContext(Context);
     var reserveId = useId();
+    id = id ?? reserveId;
+    var ctx = useContext(Context);
     var list = NodeListCtx.use();
     var map = NodeMapCtx.use();
 
-    if (ctx)
-      return ctx;
-
-    id = id ?? reserveId;
-
-    if (list.list.has(id))
-      return list.list.get(id)!;
+    if (!ctx && list.list.has(id))
+      ctx = list.list.get(id)!;
 
     ctx = useMemo(() => (
-      new this(id, map, list)
-    ), [id, map, list])!;
+      ctx ?? new this(id, map, list)
+    ), [id, ctx, map, list])!;
 
     useLayoutEffect(() => {
+      if (list.list.has(id))
+        return;
+
       list.list.set(id, ctx!);
       return () => { list.list.delete(id); };
     }, [ctx]);
 
-    return ctx;
+    return ctx!;
   }
 }

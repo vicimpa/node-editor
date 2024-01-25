@@ -1,7 +1,7 @@
 import { createElement, FC, ReactNode, useId } from "react";
 import { createPortal } from "react-dom";
 
-import { useComputed } from "@preact/signals-react/runtime";
+import { useSignals } from "@preact/signals-react/runtime";
 
 import { NodeItemCtx } from "./";
 
@@ -26,7 +26,8 @@ export const makeNodeItem = <T extends object>(
     const ctx = NodeItemCtx.use(id ?? reserveId);
 
     return (
-      useComputed(() => (
+      createElement(() => (
+        useSignals(),
         ctx.div.current &&
         createPortal(
           createElement(() => (

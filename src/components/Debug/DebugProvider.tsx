@@ -40,8 +40,10 @@ export const useDebug = (children: TDebugCTXValue, title?: string) => {
   return null;
 };
 
+export const schema = boolean();
+
 export const DebugProvider: FC<{ children?: ReactNode; }> = ({ children }) => {
-  const showDebug = useValistore('SHOW_DEBUG', boolean(), false);
+  const showDebug = useValistore('SHOW_DEBUG', schema, false);
 
   const list = useClass(ReactiveMap<string, TDebugCTXValue>).use();
   const titles = useClass(ReactiveMap<string, string>).use();

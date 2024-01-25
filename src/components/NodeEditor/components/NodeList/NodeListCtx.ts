@@ -55,12 +55,17 @@ export class NodeListCtx {
   static use(isCreate = false) {
     var ctx = useContext(Context);
     var map = NodeMapCtx.use();
+    var newCtx = useMemo(() => ctx ?? new this(map), [map]);
+
+    useLayoutEffect(() => (
+      isCreate ? (
+        newCtx.connect()
+      ) : undefined
+    ), [newCtx]);
 
     if (ctx) return ctx;
     if (!isCreate) throw new Error('You need NodeList context');
 
-    ctx = useMemo(() => new this(map), [map]);
-    useLayoutEffect(() => ctx?.connect(), []);
-    return ctx;
+    return ctx ?? newCtx;
   }
 }  
