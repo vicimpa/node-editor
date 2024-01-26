@@ -1,11 +1,10 @@
-import { createElement, FC, ReactNode, useEffect, useId, useMemo } from "react";
-import { createPortal } from "react-dom";
+import { ReactNode, useEffect, useId, useMemo } from "react";
 
 import { ReactiveMap } from "@/library/ReactiveMap";
 import { classContext } from "@/utils/classContext";
+import { makeSignalPortal } from "@/utils/makeSignalPortal";
 import { signalRef } from "@/utils/signalRef";
 import { signal } from "@preact/signals-react";
-import { useSignals } from "@preact/signals-react/runtime";
 
 export type HudPortalProps = {
   children?: ReactNode;
@@ -15,6 +14,7 @@ export class NodeHudItem {
   ref = signalRef<HTMLDivElement>();
   show = signal(true);
   constructor(public hud: NodeHudCtx) { }
+  Portal = makeSignalPortal(this.ref);
 }
 
 export class NodeHudCtx {
@@ -36,19 +36,9 @@ export class NodeHudCtx {
     return item;
   }
 
-  Portal: FC<HudPortalProps> = ({ children }) => {
+  get Portal() {
     const item = this.useItem();
-
-    return (
-      createElement(() => (
-        useSignals(),
-        item.ref.current &&
-        createPortal(
-          children,
-          item.ref.current
-        )
-      ))
-    );
+    return item.Portal;
   };
 }
 

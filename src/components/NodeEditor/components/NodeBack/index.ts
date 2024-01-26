@@ -1,1 +1,1 @@
-export * from "./NodeBackground";
+export * from "./NodeBack";

@@ -1,4 +1,7 @@
+import { ReactNode } from "react";
+
 import { classContext } from "@/utils/classContext";
+import { makeSignalPortal } from "@/utils/makeSignalPortal";
 import { cropSize } from "@/utils/math";
 import { signalCorrect } from "@/utils/signalCorrect";
 import { signalRef } from "@/utils/signalRef";
@@ -10,6 +13,10 @@ import { detectDrag } from "./lib/detectDrag";
 import { detectRect } from "./lib/detectRect";
 import { detectResize } from "./lib/detectResize";
 
+export type NodeItemPortal = {
+  children?: ReactNode;
+};
+
 export class NodeItemCtx {
   ref = signalRef<SVGForeignObjectElement>();
   div = signalRef<HTMLDivElement>();
@@ -20,6 +27,7 @@ export class NodeItemCtx {
   width = signal(0);
   height = signal(0);
 
+  move = signal(false);
   rect = computed(() => computedRect(this));
 
   focus() {
@@ -43,6 +51,8 @@ export class NodeItemCtx {
       dispose.forEach(dis => dis());
     };
   }
+
+  Portal = makeSignalPortal(this.div);
 }
 
 export const [

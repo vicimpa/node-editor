@@ -37,6 +37,7 @@ export const Scroll = () => {
       <div className={s.item} style={{ left: left + '%', right: right + '%' }} />
     );
   });
+
   const vertical = useComputed(() => {
     const bottom = sizes.value.biggerSize.y;
     const top = sizes.value.lowerSize.y;

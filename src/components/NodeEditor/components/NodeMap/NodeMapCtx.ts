@@ -10,8 +10,10 @@ import { computed, signal } from "@preact/signals-react";
 import { computedRect } from "./lib/computedRect";
 import { computedViewRect } from "./lib/computedViewRect";
 import { detectCursor } from "./lib/detectCursor";
+import { detectDrag } from "./lib/detectDrag";
 import { detectMoved } from "./lib/detectMoved";
 import { detectResize } from "./lib/detectResize";
+import { detectWheel } from "./lib/detectWheel";
 
 export class NodeMapCtx {
   xLimit = 10000;
@@ -28,11 +30,13 @@ export class NodeMapCtx {
   width = signal(0);
   height = signal(0);
 
+  move = signal(false);
+
   scale = signalCorrect(1, v => minMax(v, .1, 5));
   rect = computed(() => computedRect(this));
   viewRect = computed(() => computedViewRect(this));
 
-  cursor = signal('default');
+  cursor = computed(() => this.move.value ? 'grabbing' : 'default');
 
   offset(vec: Vec2 | MouseEvent | ReactMouseEvent): Vec2 {
     if (!(vec instanceof Vec2))
@@ -51,6 +55,8 @@ export class NodeMapCtx {
       detectResize(this),
       detectMoved(this),
       detectCursor(this),
+      detectDrag(this),
+      detectWheel(this),
     ];
 
     return () => {

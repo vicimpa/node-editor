@@ -2,9 +2,10 @@ import { useVariID } from "@/hooks/useVariId";
 import { Vec2 } from "@/library/Vec2";
 import { compute } from "@/utils/compute";
 
-import { useNodeMap } from "../../";
+import { useNodeMap } from "../..";
 import { CircleBack } from "./lib/CircleBack";
 import { CustomBack } from "./lib/CustomBack";
+import s from "./NodeBack.module.sass";
 
 const patterns = {
   'circle': CircleBack,
@@ -71,10 +72,10 @@ export const NodeBack = <T extends PATTERN_KEY>({
       </defs>
 
       {back && (
-        <rect x={x} y={y} width={width} height={height} {...back} />
+        <rect className={s.back} x={x} y={y} width={width} height={height} {...back} />
       )}
 
-      <rect x={x} y={y} width={width} height={height} fill={`url(#${id})`} />
+      <rect className={s.back} x={x} y={y} width={width} height={height} fill={`url(#${id})`} />
     </>
   );
 };
