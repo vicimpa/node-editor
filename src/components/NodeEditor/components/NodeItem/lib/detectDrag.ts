@@ -14,7 +14,7 @@ export const detectDrag = (item: NodeItemCtx) => (
 
     if (!ref || !div) return;
 
-    const drag = makeDrag(({ start, current }) => {
+    const drag = makeDrag<HTMLElement>(({ start, current, meta }) => {
       const correct = Vec2.fromSignals(x, y)
         .minus(map.offset(start));
 
@@ -26,7 +26,10 @@ export const detectDrag = (item: NodeItemCtx) => (
 
       return ({ current: newCurrent }) => {
         current.set(newCurrent);
-        return dispose;
+        return () => {
+          dispose();
+          meta && (meta.dataset.drag = 'true');
+        };
       };
     });
 
@@ -41,9 +44,17 @@ export const detectDrag = (item: NodeItemCtx) => (
       item.focus();
 
       for (const elem of div.querySelectorAll('[data-drag]')) {
-        if (elem === e.target || elem.contains(e.target)) {
-          
-          return drag(e);
+        if (
+          true
+          && elem instanceof HTMLElement
+          && (
+            false
+            || elem === e.target
+            || elem.contains(e.target)
+          )
+        ) {
+          elem.dataset.drag = 'move';
+          return drag(e, elem);
         }
       }
     });

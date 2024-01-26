@@ -3,21 +3,22 @@ import { MouseEvent as ReactMouseEvent } from "react";
 import { Vec2 } from "@/library/Vec2";
 import { windowEvent } from "@/utils/events";
 
-export type TDragEvent = {
+export type TDragEvent<T = {}> = {
   start: Vec2;
   current: Vec2;
   delta: Vec2;
   target: EventTarget | null;
+  meta?: T;
 };
 
-export type TDragStop = (e: TDragEvent) => void;
-export type TDragMove = (e: TDragEvent) => void | TDragStop;
-export type TDragStart = (e: TDragEvent) => void | TDragMove;
+export type TDragStop<T = {}> = (e: TDragEvent<T>) => void;
+export type TDragMove<T = {}> = (e: TDragEvent<T>) => void | TDragStop<T>;
+export type TDragStart<T = {}> = (e: TDragEvent<T>) => void | TDragMove<T>;
 
-export const makeDrag = (
-  dragStart: TDragStart,
+export const makeDrag = <T = {}>(
+  dragStart: TDragStart<T>,
   btn = 0
-) => (e: MouseEvent | ReactMouseEvent) => {
+) => (e: MouseEvent | ReactMouseEvent, meta?: T) => {
   if (e.button !== btn)
     return;
 
@@ -32,6 +33,7 @@ export const makeDrag = (
     get start() { return start.clone(); },
     get current() { return current.clone(); },
     get delta() { return delta.clone(); },
+    get meta() { return meta ?? undefined; },
     target: e.target
   };
 
@@ -41,7 +43,7 @@ export const makeDrag = (
   };
 
   let move = dragStart(event);
-  let stop: TDragStop | void;
+  let stop: TDragStop<T> | void;
 
   update();
 

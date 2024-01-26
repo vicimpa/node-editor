@@ -11,5 +11,11 @@
   .resizer
     display: inline-block
 
+    [data-drag]
+      cursor: grab
+
+      &[data-drag='move']
+        cursor: grabbing
+
     *
       pointer-events: all
