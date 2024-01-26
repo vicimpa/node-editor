@@ -42,6 +42,7 @@ export const detectDrag = (item: NodeItemCtx) => (
 
       for (const elem of div.querySelectorAll('[data-drag]')) {
         if (elem === e.target || elem.contains(e.target)) {
+          
           return drag(e);
         }
       }
