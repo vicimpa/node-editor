@@ -24,6 +24,7 @@ export class NodeMapCtx {
 
   x = signalCorrect(0, v => cropSize(v, this.xLimit, .5));
   y = signalCorrect(0, v => cropSize(v, this.yLimit, .5));
+  scale = signalCorrect(1, v => minMax(v, .1, 5));
 
   top = signal(0);
   left = signal(0);
@@ -32,10 +33,8 @@ export class NodeMapCtx {
 
   move = signal(false);
 
-  scale = signalCorrect(1, v => minMax(v, .1, 5));
   rect = computed(() => computedRect(this));
   viewRect = computed(() => computedViewRect(this));
-
   cursor = computed(() => this.move.value ? 'grabbing' : 'default');
 
   offset(vec: Vec2 | MouseEvent | ReactMouseEvent): Vec2 {

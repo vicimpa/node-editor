@@ -71,11 +71,21 @@ export const NodeBack = <T extends PATTERN_KEY>({
         </pattern>
       </defs>
 
-      {back && (
-        <rect className={s.back} x={x} y={y} width={width} height={height} {...back} />
-      )}
+      <g>
+        {back && (
+          <rect
+            className={s.back}
+            x={x} y={y}
+            width={width} height={height}
+            {...back} />
+        )}
 
-      <rect className={s.back} x={x} y={y} width={width} height={height} fill={`url(#${id})`} />
+        <rect
+          className={s.back}
+          x={x} y={y}
+          width={width} height={height}
+          fill={`url(#${id})`} />
+      </g>
     </>
   );
 };

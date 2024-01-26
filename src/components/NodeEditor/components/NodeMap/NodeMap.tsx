@@ -45,6 +45,5 @@ export class NodeMap extends Component<NodeMapProps> {
         }
       </NodeMapProvider>
     );
-
   }
 }
