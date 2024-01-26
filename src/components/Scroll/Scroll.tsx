@@ -34,7 +34,7 @@ export const Scroll = () => {
     const left = sizes.value.lowerSize.x;
 
     return (
-      <div className={s.item} style={{ left: left + '%', right: right + '%' }} />
+      <div className={s.item} data-show={(left || right) || undefined} style={{ left: left + '%', right: right + '%' }} />
     );
   });
 
@@ -43,7 +43,7 @@ export const Scroll = () => {
     const top = sizes.value.lowerSize.y;
 
     return (
-      <div className={s.item} style={{ bottom: bottom + '%', top: top + '%' }} />
+      <div className={s.item} data-show={(top || bottom) || undefined} style={{ bottom: bottom + '%', top: top + '%' }} />
     );
   });
 

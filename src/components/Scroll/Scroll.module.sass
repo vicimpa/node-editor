@@ -4,8 +4,6 @@ $size: 10px
 
 .top, .left,.right,.bottom
   position: absolute
-  background-color: rgb(34, 34, 34)
-  border-radius: 10px
   pointer-events: all
   overflow: hidden
 
@@ -42,5 +40,11 @@ $size: 10px
 
 .item
   position: absolute
-  background-color: #444
+  background-color: #666
   cursor: pointer
+  border-radius: 10px
+  transition: opacity 0.1s
+  opacity: 0
+
+  &[data-show]
+    opacity: 1
