@@ -1,4 +1,4 @@
-const REACTIVE = new Set<(o: object, ...args: any[]) => any>();
+const REACTIVE = new Set<(o: object) => any>();
 
 export const emit = (obj: object) => {
   for (const sub of REACTIVE) {

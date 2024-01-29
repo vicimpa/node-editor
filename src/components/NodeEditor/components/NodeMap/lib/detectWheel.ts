@@ -10,12 +10,12 @@ export const detectWheel = (map: NodeMapCtx) => (
     const { current: svg } = map.svg;
     const { current: div } = map.div;
 
+    if (!div || !svg) return;
+
     return windowEvent('wheel', (e) => {
       if (
         false
         || move.value
-        || !div
-        || !svg
         || !(e.target instanceof Element)
         || !div.contains(e.target)
       ) return;
