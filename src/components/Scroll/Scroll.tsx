@@ -30,20 +30,20 @@ export const Scroll = () => {
   });
 
   const horizontal = useComputed(() => {
-    const right = sizes.value.biggerSize.x;
-    const left = sizes.value.lowerSize.x;
+    const right = sizes.value.biggerSize.x + '%';
+    const left = sizes.value.lowerSize.x + '%';
 
     return (
-      <div className={s.item} data-show={(left || right) || undefined} style={{ left: left + '%', right: right + '%' }} />
+      <div className={s.item} data-show={(left || right) || undefined} style={{ left, right }} />
     );
   });
 
   const vertical = useComputed(() => {
-    const bottom = sizes.value.biggerSize.y;
-    const top = sizes.value.lowerSize.y;
+    const bottom = sizes.value.biggerSize.y + '%';
+    const top = sizes.value.lowerSize.y + '%';
 
     return (
-      <div className={s.item} data-show={(top || bottom) || undefined} style={{ bottom: bottom + '%', top: top + '%' }} />
+      <div className={s.item} data-show={(top || bottom) || undefined} style={{ bottom, top }} />
     );
   });
 
