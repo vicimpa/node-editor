@@ -1,0 +1,30 @@
+.port
+  --color: #333
+  display: flex
+  height: 20px
+  align-items: center
+  background-color: color-mix(in srgb, var(--color) 20%, black)
+  gap: 5px
+  border-radius: 20px
+  font-size: 10px
+  user-select: none
+
+  .circle
+    width: 20px
+    height: 20px
+    border: 4px solid color-mix(in srgb, var(--color) 70%, white)
+    border-radius: 100%
+    cursor: pointer
+    background-color: color-mix(in srgb, var(--color) 40%, black)
+
+  &:not([data-output])
+    flex-direction: row
+    padding-right: 10px
+    margin-left: -10px
+    text-align: left
+
+  &[data-output]
+    flex-direction: row-reverse
+    padding-left: 10px
+    margin-right: -10px
+    text-align: right

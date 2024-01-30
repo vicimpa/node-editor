@@ -1,5 +1,7 @@
 import { FC, useEffect, useId } from "react";
 
+import { useConnect } from "@/hooks/useConnect";
+
 import { NodePortCtx } from "./NodePortCtx";
 
 export type NodePortProps = {
@@ -17,6 +19,8 @@ export const NodePort: FC<NodePortProps> = ({ id, output, title, color }) => {
     port.title.value = title ?? port.title.peek();
     port.color.value = color ?? port.color.peek();
   }, [port, title, color]);
+
+  useConnect(port);
 
   return null;
 };

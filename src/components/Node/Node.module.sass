@@ -21,18 +21,16 @@
       justify-content: space-between
       gap: 10px
 
-    .left, .right
+    .input, .output
       display: flex
       flex-direction: column
       gap: 10px
 
-    .left
+    .input
       align-items: flex-start
-      margin-left: -4px
 
-    .right
+    .output
       align-items: flex-end
-      margin-right: -4px
 
     .center
       padding: 0px 10px
@@ -41,9 +39,13 @@
 
   .head
     padding: 5px 10px
-    background-color: #133c2b
+    background-color: var(--color)
     border-radius: 5px 5px 0 0
     user-select: none
-    color: #aaa
     font-size: 16px
-    text-decoration: underline
+
+    .text
+      text-decoration: underline
+      color: var(--color)
+      text-decoration-color: var(--color)
+      filter: invert(1)
