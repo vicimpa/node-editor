@@ -1,44 +1,32 @@
 import { Vec2 } from "@/library/Vec2";
-import { windowEvent } from "@/utils/events";
-import { effect } from "@preact/signals-react";
+import { refEvent } from "@/utils/events";
 
 import { NodeMapCtx } from "../";
 
 export const detectWheel = (map: NodeMapCtx) => (
-  effect(() => {
+  refEvent(map.div, 'wheel', (e) => {
     const { scale, x, y, move } = map;
-    const { current: svg } = map.svg;
-    const { current: div } = map.div;
 
-    if (!div || !svg) return;
+    if (move.value) return;
 
-    return windowEvent('wheel', (e) => {
-      if (
-        false
-        || move.value
-        || !(e.target instanceof Element)
-        || !div.contains(e.target)
-      ) return;
+    e.preventDefault();
+    e.stopPropagation();
 
-      e.preventDefault();
-      e.stopPropagation();
+    if (!e.ctrlKey) {
+      const delta = Vec2.fromDeltaXY(e);
 
-      if (!e.ctrlKey) {
-        const delta = Vec2.fromDeltaXY(e);
+      if (e.shiftKey && !delta.x)
+        delta.inverse();
 
-        if (e.shiftKey && !delta.x)
-          delta.inverse();
+      delta
+        .div(scale)
+        .plus(x, y)
+        .toSignals(x, y);
 
-        delta
-          .div(scale)
-          .plus(x, y)
-          .toSignals(x, y);
+      return;
+    }
 
-        return;
-      }
-
-      const mouse = Vec2.fromPageXY(e);
-      map.toScale(v => v - e.deltaY * .001, mouse);
-    });
+    const mouse = Vec2.fromPageXY(e);
+    map.toScale(v => v - e.deltaY * .001, mouse);
   })
 );

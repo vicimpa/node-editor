@@ -1,19 +1,30 @@
+import { RefObject } from "react";
+
+import { effect } from "@preact/signals-react";
+
 export type WEM = WindowEventMap;
+export type DEM = DocumentEventMap;
+export type HEM = HTMLElementEventMap;
 export type TListener<T extends Event = Event> = (e: T) => any;
 
-const WINDOW_EVENTS = new Map<keyof WEM, Set<TListener<any>>>();
+export const refEvent = <T extends HTMLElement, K extends keyof HEM>(
+  ref: RefObject<T>,
+  key: K | K[],
+  listener: TListener<HEM[K]>
+) => {
+  if (Array.isArray(key)) {
+    const unsub = key.map(e => refEvent(ref, e, listener));
+    return () => { unsub.forEach(u => u?.()); };
+  }
 
-const getCollect = <K extends keyof WEM>(
-  key: K,
-  set = new Set<TListener<WEM[K]>>()
-) => (
-  set = WINDOW_EVENTS.get(key) ?? (
-    WINDOW_EVENTS.set(key, set),
-    addEventListener(key, (event) => (
-      set.forEach(sub => sub(event))
-    ), { passive: false }), set
-  )
-);
+  return effect(() => {
+    const { current: elem } = ref;
+    if (elem) {
+      elem.addEventListener(key, listener);
+      return () => { elem.removeEventListener(key, listener); };
+    }
+  });
+};
 
 export const windowEvent = <K extends keyof WEM>(
   key: K | K[],
@@ -24,6 +35,23 @@ export const windowEvent = <K extends keyof WEM>(
     return () => { unsub.forEach(u => u()); };
   }
 
-  const collect = getCollect(key).add(listener);
-  return () => { collect.delete(listener); };
+  return (
+    addEventListener(key, listener),
+    () => { removeEventListener(key, listener); }
+  );
+};
+
+export const documentEvent = <K extends keyof DEM>(
+  key: K | K[],
+  listener: TListener<DEM[K]>
+) => {
+  if (Array.isArray(key)) {
+    const unsub = key.map(e => documentEvent(e, listener));
+    return () => { unsub.forEach(u => u()); };
+  }
+
+  return (
+    document.addEventListener(key, listener),
+    () => { document.removeEventListener(key, listener); }
+  );
 };
