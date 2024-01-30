@@ -1,10 +1,6 @@
-import { MutableRefObject, useRef } from "react";
-
-import s from "@/components/SizeControl/SizeControl.module.sass";
+import s from "../../SizeControl.module.sass";
 
 export const FullScreen = () => {
-  const ref = useRef() as MutableRefObject<HTMLDivElement>;
-
   const toggleFullscreen = async () => {
     if (typeof document.fullscreenEnabled !== undefined) {
       if (document.fullscreenElement) {
@@ -17,6 +13,6 @@ export const FullScreen = () => {
   };
 
   return (
-    <div className={`${s.item} ${s.text}`} ref={ref} onClick={toggleFullscreen}>FULL</div>
+    <div className={`${s.item} ${s.text}`} onClick={toggleFullscreen}>FULL</div>
   );
 };

@@ -1,13 +1,10 @@
-import { useNodeList } from "@/components/NodeEditor";
-import s from "@/components/SizeControl/SizeControl.module.sass";
-import { Vec2 } from "@/library/Vec2.ts";
-import { rectCenter } from "@/utils/domrect.ts";
-import { min } from "@/utils/math.ts";
+import {useNodeList} from "@/components/NodeEditor";
+import s from "../../SizeControl.module.sass";
+import {Vec2} from "@/library/Vec2.ts";
+import {rectCenter} from "@/utils/domrect.ts";
+import {min} from "@/utils/math.ts";
 
-type CenterProps = {
-
-};
-export const Center = ({ }: CenterProps) => {
+export const Center = () => {
   const list = useNodeList();
 
   const centralize = () => {
@@ -17,6 +14,7 @@ export const Center = ({ }: CenterProps) => {
     const scale = min(...Vec2.fromSize(mapSize).cdiv(contentSize.cplus(50)));
     list.map.toScale(scale);
   };
+
   return (
     <div className={`${s.item} ${s.text}`} onClick={centralize}>CNTR</div>
   );

@@ -1,8 +1,8 @@
-import { useNodeMap } from "@/components/NodeEditor";
-import s from "@/components/SizeControl/SizeControl.module.sass";
-import { useWindowEvent } from "@/hooks/useWindowEvent";
-import { looper } from "@/utils/looper";
-import { useSignal, useSignalEffect } from "@preact/signals-react";
+import {useNodeMap} from "@/components/NodeEditor";
+import s from "../../SizeControl.module.sass";
+import {useWindowEvent} from "@/hooks/useWindowEvent";
+import {looper} from "@/utils/looper";
+import {useSignal, useSignalEffect} from "@preact/signals-react";
 
 const DELTA_ZOOM = .12;
 
