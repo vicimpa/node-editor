@@ -2,7 +2,9 @@ import { SizeControl } from "@/components/SizeControl";
 
 import { DebugProvider } from "./components/Debug";
 import { Node } from "./components/Node";
-import { NodeBack, NodeHud, NodeLayers, NodeList, NodeMap } from "./components/NodeEditor";
+import {
+    NodeBack, NodeHud, NodeLayers, NodeList, NodeMap, NodePort
+} from "./components/NodeEditor";
 import { Scroll } from "./components/Scroll";
 
 export const App = () => {
@@ -27,6 +29,7 @@ export const App = () => {
                 <h1>Hi 123123</h1>
                 <h1>Hi 123123</h1>
                 <h1>Hi 123123</h1>
+                <NodePort title="123" />
               </Node>
 
               <Node>

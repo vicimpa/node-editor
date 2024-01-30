@@ -9,7 +9,7 @@ import { signalCorrect } from "@/utils/signalCorrect";
 import { signalRef } from "@/utils/signalRef";
 import { computed, signal } from "@preact/signals-react";
 
-import { NodeListCtx, NodeMapCtx } from "../../";
+import { NodeListCtx, NodeMapCtx, NodePortCtx } from "../../";
 import { computedRect } from "./lib/computedRect";
 import { detectDrag } from "./lib/detectDrag";
 import { detectRect } from "./lib/detectRect";
@@ -37,8 +37,8 @@ export class NodeItemCtx {
   move = signal(false);
   rect = computed(() => computedRect(this));
 
-  input = new ReactiveMap();
-  output = new ReactiveMap();
+  input = new ReactiveMap<string, NodePortCtx>();
+  output = new ReactiveMap<string, NodePortCtx>();
 
   focus() { this.list.focus(this); }
 

@@ -1,5 +1,7 @@
 import { FC, ReactNode } from "react";
 
+import { useDiff } from "@/hooks/useDiff";
+
 import { useNodeList } from "../NodeList";
 import { NodeItemProvider } from "./";
 
@@ -20,6 +22,13 @@ export const makeNodeItem = <T extends object>(
   ...props
 }) => {
     const ctx = useNodeList().useItem(id);
+
+    useDiff({ x, y }, (diff) => {
+      for (const _key in diff) {
+        const key = _key as keyof typeof diff;
+        ctx[key].value = diff[key] ?? ctx[key].peek();
+      }
+    });
 
     return (
       <NodeItemProvider value={ctx}>
