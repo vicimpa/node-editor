@@ -12,14 +12,19 @@ import { NodeItemCtx } from "../NodeItem";
 import { NodeList } from "./";
 import { computedRect } from "./lib/computedRect";
 import { detectResize } from "./lib/detectResize";
+import { detectSize } from "./lib/detectSize";
 
-@connect([detectResize])
+@connect([
+  detectResize,
+  detectSize
+])
 export class NodeListCtx {
   ref = signalRef<SVGGElement>();
 
   get map() { return this.listElem.map; }
 
   list = new ReactiveMap<string, NodeItemCtx>();
+  itemsCount = signal(0);
 
   x = signal(0);
   y = signal(0);

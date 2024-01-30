@@ -1,17 +1,18 @@
-import { subscribe } from "@/utils/reactive";
-import { batch, effect, signal } from "@preact/signals-react";
+
+import { batch, effect } from "@preact/signals-react";
 
 import { NodeListCtx } from "../";
 
 export const detectResize = (list: NodeListCtx) => (
   effect(() => {
-    const size = signal(0);
-    const dis = subscribe(list.list, () => size.value = list.list.size);
+    list.itemsCount.value;
 
-    for (const [, value] of list.list) {
-      value.x.value;
-      value.y.value;
-    }
+    list.list.forEach(v => {
+      v.x.value;
+      v.y.value;
+      v.width.value;
+      v.height.value;
+    });
 
     if (list.ref.current)
       batch(() => {
@@ -21,9 +22,5 @@ export const detectResize = (list: NodeListCtx) => (
         list.width.value = bbox.width ?? 0;
         list.height.value = bbox.height ?? 0;
       });
-
-    return () => {
-      dis();
-    };
   })
 );
