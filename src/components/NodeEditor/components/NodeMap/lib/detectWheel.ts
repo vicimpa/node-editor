@@ -38,8 +38,7 @@ export const detectWheel = (map: NodeMapCtx) => (
       }
 
       const mouse = Vec2.fromPageXY(e);
-      map.toScale(-e.deltaY * .001, mouse);
-
+      map.toScale(v => v - e.deltaY * .001, mouse);
     });
   })
 );

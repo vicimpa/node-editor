@@ -4,6 +4,7 @@ import { connect } from "@/decorators/connect";
 import { Vec2 } from "@/library/Vec2";
 import { classContext } from "@/utils/classContext";
 import { rectCenter } from "@/utils/domrect.ts";
+import { fv, TFV } from "@/utils/fv";
 import { cropSize, minMax } from "@/utils/math";
 import { signalCorrect } from "@/utils/signalCorrect";
 import { signalRef } from "@/utils/signalRef";
@@ -58,9 +59,9 @@ export class NodeMapCtx {
     return vec.cminus(viewRect).div(scale).plus(rect);
   }
 
-  toScale(delta: number, vec = rectCenter(this.viewRect.value)) {
+  toScale(newScale: TFV<number, [old: number]>, vec = rectCenter(this.viewRect.value)) {
     const start = this.offset(vec);
-    this.scale.value += delta;
+    this.scale.value = fv(newScale, this.scale.peek());
     start.minus(this.offset(vec));
     start.plus(this.x, this.y);
     start.toSignals(this.x, this.y);
