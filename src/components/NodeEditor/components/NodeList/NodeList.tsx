@@ -1,4 +1,6 @@
-import { Component, createElement, ReactNode, useEffect } from "react";
+import { Component, createElement, ReactNode } from "react";
+
+import { useConnect } from "@/hooks/useConnect";
 
 import { NodeItem } from "../NodeItem";
 import { NodeMapCtx, useNodeMap } from "../NodeMap";
@@ -21,7 +23,7 @@ export class NodeList extends Component<NodeListProps> {
         {
           createElement(() => (
             this.map = useNodeMap(),
-            useEffect(() => ctx.connect(), [ctx]),
+            useConnect(ctx),
             <>
               {children}
 

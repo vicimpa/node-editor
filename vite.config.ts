@@ -17,7 +17,7 @@ export default defineConfig({
     host: '0.0.0.0'
   },
   plugins: [
-    react({ plugins: [], devTarget: 'esnext' }),
+    react({ plugins: [], devTarget: 'esnext', tsDecorators: true }),
     paths({ root: '../' }),
     unplugin({
       google: {

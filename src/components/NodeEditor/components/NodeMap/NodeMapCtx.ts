@@ -1,7 +1,9 @@
 import { MouseEvent as ReactMouseEvent } from "react";
 
+import { connect } from "@/decorators/connect";
 import { Vec2 } from "@/library/Vec2";
 import { classContext } from "@/utils/classContext";
+import { rectCenter } from "@/utils/domrect.ts";
 import { cropSize, minMax } from "@/utils/math";
 import { signalCorrect } from "@/utils/signalCorrect";
 import { signalRef } from "@/utils/signalRef";
@@ -14,8 +16,14 @@ import { detectDrag } from "./lib/detectDrag";
 import { detectMoved } from "./lib/detectMoved";
 import { detectResize } from "./lib/detectResize";
 import { detectWheel } from "./lib/detectWheel";
-import {rectCenter} from "@/utils/domrect.ts";
 
+@connect([
+  detectCursor,
+  detectDrag,
+  detectMoved,
+  detectResize,
+  detectWheel,
+])
 export class NodeMapCtx {
   xLimit = 10000;
   yLimit = 10000;
@@ -56,20 +64,6 @@ export class NodeMapCtx {
     start.minus(this.offset(vec));
     start.plus(this.x, this.y);
     start.toSignals(this.x, this.y);
-  }
-
-  connect() {
-    const dispose: Array<() => void> = [
-      detectResize(this),
-      detectMoved(this),
-      detectCursor(this),
-      detectDrag(this),
-      detectWheel(this),
-    ];
-
-    return () => {
-      dispose.forEach(dis => dis());
-    };
   }
 }
 

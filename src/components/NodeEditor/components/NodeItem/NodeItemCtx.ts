@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 
+import { connect } from "@/decorators/connect";
 import { ReactiveMap } from "@/library/ReactiveMap";
 import { classContext } from "@/utils/classContext";
 import { makeSignalPortal } from "@/utils/makeSignalPortal";
@@ -18,6 +19,11 @@ export type NodeItemPortal = {
   children?: ReactNode;
 };
 
+@connect([
+  detectResize,
+  detectRect,
+  detectDrag,
+])
 export class NodeItemCtx {
   ref = signalRef<SVGForeignObjectElement>();
   div = signalRef<HTMLDivElement>();
@@ -41,18 +47,6 @@ export class NodeItemCtx {
     public map: NodeMapCtx,
     public list: NodeListCtx
   ) { }
-
-  connect() {
-    const dispose: Array<() => void> = [
-      detectResize(this),
-      detectRect(this),
-      detectDrag(this),
-    ];
-
-    return () => {
-      dispose.forEach(dis => dis());
-    };
-  }
 
   Portal = makeSignalPortal(this.div);
 }

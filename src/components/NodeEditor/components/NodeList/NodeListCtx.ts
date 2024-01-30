@@ -1,5 +1,6 @@
 import { useId } from "react";
 
+import { connect } from "@/decorators/connect";
 import { useClass } from "@/hooks/useClass";
 import { useSet } from "@/hooks/useSet";
 import { ReactiveMap } from "@/library/ReactiveMap";
@@ -12,6 +13,7 @@ import { NodeList } from "./";
 import { computedRect } from "./lib/computedRect";
 import { detectResize } from "./lib/detectResize";
 
+@connect([detectResize])
 export class NodeListCtx {
   ref = signalRef<SVGGElement>();
 
@@ -28,16 +30,6 @@ export class NodeListCtx {
   rect = computed(() => computedRect(this));
 
   constructor(public listElem: NodeList) { }
-
-  connect() {
-    const dispose: Array<() => void> = [
-      detectResize(this)
-    ];
-
-    return () => {
-      dispose.forEach(dis => dis());
-    };
-  }
 
   focus(id: string | NodeItemCtx) {
     if (id instanceof NodeItemCtx)

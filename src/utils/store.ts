@@ -1,5 +1,5 @@
-export const store = <T>(init: () => T) => {
-  const symbol = Symbol('store');
+export const store = <T>(init: () => T, name = 'store') => {
+  const symbol = Symbol(name);
 
   return (obj: object & { [symbol]?: T; }) => (
     obj[symbol] ?? (

@@ -1,11 +1,8 @@
+import { connect } from "@/decorators/connect";
 import { signalRef } from "@/utils/signalRef";
 
+@connect([])
 export class NodePortCtx {
   ref = signalRef<HTMLSpanElement>();
 
-  connect() {
-    const dispose: Array<() => void> = [];
-
-    return () => { dispose.forEach(u => u()); };
-  }
 }

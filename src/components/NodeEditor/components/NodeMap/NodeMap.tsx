@@ -1,6 +1,7 @@
-import { Component, createElement, ReactNode, useEffect } from "react";
+import { Component, createElement, ReactNode } from "react";
 
 import { Debug } from "@/components/Debug";
+import { useConnect } from "@/hooks/useConnect";
 import { fixed } from "@/utils/fixed";
 
 import { NodeMapCtx, NodeMapProvider } from "./";
@@ -22,7 +23,7 @@ export class NodeMap extends Component<NodeMapProps> {
         {
           createElement(
             () => (
-              useEffect(() => ctx.connect(), [ctx]),
+              useConnect(ctx),
               <>
                 <div className={s.map} ref={ctx.div}>
                   <svg ref={ctx.svg} viewBox="0 0 0 0">
