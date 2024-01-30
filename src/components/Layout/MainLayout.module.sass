@@ -1,0 +1,31 @@
+.layout
+  display: flex
+  flex-direction: column
+  width: 100vw
+  height: 100vh
+
+  .header
+    height: 40px
+    display: flex
+    align-items: center
+    justify-content: center
+    box-shadow: 0 0 10px #000
+    z-index: 1
+
+  .main
+    display: flex
+    flex-grow: 1
+
+    .sidebar
+      width: 200px
+      display: flex
+      align-items: center
+      justify-content: center
+      background-color: rgba(0,0,0,0.4)
+
+    .content
+      position: relative
+      display: flex
+      justify-content: center
+      align-items: center
+      flex-grow: 1

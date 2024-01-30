@@ -18,26 +18,28 @@ export class NodeHud extends Component<NodeHudProps> {
 
     return (
       <NodeHudProvider value={ctx}>
-        {children}
+        <div ref={ctx.ref} className={s.container}>
+          {children}
 
-        <div className={s.hud}>
-          {
-            createElement(() => (
-              ctx.list.use()
-                .map((item, key) => (
-                  createElement(() => (
-                    useSignals(),
-                    (
-                      <div
-                        className={s.item}
-                        key={key}
-                        ref={item.ref}
-                        hidden={!item.show.value} />
-                    )
-                  ), { key })
-                ))
-            ))
-          }
+          <div className={s.hud}>
+            {
+              createElement(() => (
+                ctx.list.use()
+                  .map((item, key) => (
+                    createElement(() => (
+                      useSignals(),
+                      (
+                        <div
+                          className={s.item}
+                          key={key}
+                          ref={item.ref}
+                          hidden={!item.show.value} />
+                      )
+                    ), { key })
+                  ))
+              ))
+            }
+          </div>
         </div>
       </NodeHudProvider>
     );
