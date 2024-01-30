@@ -1,11 +1,9 @@
-import { SizeControl } from "@/components/SizeControl";
-
-import { DebugProvider } from "./components/Debug";
-import { Node } from "./components/Node";
-import {
-    NodeBack, NodeHud, NodeLayers, NodeList, NodeMap, NodePort
-} from "./components/NodeEditor";
-import { Scroll } from "./components/Scroll";
+import {DebugProvider} from "./components/Debug";
+import {Node} from "./components/Node";
+import {NodeBack, NodeHud, NodeLayers, NodeList, NodeMap, NodePort} from "./components/NodeEditor";
+import {Scroll} from "./components/Scroll";
+import {SizeControl} from "./components/SizeControl";
+import "./styles/style.css"
 
 export const App = () => {
   return (
@@ -16,12 +14,12 @@ export const App = () => {
             type="circle"
             fill="#555"
             r={4}
-            back={{ fill: "#333", stroke: '#555' }} />
+            back={{fill: "#333", stroke: '#555'}}/>
 
           <NodeLayers>
             <NodeList>
-              <Scroll />
-              <SizeControl />
+              <Scroll/>
+              <SizeControl/>
 
               <Node>
                 <h1>Hi 123123</h1>
@@ -29,6 +27,7 @@ export const App = () => {
                 <h1>Hi 123123</h1>
                 <h1>Hi 123123</h1>
                 <h1>Hi 123123</h1>
+                <NodePort title="123" />
                 <NodePort title="123" />
               </Node>
 
@@ -43,7 +42,7 @@ export const App = () => {
               </Node>
 
               <Node>
-                <textarea />
+                <textarea/>
               </Node>
             </NodeList>
           </NodeLayers>

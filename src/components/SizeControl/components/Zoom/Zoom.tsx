@@ -10,6 +10,12 @@ export const Zoom = () => {
   const map = useNodeMap();
   const delta = useSignal(0);
 
+  const handlerMouseDown = (e: React.MouseEvent, isZoomIn: boolean) => {
+    if (e.button !== 0) return
+    const deltaValue = isZoomIn ? 1 : -1
+    delta.value += deltaValue
+  }
+
   useWindowEvent(['mouseup', 'blur'], () => {
     delta.value = 0;
   });
@@ -27,8 +33,8 @@ export const Zoom = () => {
 
   return (
     <>
-      <div className={s.item} onMouseDown={() => delta.value += 1}>+</div>
-      <div className={s.item} onMouseDown={() => delta.value -= 1}>-</div>
+      <div className={s.item} onMouseDown={(e) => handlerMouseDown(e, true)}><span className={"icon-zoom-in"}/></div>
+      <div className={s.item} onMouseDown={(e) => handlerMouseDown(e, false)}><span className={"icon-zoom-out"}/></div>
     </>
   );
 };

@@ -16,6 +16,6 @@ export const Center = () => {
   };
 
   return (
-    <div className={`${s.item} ${s.text}`} onClick={centralize}>CNTR</div>
+    <div className={s.item} onClick={centralize}><span className={"icon-radio-checked"}/></div>
   );
 };

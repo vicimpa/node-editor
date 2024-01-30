@@ -13,6 +13,6 @@ export const FullScreen = () => {
   };
 
   return (
-    <div className={`${s.item} ${s.text}`} onClick={toggleFullscreen}>FULL</div>
+    <div className={s.item} onClick={toggleFullscreen}><span className={"icon-enlarge"}/></div>
   );
 };
