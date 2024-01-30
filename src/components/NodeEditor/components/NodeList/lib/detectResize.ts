@@ -1,7 +1,6 @@
+import {batch, effect} from "@preact/signals-react";
 
-import { batch, effect } from "@preact/signals-react";
-
-import { NodeListCtx } from "../";
+import {NodeListCtx} from "../";
 
 export const detectResize = (list: NodeListCtx) => (
   effect(() => {

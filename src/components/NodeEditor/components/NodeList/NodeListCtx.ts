@@ -1,18 +1,18 @@
-import { useId } from "react";
+import {useId} from "react";
 
-import { connect } from "@/decorators/connect";
-import { useClass } from "@/hooks/useClass";
-import { useSet } from "@/hooks/useSet";
-import { ReactiveMap } from "@/library/ReactiveMap";
-import { classContext } from "@/utils/classContext";
-import { signalRef } from "@/utils/signalRef";
-import { computed, signal } from "@preact/signals-react";
+import {connect} from "@/decorators/connect";
+import {useClass} from "@/hooks/useClass";
+import {useSet} from "@/hooks/useSet";
+import {ReactiveMap} from "@/library/ReactiveMap";
+import {classContext} from "@/utils/classContext";
+import {signalRef} from "@/utils/signalRef";
+import {batch, computed, signal} from "@preact/signals-react";
 
-import { NodeItemCtx } from "../NodeItem";
-import { NodeList } from "./";
-import { computedRect } from "./lib/computedRect";
-import { detectResize } from "./lib/detectResize";
-import { detectSize } from "./lib/detectSize";
+import {NodeItemCtx} from "../NodeItem";
+import {NodeList} from "./";
+import {computedRect} from "./lib/computedRect";
+import {detectResize} from "./lib/detectResize";
+import {detectSize} from "./lib/detectSize";
 
 @connect([
   detectResize,
@@ -21,7 +21,9 @@ import { detectSize } from "./lib/detectSize";
 export class NodeListCtx {
   ref = signalRef<SVGGElement>();
 
-  get map() { return this.listElem.map; }
+  get map() {
+    return this.listElem.map;
+  }
 
   list = new ReactiveMap<string, NodeItemCtx>();
   itemsCount = signal(0);
@@ -34,7 +36,8 @@ export class NodeListCtx {
 
   rect = computed(() => computedRect(this));
 
-  constructor(public listElem: NodeList) { }
+  constructor(public listElem: NodeList) {
+  }
 
   focus(id: string | NodeItemCtx) {
     if (id instanceof NodeItemCtx)
@@ -43,8 +46,10 @@ export class NodeListCtx {
     const item = this.list.get(id);
 
     if (item) {
-      this.list.delete(id) &&
+      batch(() => {
+        this.list.delete(id) &&
         this.list.set(id, item);
+      })
     }
   }
 

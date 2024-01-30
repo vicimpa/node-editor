@@ -33,8 +33,10 @@ export const Zoom = () => {
 
   return (
     <>
-      <div className={s.item} onMouseDown={(e) => handlerMouseDown(e, true)}><span className={"icon-zoom-in"}/></div>
-      <div className={s.item} onMouseDown={(e) => handlerMouseDown(e, false)}><span className={"icon-zoom-out"}/></div>
+      <button className={s.item} onMouseDown={(e) => handlerMouseDown(e, true)}><span className={"icon-zoom-in"}/>
+      </button>
+      <button className={s.item} onMouseDown={(e) => handlerMouseDown(e, false)}><span className={"icon-zoom-out"}/>
+      </button>
     </>
   );
 };

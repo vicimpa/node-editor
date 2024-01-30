@@ -1,4 +1,4 @@
-import { store } from "@/utils/store";
+import {store} from "@/utils/store";
 
 export type TPlugin<T extends object> = (object: T) => (() => void) | void;
 
