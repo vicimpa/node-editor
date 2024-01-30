@@ -9,7 +9,7 @@ export type SignalPortalProps = {
 
 
 export const makeSignalPortal = (
-  <T extends HTMLElement>(signal: RefObject<T>) => (
+  <T extends Element>(signal: RefObject<T>) => (
     ({ children }: SignalPortalProps) => (
       createElement(() => (
         useSignals(),

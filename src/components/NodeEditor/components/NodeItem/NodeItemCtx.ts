@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 
+import { ReactiveMap } from "@/library/ReactiveMap";
 import { classContext } from "@/utils/classContext";
 import { makeSignalPortal } from "@/utils/makeSignalPortal";
 import { cropSize } from "@/utils/math";
@@ -30,9 +31,10 @@ export class NodeItemCtx {
   move = signal(false);
   rect = computed(() => computedRect(this));
 
-  focus() {
-    this.list.focus(this);
-  }
+  input = new ReactiveMap();
+  output = new ReactiveMap();
+
+  focus() { this.list.focus(this); }
 
   constructor(
     public id: string,

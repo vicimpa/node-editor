@@ -1,6 +1,8 @@
-import { ReactNode, useEffect, useId, useMemo } from "react";
+import { createElement, FC, ReactNode } from "react";
 
-import { ReactiveMap } from "@/library/ReactiveMap";
+import { useAdd } from "@/hooks/useAdd";
+import { useClass } from "@/hooks/useClass";
+import { ReactiveSet } from "@/library/ReactiveSet";
 import { classContext } from "@/utils/classContext";
 import { makeSignalPortal } from "@/utils/makeSignalPortal";
 import { signalRef } from "@/utils/signalRef";
@@ -19,26 +21,16 @@ export class NodeHudItem {
 
 export class NodeHudCtx {
   ref = signalRef<HTMLDivElement>();
-  list = new ReactiveMap<string, NodeHudItem>();
+  list = new ReactiveSet<NodeHudItem>();
 
   useItem() {
-    const id = useId();
-
-    const item = useMemo(() => (
-      new NodeHudItem(this)
-    ), [id]);
-
-    useEffect(() => (
-      this.list.set(id, item),
-      () => { this.list.delete(id); }
-    ), [id, item]);
-
-    return item;
+    const item = useClass(NodeHudItem, this);
+    return useAdd(this.list, item, [item]);
   }
 
-  get Portal() {
+  Portal: FC<HudPortalProps> = (props) => {
     const item = this.useItem();
-    return item.Portal;
+    return createElement(item.Portal, props);
   };
 }
 

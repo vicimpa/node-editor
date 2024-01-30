@@ -1,5 +1,7 @@
-import { useEffect, useId, useMemo } from "react";
+import { useId } from "react";
 
+import { useClass } from "@/hooks/useClass";
+import { useSet } from "@/hooks/useSet";
 import { ReactiveMap } from "@/library/ReactiveMap";
 import { classContext } from "@/utils/classContext";
 import { signalRef } from "@/utils/signalRef";
@@ -53,6 +55,7 @@ export class NodeListCtx {
     const reserveId = useId();
     id = id ?? reserveId
 
+<<<<<<< Updated upstream
     const item = useMemo(() => (
         new NodeItemCtx(id, this.map, this)
     ), [id]);
@@ -63,6 +66,10 @@ export class NodeListCtx {
     ), [id, item]);
 
     return item;
+=======
+    const item = useClass(NodeItemCtx, id, this.map, this);
+    return useSet(this.list, id, item, [id, item]);
+>>>>>>> Stashed changes
   }
 }
 

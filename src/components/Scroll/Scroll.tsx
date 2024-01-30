@@ -31,21 +31,27 @@ export const Scroll = () => {
 
   const horizontal = useComputed(() => {
     const size = sizes.value.viewSize.x;
-    const right = sizes.value.biggerSize.x + '%';
     const left = sizes.value.lowerSize.x + '%';
+    const right = sizes.value.biggerSize.x + '%';
 
     return (
-      <div className={s.item} data-show={(size !== 100) || undefined} style={{ left, right }} />
+      <div
+        className={s.item}
+        data-show={(size !== 100) || undefined}
+        style={{ left, right }} />
     );
   });
 
   const vertical = useComputed(() => {
     const size = sizes.value.viewSize.y;
-    const bottom = sizes.value.biggerSize.y + '%';
     const top = sizes.value.lowerSize.y + '%';
+    const bottom = sizes.value.biggerSize.y + '%';
 
     return (
-      <div className={s.item} data-show={(size !== 100) || undefined} style={{ bottom, top }} />
+      <div
+        className={s.item}
+        data-show={(size !== 100) || undefined}
+        style={{ bottom, top }} />
     );
   });
 
