@@ -14,6 +14,7 @@ import { detectDrag } from "./lib/detectDrag";
 import { detectMoved } from "./lib/detectMoved";
 import { detectResize } from "./lib/detectResize";
 import { detectWheel } from "./lib/detectWheel";
+import {rectCenter} from "@/utils/domrect.ts";
 
 export class NodeMapCtx {
   xLimit = 10000;
@@ -47,6 +48,14 @@ export class NodeMapCtx {
     const viewSize = Vec2.fromSize(viewRect);
     const scale = viewSize.cdiv(size);
     return vec.cminus(viewRect).div(scale).plus(rect);
+  }
+
+  toScale(delta: number, vec = rectCenter(this.viewRect.value)) {
+    const start = this.offset(vec);
+    this.scale.value += delta;
+    start.minus(this.offset(vec));
+    start.plus(this.x, this.y);
+    start.toSignals(this.x, this.y);
   }
 
   connect() {

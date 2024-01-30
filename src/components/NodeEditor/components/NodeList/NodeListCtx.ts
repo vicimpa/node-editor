@@ -51,10 +51,10 @@ export class NodeListCtx {
 
   useItem(id?: string) {
     const reserveId = useId();
-    id = id ?? reserveId;
+    id = id ?? reserveId
 
     const item = useMemo(() => (
-      new NodeItemCtx(id, this.map, this)
+        new NodeItemCtx(id, this.map, this)
     ), [id]);
 
     useEffect(() => (

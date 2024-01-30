@@ -2,6 +2,7 @@ import { DebugProvider } from "./components/Debug";
 import { Node } from "./components/Node";
 import { NodeBack, NodeHud, NodeList, NodeMap } from "./components/NodeEditor";
 import { Scroll } from "./components/Scroll";
+import {SizeControl} from "@/components/SizeControl";
 
 export const App = () => {
   return (
@@ -16,6 +17,7 @@ export const App = () => {
 
           <NodeList>
             <Scroll />
+            <SizeControl/>
 
             <Node>
               <h1>Hi 123123</h1>
