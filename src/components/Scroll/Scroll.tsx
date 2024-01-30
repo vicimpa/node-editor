@@ -10,7 +10,7 @@ export const Scroll = () => {
   const list = useNodeList();
 
   const sizes = useComputed(() => {
-    const rect = list.rect.value;
+    const { value: rect } = list.rect;
     const viewRect = list.map.rect.value;
     const viewSize = Vec2.fromSize(viewRect);
     const biggerSize = Vec2.fromSize(rect).plus(rect)
@@ -30,20 +30,22 @@ export const Scroll = () => {
   });
 
   const horizontal = useComputed(() => {
-    const right = sizes.value.biggerSize.x;
-    const left = sizes.value.lowerSize.x;
+    const size = sizes.value.viewSize.x;
+    const right = sizes.value.biggerSize.x + '%';
+    const left = sizes.value.lowerSize.x + '%';
 
     return (
-      <div className={s.item} data-show={(left || right) || undefined} style={{ left: left + '%', right: right + '%' }} />
+      <div className={s.item} data-show={(size !== 100) || undefined} style={{ left, right }} />
     );
   });
 
   const vertical = useComputed(() => {
-    const bottom = sizes.value.biggerSize.y;
-    const top = sizes.value.lowerSize.y;
+    const size = sizes.value.viewSize.y;
+    const bottom = sizes.value.biggerSize.y + '%';
+    const top = sizes.value.lowerSize.y + '%';
 
     return (
-      <div className={s.item} data-show={(top || bottom) || undefined} style={{ bottom: bottom + '%', top: top + '%' }} />
+      <div className={s.item} data-show={(size !== 100) || undefined} style={{ bottom, top }} />
     );
   });
 
