@@ -6,10 +6,10 @@ export const Zoom = () => {
     const map = useNodeMap()
 
     const zoomIn = () => {
-        map.toScale(DELTA_ZOOM)
+        map.toScale(v => v + DELTA_ZOOM)
     }
     const zoomOut = () => {
-        map.toScale(-DELTA_ZOOM)
+        map.toScale(v => v - DELTA_ZOOM)
     }
 
     return (
