@@ -1,6 +1,4 @@
-import { FC, useId } from "react";
-
-import { useDiff } from "@/hooks/useDiff";
+import { FC, useEffect, useId } from "react";
 
 import { NodePortCtx } from "./NodePortCtx";
 
@@ -11,16 +9,14 @@ export type NodePortProps = {
   output?: boolean;
 };
 
-export const NodePort: FC<NodePortProps> = ({ id, output, ...props }) => {
+export const NodePort: FC<NodePortProps> = ({ id, output, title, color }) => {
   const reserveId = useId();
   const port = NodePortCtx.usePort(id ?? reserveId, output);
 
-  useDiff(props, (diff) => {
-    for (const _key in diff) {
-      const key = _key as keyof typeof diff;
-      port[key].value = diff[key] ?? port[key].peek();
-    }
-  });
+  useEffect(() => {
+    port.title.value = title ?? port.title.peek();
+    port.color.value = color ?? port.color.peek();
+  }, [port, title, color]);
 
   return null;
 };

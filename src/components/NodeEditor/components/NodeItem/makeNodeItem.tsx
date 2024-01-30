@@ -1,6 +1,6 @@
-import { FC, ReactNode } from "react";
+import { FC, ReactNode, useEffect } from "react";
 
-import { useDiff } from "@/hooks/useDiff";
+import { batch } from "@preact/signals-react";
 
 import { useNodeList } from "../NodeList";
 import { NodeItemProvider } from "./";
@@ -23,12 +23,10 @@ export const makeNodeItem = <T extends object>(
 }) => {
     const ctx = useNodeList().useItem(id);
 
-    useDiff({ x, y }, (diff) => {
-      for (const _key in diff) {
-        const key = _key as keyof typeof diff;
-        ctx[key].value = diff[key] ?? ctx[key].peek();
-      }
-    });
+    useEffect(() => batch(() => {
+      ctx.x.value = x;
+      ctx.y.value = y;
+    }), [x, y]);
 
     return (
       <NodeItemProvider value={ctx}>
