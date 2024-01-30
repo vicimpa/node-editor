@@ -53,23 +53,10 @@ export class NodeListCtx {
 
   useItem(id?: string) {
     const reserveId = useId();
-    id = id ?? reserveId
+    id = id ?? reserveId;
 
-<<<<<<< Updated upstream
-    const item = useMemo(() => (
-        new NodeItemCtx(id, this.map, this)
-    ), [id]);
-
-    useEffect(() => (
-      this.list.set(id, item),
-      () => { this.list.delete(id); }
-    ), [id, item]);
-
-    return item;
-=======
     const item = useClass(NodeItemCtx, id, this.map, this);
     return useSet(this.list, id, item, [id, item]);
->>>>>>> Stashed changes
   }
 }
 

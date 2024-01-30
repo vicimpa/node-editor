@@ -19,6 +19,7 @@ export const App = () => {
           <NodeLayers>
             <NodeList>
               <Scroll />
+              <SizeControl />
 
               <Node>
                 <h1>Hi 123123</h1>
