@@ -1,19 +1,14 @@
-import {batch, effect} from "@preact/signals-react";
+import { mover } from "@/utils/mover";
+import { batch, effect } from "@preact/signals-react";
 
-import {NodeListCtx} from "../";
+import { NodeListCtx } from "../";
 
 export const detectResize = (list: NodeListCtx) => (
   effect(() => {
-    list.itemsCount.value;
+    if (!list.ref.current)
+      return;
 
-    list.list.forEach(v => {
-      v.x.value;
-      v.y.value;
-      v.width.value;
-      v.height.value;
-    });
-
-    if (list.ref.current)
+    return mover(list.ref.current, () => {
       batch(() => {
         const bbox = list.ref.current?.getBBox()!;
         list.x.value = bbox.x ?? 0;
@@ -21,5 +16,6 @@ export const detectResize = (list: NodeListCtx) => (
         list.width.value = bbox.width ?? 0;
         list.height.value = bbox.height ?? 0;
       });
+    });
   })
 );
