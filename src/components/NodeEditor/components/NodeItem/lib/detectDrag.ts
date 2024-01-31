@@ -1,5 +1,5 @@
 import { Vec2 } from "@/library/Vec2";
-import { windowEvent } from "@/utils/events";
+import { refEvent } from "@/utils/events";
 import { looper } from "@/utils/looper";
 import { makeDrag } from "@/utils/makeDrag";
 import { effect } from "@preact/signals-react";
@@ -11,8 +11,6 @@ export const detectDrag = (item: NodeItemCtx) => (
     const { current: ref } = item.ref;
     const { current: div } = item.div;
     const { map, x, y } = item;
-
-    if (!ref || !div) return;
 
     const drag = makeDrag<HTMLElement>(({ start, current, meta }) => {
       const correct = Vec2.fromSignals(x, y)
@@ -33,13 +31,14 @@ export const detectDrag = (item: NodeItemCtx) => (
       };
     });
 
-    return windowEvent('mousedown', (e) => {
+    return refEvent(item.div, 'mousedown', (e) => {
       if (
         false
         || e.button
         || !(e.target instanceof Element)
-        || !div.contains(e.target)
       ) return;
+
+      if (!ref || !div) return;
 
       item.focus();
 

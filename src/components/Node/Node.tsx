@@ -28,6 +28,7 @@ export const Node = makeNodeItem<TNodeProps>(
           <span className={s.text}>
             {title}
           </span>
+          <button>+</button>
         </div>
         <div className={s.content}>
           <div className={s.pins}>

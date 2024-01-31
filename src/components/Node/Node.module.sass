@@ -3,11 +3,12 @@
   flex-direction: column
   gap: 10px
   min-width: 100px
-  background-color: #555
-  border-radius: 5px
+  background-color: color-mix(in srgb, var(--color) 10%, rgba(0,0,0,0.4))
+  backdrop-filter: blur(3px)
+  border-radius: 10px
   padding-bottom: 10px
   margin: 20px
-  box-shadow: 0 0 10px #000
+  box-shadow: 0 0 15px #000
   pointer-events: visible
 
   .content
@@ -39,13 +40,15 @@
 
   .head
     padding: 5px 10px
-    background-color: var(--color)
+    background-color: color-mix(in srgb, var(--color) 40%, rgba(0,0,0,0.4))
     border-radius: 5px 5px 0 0
     user-select: none
-    font-size: 16px
+    display: flex
 
     .text
       text-decoration: underline
-      color: var(--color)
-      text-decoration-color: var(--color)
-      filter: invert(1)
+      color: #fff
+      text-decoration-color: #fff
+      font-weight: 600
+      font-size: 14px
+      flex-grow: 1
