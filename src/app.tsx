@@ -50,6 +50,13 @@ export const App = () => {
                     <NodePort title="123123" />
                     <NodePort title="123" output />
                   </Node>
+
+                  <Node x={200} y={-100} title="My test node" color="#ff0">
+                    <h1>Test node</h1>
+                    <NodePort title="123" color="#f00" />
+                    <NodePort title="123123" />
+                    <NodePort title="123" output />
+                  </Node>
                 </NodeList>
               </NodeLines>
             </NodeLayers>

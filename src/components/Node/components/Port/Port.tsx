@@ -1,7 +1,6 @@
 import { FC } from "react";
 
 import { NodePortCtx } from "@/components/NodeEditor";
-import { useNodeLines } from "@/components/NodeEditor/components/NodeLines";
 import { compute } from "@/utils/compute";
 import { v } from "@/utils/styleVar";
 
@@ -12,7 +11,6 @@ export type PortProps = {
 };
 
 export const Port: FC<PortProps> = ({ ctx }) => {
-  const lines = useNodeLines();
   const { color, title, isOutput, ref } = ctx;
   return (
     <>
@@ -24,8 +22,6 @@ export const Port: FC<PortProps> = ({ ctx }) => {
             style={{ [v`color`]: color.value }}
           >
             <span
-              onMouseDown={() => lines.from(ctx)}
-              onMouseUp={() => lines.to(ctx)}
               ref={ref}
               className={s.circle} />
             <span>{title}</span>
