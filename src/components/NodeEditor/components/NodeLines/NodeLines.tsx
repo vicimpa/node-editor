@@ -1,16 +1,46 @@
-import {Component} from "react";
+import { Component, createElement, ReactNode } from "react";
 
-import {NodeLinesCtx, NodeLinesProvider} from "./";
+import { useConnect } from "@/hooks/useConnect";
+import { compute } from "@/utils/compute";
 
-export class NodeLines extends Component {
+import { useNodeMap } from "../NodeMap";
+import { NodeLinesCtx, NodeLinesProvider } from "./";
+import { LinesItem } from "./NodeLinesItem";
+
+export type NodeLinesProps = {
+  children?: ReactNode;
+};
+
+export class NodeLines extends Component<NodeLinesProps> {
   ctx = new NodeLinesCtx();
 
   render() {
-    const {} = this.ctx
+    const { ctx } = this;
 
     return (
-      <NodeLinesProvider value={this.ctx}>
-        
+      <NodeLinesProvider value={ctx}>
+        {
+          createElement(() => {
+            ctx.map = useNodeMap();
+            useConnect(ctx);
+            return null;
+          })
+        }
+        {this.props.children}
+        {
+          createElement(() => (
+            ctx.list.use()
+              .map((item, key) => (
+                <LinesItem data={item} key={key} />
+              ))
+          ))
+        }
+        {
+          compute(() => (
+            ctx.active.value &&
+            <LinesItem data={ctx.active.value} vec={ctx.mouse} />
+          ))
+        }
       </NodeLinesProvider>
     );
   }
