@@ -1,24 +1,24 @@
-import { MouseEvent as ReactMouseEvent } from "react";
+import {MouseEvent as ReactMouseEvent} from "react";
 
-import { connect } from "@/decorators/connect";
-import { Vec2 } from "@/library/Vec2";
-import { classContext } from "@/utils/classContext";
-import { rectCenter } from "@/utils/domrect.ts";
-import { fv, TFV } from "@/utils/fv";
-import { runLoop } from "@/utils/looper";
-import { cropSize, min, minMax } from "@/utils/math";
-import { signalCorrect } from "@/utils/signalCorrect";
-import { signalRef } from "@/utils/signalRef";
-import { batch, computed, signal } from "@preact/signals-react";
+import {connect} from "@/decorators/connect";
+import {Vec2} from "@/library/Vec2";
+import {classContext} from "@/utils/classContext";
+import {rectCenter} from "@/utils/domrect.ts";
+import {fv, TFV} from "@/utils/fv";
+import {runLoop} from "@/utils/looper";
+import {cropSize, min, minMax} from "@/utils/math";
+import {signalCorrect} from "@/utils/signalCorrect";
+import {signalRef} from "@/utils/signalRef";
+import {batch, computed, signal} from "@preact/signals-react";
 
-import { computedRect } from "./lib/computedRect";
-import { computedViewRect } from "./lib/computedViewRect";
-import { detectAnimation } from "./lib/detectAnimation";
-import { detectCursor } from "./lib/detectCursor";
-import { detectDrag } from "./lib/detectDrag";
-import { detectMoved } from "./lib/detectMoved";
-import { detectResize } from "./lib/detectResize";
-import { detectWheel } from "./lib/detectWheel";
+import {computedRect} from "./lib/computedRect";
+import {computedViewRect} from "./lib/computedViewRect";
+import {detectAnimation} from "./lib/detectAnimation";
+import {detectCursor} from "./lib/detectCursor";
+import {detectDrag} from "./lib/detectDrag";
+import {detectMoved} from "./lib/detectMoved";
+import {detectResize} from "./lib/detectResize";
+import {detectWheel} from "./lib/detectWheel";
 
 @connect([
   detectCursor,
@@ -88,8 +88,8 @@ export class NodeMapCtx {
     if (!(vec instanceof Vec2))
       return this.offset(Vec2.fromPageXY(vec));
 
-    const { value: rect } = this.rect;
-    const { value: viewRect } = this.viewRect;
+    const {value: rect} = this.rect;
+    const {value: viewRect} = this.viewRect;
     const size = Vec2.fromSize(rect);
     const viewSize = Vec2.fromSize(viewRect);
     const scale = viewSize.cdiv(size);
