@@ -1,19 +1,26 @@
 import {useNodeMap} from "@/components/NodeEditor";
-import s from "../../SizeControl.module.sass";
 import {useWindowEvent} from "@/hooks/useWindowEvent";
 import {looper} from "@/utils/looper";
-import {useSignal, useSignalEffect} from "@preact/signals-react";
-
-const DELTA_ZOOM = .12;
+import {useComputed, useSignal, useSignalEffect} from "@preact/signals-react";
+import {compute} from "@/utils/compute.ts";
+import {ZoomButton} from "./components/ZoomButton.tsx";
 
 export const Zoom = () => {
   const map = useNodeMap();
   const delta = useSignal(0);
 
-  const handlerMouseDown = (e: React.MouseEvent, isZoomIn: boolean) => {
-    if (e.button !== 0) return
-    const deltaValue = isZoomIn ? 1 : -1
-    delta.value += deltaValue
+  const zoomDisabled =
+    useComputed(() => ({
+      zoomInDisabled: map.scale.value === map.scaleMax,
+      zoomOutDisabled: map.scale.value === map.scaleMin
+    }))
+
+  const handlerMouseDown = (isZoomIn: boolean) => {
+    return (e: React.MouseEvent) => {
+      if (e.button !== 0) return
+      const deltaValue = isZoomIn ? 1 : -1
+      delta.value += deltaValue
+    }
   }
 
   useWindowEvent(['mouseup', 'blur'], () => {
@@ -21,22 +28,37 @@ export const Zoom = () => {
   });
 
   useSignalEffect(() => {
+    if (zoomDisabled.value.zoomInDisabled || zoomDisabled.value.zoomOutDisabled)
+      delta.value = 0;
+  })
+
+  useSignalEffect(() => {
     if (!delta.value)
       return;
 
     return looper((_, dtime) => {
       map.toScale((v) => (
-        v + delta.peek() * dtime * DELTA_ZOOM * .01
+        // v + delta.peek() * dtime * map.scaleDelta * .01
+        v + delta.peek() * dtime * v * .1 * .01
       ));
     });
   });
 
   return (
     <>
-      <button className={s.item} onMouseDown={(e) => handlerMouseDown(e, true)}><span className={"icon-zoom-in"}/>
-      </button>
-      <button className={s.item} onMouseDown={(e) => handlerMouseDown(e, false)}><span className={"icon-zoom-out"}/>
-      </button>
+      {compute(() =>
+        <ZoomButton
+          isZoomIn={true}
+          disabled={zoomDisabled.value.zoomInDisabled}
+          handler={handlerMouseDown(true)}/>)
+      }
+      {compute(() =>
+        <ZoomButton
+          isZoomIn={false}
+          disabled={zoomDisabled.value.zoomOutDisabled}
+          handler={handlerMouseDown(false)}/>)
+      }
     </>
   );
 };
+

@@ -1,9 +1,9 @@
-import { createElement, ReactNode } from "react";
+import {createElement, ReactNode} from "react";
 
-import { v } from "@/utils/styleVar";
+import {v} from "@/utils/styleVar";
 
-import { makeNodeItem, useNodeItem } from "../NodeEditor";
-import { Port } from "./components/Port";
+import {makeNodeItem, useNodeItem} from "../NodeEditor";
+import {Port} from "./components/Port";
 import s from "./Node.module.sass";
 
 export type TNodeProps = {
@@ -22,12 +22,17 @@ export const Node = makeNodeItem<TNodeProps>(
   ) => {
     const item = useNodeItem();
 
+    const onFixed = () => {
+      item.fixed.value = !item.fixed.value
+    }
+
     return (
-      <div className={s.node} style={{ [v`color`]: color }}>
+      <div className={s.node} style={{[v`color`]: color}}>
         <div data-drag className={s.head}>
           <span className={s.text}>
             {title}
           </span>
+          <button onClick={onFixed}>F</button>
           <button>+</button>
         </div>
         <div className={s.content}>
@@ -37,7 +42,7 @@ export const Node = makeNodeItem<TNodeProps>(
                 createElement(() => (
                   item.input.use()
                     .map((ctx, key) => (
-                      <Port {...{ ctx, key }} />
+                      <Port {...{ctx, key}} />
                     ))
                 ))
               }
@@ -47,7 +52,7 @@ export const Node = makeNodeItem<TNodeProps>(
                 createElement(() => (
                   item.output.use()
                     .map((ctx, key) => (
-                      <Port {...{ ctx, key }} />
+                      <Port {...{ctx, key}} />
                     ))
                 ))
               }

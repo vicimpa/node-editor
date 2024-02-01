@@ -2,7 +2,7 @@ import {useNodeHud} from "@/components/NodeEditor";
 
 import s from "../../SizeControl.module.sass";
 import {useComputed} from "@preact/signals-react";
-import {useFullscreen} from "@/components/SizeControl/components/FullScreen/useFullscreen.ts";
+import {useFullscreen} from "./useFullscreen.ts";
 
 export const FullScreen = () => {
   const isFullscreen = useFullscreen()
@@ -18,7 +18,8 @@ export const FullScreen = () => {
   };
 
   const icon = useComputed(() => {
-    return isFullscreen.value ? <span className={"icon-shrink"}/> : <span className={"icon-enlarge"}/>
+    const isFullscreenEnabled = isFullscreen.value
+    return <span className={isFullscreenEnabled ? "icon-shrink" : "icon-enlarge"}/>
   })
 
   return (

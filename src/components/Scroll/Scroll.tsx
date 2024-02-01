@@ -1,8 +1,8 @@
-import { Vec2 } from "@/library/Vec2";
-import { computed, useComputed } from "@preact/signals-react";
+import {Vec2} from "@/library/Vec2";
+import {computed, useComputed} from "@preact/signals-react";
 
-import { Debug } from "../Debug";
-import { useNodeHud, useNodeList } from "../NodeEditor";
+import {Debug} from "../Debug";
+import {useNodeHud, useNodeList} from "../NodeEditor";
 import s from "./Scroll.module.sass";
 
 export const Scroll = () => {
@@ -10,7 +10,7 @@ export const Scroll = () => {
   const list = useNodeList();
 
   const sizes = useComputed(() => {
-    const { value: rect } = list.rect;
+    const {value: rect} = list.rect;
     const viewRect = list.map.rect.value;
     const viewSize = Vec2.fromSize(viewRect);
     const biggerSize = Vec2.fromSize(rect).plus(rect)
@@ -38,7 +38,7 @@ export const Scroll = () => {
       <div
         className={s.item}
         data-show={(size !== 100) || undefined}
-        style={{ left, right }} />
+        style={{left, right}}/>
     );
   });
 
@@ -51,7 +51,7 @@ export const Scroll = () => {
       <div
         className={s.item}
         data-show={(size !== 100) || undefined}
-        style={{ bottom, top }} />
+        style={{bottom, top}}/>
     );
   });
 
