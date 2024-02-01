@@ -14,6 +14,7 @@ export const detectDrag = (map: NodeMapCtx) => (
     if (!ref || !div) return;
 
     const drag = makeDrag(({ start }) => (
+      map.animation.value = undefined,
       move.value = true,
       start = Vec2.fromSignals(x, y),
       ({ delta }) => {

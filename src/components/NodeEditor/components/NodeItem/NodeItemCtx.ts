@@ -1,19 +1,19 @@
-import {ReactNode} from "react";
+import { ReactNode } from "react";
 
-import {connect} from "@/decorators/connect";
-import {ReactiveMap} from "@/library/ReactiveMap";
-import {classContext} from "@/utils/classContext";
-import {makeSignalPortal} from "@/utils/makeSignalPortal";
-import {cropSize} from "@/utils/math";
-import {signalCorrect} from "@/utils/signalCorrect";
-import {signalRef} from "@/utils/signalRef";
-import {computed, signal} from "@preact/signals-react";
+import { connect } from "@/decorators/connect";
+import { ReactiveMap } from "@/library/ReactiveMap";
+import { classContext } from "@/utils/classContext";
+import { makeSignalPortal } from "@/utils/makeSignalPortal";
+import { cropSize } from "@/utils/math";
+import { signalCorrect } from "@/utils/signalCorrect";
+import { signalRef } from "@/utils/signalRef";
+import { computed, signal } from "@preact/signals-react";
 
-import {NodeListCtx, NodeMapCtx, NodePortCtx} from "../../";
-import {computedRect} from "./lib/computedRect";
-import {detectDrag} from "./lib/detectDrag";
-import {detectRect} from "./lib/detectRect";
-import {detectResize} from "./lib/detectResize";
+import { NodeListCtx, NodeMapCtx, NodePortCtx } from "../../";
+import { computedRect } from "./lib/computedRect";
+import { detectDrag } from "./lib/detectDrag";
+import { detectRect } from "./lib/detectRect";
+import { detectResize } from "./lib/detectResize";
 
 export type NodeItemPortal = {
   children?: ReactNode;
@@ -34,16 +34,13 @@ export class NodeItemCtx {
   width = signal(0);
   height = signal(0);
 
-  fixed = signal(false);
   move = signal(false);
   rect = computed(() => computedRect(this));
 
   input = new ReactiveMap<string, NodePortCtx>();
   output = new ReactiveMap<string, NodePortCtx>();
 
-  focus() {
-    this.list.focus(this);
-  }
+  focus() { this.list.focus(this); }
 
   constructor(
     public id: string,

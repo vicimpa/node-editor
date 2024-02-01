@@ -2,13 +2,18 @@ import { connect } from "@/decorators/connect";
 import { useClass } from "@/hooks/useClass";
 import { useSet } from "@/hooks/useSet";
 import { signalRef } from "@/utils/signalRef";
-import { signal } from "@preact/signals-react";
+import { computed, signal } from "@preact/signals-react";
 
 import { NodeItemCtx, useNodeItem } from "../NodeItem";
+import { computeCorrect } from "./lib/computeCorrect";
+import { computePosition } from "./lib/computePosition";
 
 @connect([])
 export class NodePortCtx {
   ref = signalRef<HTMLSpanElement>();
+
+  position = computed(() => computePosition(this));
+  correct = computed(() => computeCorrect(this));
 
   title = signal('port');
   color = signal('#999');

@@ -1,4 +1,4 @@
-import { cos, hypot, max, min, rem, rems, sin } from "@/utils/math";
+import { cos, hypot, iters, max, min, rem, rems, sin } from "@/utils/math";
 import { batch, Signal } from "@preact/signals-react";
 
 export type TMutation = (this: Vec2, x: number, y: number) => any;
@@ -188,6 +188,12 @@ export class Vec2 {
     return this;
   }
 
+  iters(to: Vec2, i: number) {
+    this.x = iters(this.x, to.x, i);
+    this.y = iters(this.y, to.y, i);
+    return this;
+  }
+
   clone() {
     return new Vec2(this);
   }
@@ -216,6 +222,10 @@ export class Vec2 {
     return this.clone().rems(...args);
   }
 
+  cinverse() {
+    return this.clone().inverse();
+  }
+
   length() {
     return hypot(...this);
   }
@@ -228,8 +238,20 @@ export class Vec2 {
     return this.div(this.length());
   }
 
+  min() {
+    return min(...this);
+  }
+
+  max() {
+    return max(...this);
+  }
+
   cnormalize() {
     return this.clone().normalize();
+  }
+
+  citers(to: Vec2, i: number) {
+    return this.clone().iters(to, i);
   }
 
   toSignals(x: Signal<number>, y: Signal<number>) {

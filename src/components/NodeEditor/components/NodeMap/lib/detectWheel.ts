@@ -1,12 +1,12 @@
-import {Vec2} from "@/library/Vec2";
-import {refEvent} from "@/utils/events";
+import { Vec2 } from "@/library/Vec2";
+import { refEvent } from "@/utils/events";
 
-import {NodeMapCtx} from "../";
-import {sign} from "@/utils/math.ts";
+import { NodeMapCtx } from "../";
 
 export const detectWheel = (map: NodeMapCtx) => (
   refEvent(map.div, 'wheel', (e) => {
-    const {scale, x, y, move} = map;
+    map.animation.value = undefined;
+    const { scale, x, y, move } = map;
 
     if (move.value) return;
 
@@ -28,6 +28,6 @@ export const detectWheel = (map: NodeMapCtx) => (
     }
 
     const mouse = Vec2.fromPageXY(e);
-    map.toScale(v => v - sign(e.deltaY) * v * .1, mouse);
+    map.toScale(v => v - e.deltaY * v * .001, mouse);
   })
 );

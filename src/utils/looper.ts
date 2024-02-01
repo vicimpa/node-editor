@@ -19,7 +19,7 @@ var loop = (newTime: number) => {
 
 requestAnimationFrame(loop);
 
-export const runLoop = <T extends TLoop>(loop: T) => {
+export const runLoop = <T extends TLoop>(loop: T): ReturnType<T> => {
   return loop(time, deltaTime);
 };
 
