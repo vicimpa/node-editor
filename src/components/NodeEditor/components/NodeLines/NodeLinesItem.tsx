@@ -7,6 +7,7 @@ import { Signal } from "@preact/signals-react";
 
 import { useNodeLayers } from "../NodeLayers";
 import { NodePortCtx } from "../NodePort";
+import s from "./NodeLines.module.sass";
 
 export type LinesItemProps = {
   from: NodePortCtx;
@@ -14,11 +15,10 @@ export type LinesItemProps = {
   vec?: Signal<Vec2 | null>;
 };
 
-const getPath = (f: Vec2, t: Vec2, xsing: number) => {
+const getPath = (f: Vec2, t: Vec2, asing: number, bsign = asing) => {
   const dist = f.cminus(t).abs().div(2, 4).cropMax(250, 50);
-  const signVec = new Vec2(xsing, 0);
-  const stepA = f.cplus(dist.ctimes(signVec));
-  const stepB = t.cminus(dist.ctimes(signVec));
+  const stepA = f.cplus(dist.ctimes(asing, 0));
+  const stepB = t.cminus(dist.ctimes(bsign, 0));
   return [`M${f}`, `C${stepA} ${stepB} ${t}`].join(' ');
 };
 
@@ -48,6 +48,7 @@ export const LinesItem: FC<LinesItemProps> = forward<'path', LinesItemProps>(
                   <path
                     d={getPath(_f, _t, isOutput ? 1 : -1)}
                     stroke={`url(#${gradientId})`}
+                    className={s.line}
                     ref={ref}
                     strokeWidth={5}
                     fill="transparent" />
@@ -71,7 +72,7 @@ export const LinesItem: FC<LinesItemProps> = forward<'path', LinesItemProps>(
 
               return (
                 <path
-                  d={getPath(_f, _t, from.isOutput ? 1 : -1)}
+                  d={getPath(_f, _t, from.isOutput ? 1 : -1, 0)}
                   stroke="#666"
                   fill="none"
                   strokeWidth={5} />
