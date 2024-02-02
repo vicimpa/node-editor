@@ -14,14 +14,12 @@ export const detectReconnect = (connect: Connect) => (
 
     const drag = makeDrag(({ current }) => {
       current = connect.list.nodemap.offset(current);
-
       const disFrom = new Vec2(from.position.value).distance(current);
       const disTo = new Vec2(to.position.value).distance(current);
-      const need = disFrom < disTo ? from : to;
-
-      return () => {
-
-      };
+      const need = disFrom < disTo ? to : from;
+      connect.list.delete(connect);
+      connect.list.lines.active.value = need;
+      connect.list.lines.mouse.value = current;
     });
 
     return refSvgEvent(connect.ref, 'mousedown', drag);

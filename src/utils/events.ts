@@ -5,12 +5,13 @@ import { effect } from "@preact/signals-react";
 export type WEM = WindowEventMap;
 export type DEM = DocumentEventMap;
 export type HEM = HTMLElementEventMap;
+export type SEM = SVGElementEventMap;
 export type TListener<T extends Event = Event> = (e: T) => any;
 
-export const refSvgEvent = <T extends SVGElement, K extends keyof HEM>(
+export const refSvgEvent = <T extends SVGElement, K extends keyof SEM>(
   ref: RefObject<T>,
   key: K | K[],
-  listener: TListener<HEM[K]>
+  listener: TListener<SEM[K]>
 ) => {
   if (Array.isArray(key)) {
     const unsub = key.map(e => refSvgEvent(ref, e, listener));
