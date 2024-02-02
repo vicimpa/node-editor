@@ -1,4 +1,4 @@
-import { cos, hypot, iters, max, min, rem, rems, sin } from "@/utils/math";
+import { abs, cos, hypot, iters, max, min, rem, rems, sign, sin } from "@/utils/math";
 import { batch, Signal } from "@preact/signals-react";
 
 export type TMutation = (this: Vec2, x: number, y: number) => any;
@@ -38,7 +38,7 @@ export class Vec2 {
   }
 
   toString() {
-    return `${this.x},${this.y}`;
+    return `${this.x} ${this.y}`;
   }
 
   get tuple(): TTupleVec2 {
@@ -194,6 +194,18 @@ export class Vec2 {
     return this;
   }
 
+  sign() {
+    this.x = sign(this.x);
+    this.y = sign(this.y);
+    return this;
+  }
+
+  abs() {
+    this.x = abs(this.x);
+    this.y = abs(this.y);
+    return this;
+  }
+
   clone() {
     return new Vec2(this);
   }
@@ -226,6 +238,22 @@ export class Vec2 {
     return this.clone().inverse();
   }
 
+  cnormalize() {
+    return this.clone().normalize();
+  }
+
+  citers(to: Vec2, i: number) {
+    return this.clone().iters(to, i);
+  }
+
+  csign() {
+    return this.clone().sign();
+  }
+
+  cabs() {
+    return this.clone().abs();
+  }
+
   length() {
     return hypot(...this);
   }
@@ -244,14 +272,6 @@ export class Vec2 {
 
   max() {
     return max(...this);
-  }
-
-  cnormalize() {
-    return this.clone().normalize();
-  }
-
-  citers(to: Vec2, i: number) {
-    return this.clone().iters(to, i);
   }
 
   toSignals(x: Signal<number>, y: Signal<number>) {

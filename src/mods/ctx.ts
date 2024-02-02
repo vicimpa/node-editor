@@ -47,6 +47,18 @@ declare global {
     roundRect(...args: [...TXYWH, radii?: number | DOMPointInit | (number | DOMPointInit)[]]): void;
   }
 
+  interface Path2D {
+    arc(...args: [...TXY, radius: number, ...TAngles, counterclockwise?: boolean]): void;
+    arcTo(...args: [...TXY1, ...TXY2, radius: number]): void;
+    bezierCurveTo(...args: [...TCP1, ...TCP2, ...TXY]): void;
+    ellipse(...args: [...TXY, ...TRadius, rotation: number, ...TAngles, counterclockwise?: boolean]): void;
+    lineTo(...args: TXY): void;
+    moveTo(...args: TXY): void;
+    quadraticCurveTo(...args: [...TCP, ...TXY]): void;
+    rect(...args: TXYWH): void;
+    roundRect(...args: [...TXYWH, radii?: number | DOMPointInit | (number | DOMPointInit)[]]): void;
+  }
+
   interface CanvasDrawImage {
     drawImage(image: CanvasImageSource, ...args: TDXY): void;
     drawImage(image: CanvasImageSource, ...args: TDXYWH): void;
@@ -156,3 +168,4 @@ const patch = <T extends (...args: any[]) => any>(func: T): T => (
     }
   }
 }
+
