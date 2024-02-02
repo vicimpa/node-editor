@@ -7,6 +7,7 @@ import {NodeBack, NodeHud, NodeLayers, NodeList, NodeMap, NodePort} from "./comp
 import {NodeLines} from "./components/NodeEditor/components/NodeLines";
 import {Scroll} from "./components/Scroll";
 import {SizeControl} from "./components/SizeControl";
+import {NodeSelection} from "@/components/NodeEditor/components/NodeSelection";
 
 export const App = () => {
   return (
@@ -23,38 +24,40 @@ export const App = () => {
             <NodeLayers>
               <NodeLines>
                 <NodeList>
-                  <Scroll/>
-                  <SizeControl/>
+                  <NodeSelection>
+                    <Scroll/>
+                    <SizeControl/>
 
-                  <Node>
-                    <h1>Test node</h1>
-                    <NodePort/>
-                    <NodePort/>
-                    <NodePort output/>
-                  </Node>
+                    <Node>
+                      <h1>Test node</h1>
+                      <NodePort/>
+                      <NodePort/>
+                      <NodePort output/>
+                    </Node>
 
-                  <Node>
-                    <h1>Test node</h1>
-                    <NodePort/>
-                    <NodePort/>
-                    <NodePort output/>
-                  </Node>
+                    <Node>
+                      <h1>Test node</h1>
+                      <NodePort/>
+                      <NodePort/>
+                      <NodePort output/>
+                    </Node>
 
-                  <Node>
-                    <h1>Test node</h1>
-                    <NodePort/>
-                    <NodePort/>
-                    <NodePort output/>
-                  </Node>
+                    <Node>
+                      <h1>Test node</h1>
+                      <NodePort/>
+                      <NodePort/>
+                      <NodePort output/>
+                    </Node>
 
 
-                  <Node>
-                    <h1>Test node</h1>
-                    <NodePort/>
-                    <NodePort/>
-                    <NodePort output/>
-                  </Node>
+                    <Node>
+                      <h1>Test node</h1>
+                      <NodePort/>
+                      <NodePort/>
+                      <NodePort output/>
+                    </Node>
 
+                  </NodeSelection>
                 </NodeList>
               </NodeLines>
             </NodeLayers>

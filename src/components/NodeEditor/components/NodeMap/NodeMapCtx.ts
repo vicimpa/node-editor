@@ -94,10 +94,8 @@ export class NodeMapCtx {
 
     const {value: rect} = this.rect;
     const {value: viewRect} = this.viewRect;
-    const size = Vec2.fromSize(rect);
-    const viewSize = Vec2.fromSize(viewRect);
-    const scale = viewSize.cdiv(size);
-    return vec.cminus(viewRect).div(scale).plus(rect);
+
+    return vec.cminus(viewRect).div(this.scale).plus(rect);
   }
 
   toScale(newScale: TFV<number, [old: number]>, vec = rectCenter(this.viewRect.value)) {
