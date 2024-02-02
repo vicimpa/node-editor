@@ -28,34 +28,17 @@ export const App = () => {
                   <Scroll />
                   <SizeControl />
 
-                  <Node title="My test node" color="#00f">
+                  <Node>
                     <h1>Test node</h1>
-                    <NodePort title="123" color="#f00" />
-                    <NodePort title="123123" />
-                    <NodePort title="123" output />
+                    <NodePort />
+                    <NodePort />
+                    <NodePort output />
                   </Node>
-
-
-                  <Node x={-200} y={100} title="My test node" color="#0f0">
+                  <Node>
                     <h1>Test node</h1>
-                    <NodePort title="123" color="#f00" />
-                    <NodePort title="123123" />
-                    <NodePort title="123" output />
-                  </Node>
-
-
-                  <Node x={100} y={200} title="My test node" color="#f0f">
-                    <h1>Test node</h1>
-                    <NodePort title="123" color="#f00" />
-                    <NodePort title="123123" />
-                    <NodePort title="123" output />
-                  </Node>
-
-                  <Node x={200} y={-100} title="My test node" color="#ff0">
-                    <h1>Test node</h1>
-                    <NodePort title="123" color="#f00" />
-                    <NodePort title="123123" />
-                    <NodePort title="123" output />
+                    <NodePort />
+                    <NodePort />
+                    <NodePort output />
                   </Node>
                 </NodeList>
               </NodeLines>

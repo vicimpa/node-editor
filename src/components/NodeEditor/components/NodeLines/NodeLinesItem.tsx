@@ -5,14 +5,15 @@ import { compute } from "@/utils/compute";
 import { Signal } from "@preact/signals-react";
 
 import { useNodeLayers } from "../NodeLayers";
-import { NodeLinesItem } from "./";
+import { NodePortCtx } from "../NodePort";
 
 export type LinesItemProps = {
-  data: NodeLinesItem;
+  from: NodePortCtx;
+  to?: NodePortCtx;
   vec?: Signal<Vec2 | null>;
 };
 
-export const LinesItem: FC<LinesItemProps> = ({ vec, data: { from, to } }) => {
+export const LinesItem: FC<LinesItemProps> = ({ vec, from, to }) => {
   const { Portal } = useNodeLayers();
 
   if (to)

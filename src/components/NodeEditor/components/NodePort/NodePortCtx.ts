@@ -22,6 +22,9 @@ export class NodePortCtx {
   title = signal('port');
   color = signal('#999');
 
+  meta?: any;
+  onConnect?: (ctx: NodePortCtx) => any;
+
   constructor(
     public id: string,
     public isOutput = false,

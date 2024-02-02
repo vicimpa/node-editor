@@ -31,14 +31,14 @@ export class NodeLines extends Component<NodeLinesProps> {
           createElement(() => (
             ctx.list.use()
               .map((item, key) => (
-                <LinesItem data={item} key={key} />
+                <LinesItem {...item} key={key} />
               ))
           ))
         }
         {
           compute(() => (
             ctx.active.value &&
-            <LinesItem data={ctx.active.value} vec={ctx.mouse} />
+            <LinesItem from={ctx.active.value} vec={ctx.mouse} />
           ))
         }
       </NodeLinesProvider>
