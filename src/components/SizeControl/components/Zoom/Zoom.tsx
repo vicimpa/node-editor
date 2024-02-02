@@ -1,10 +1,11 @@
-import { useNodeMap } from "@/components/NodeEditor";
-import { useWindowEvent } from "@/hooks/useWindowEvent";
-import { compute } from "@/utils/compute.ts";
-import { looper } from "@/utils/looper";
-import { useComputed, useSignal, useSignalEffect } from "@preact/signals-react";
+import {useNodeMap} from "@/components/NodeEditor";
+import {useWindowEvent} from "@/hooks/useWindowEvent";
+import {compute} from "@/utils/compute.ts";
+import {looper} from "@/utils/looper";
+import {useComputed, useSignal, useSignalEffect} from "@preact/signals-react";
 
-import { ZoomButton } from "./components/ZoomButton.tsx";
+import {ZoomButton} from "./components/ZoomButton.tsx";
+import {MouseEvent} from "react";
 
 export const Zoom = () => {
   const map = useNodeMap();
@@ -17,7 +18,7 @@ export const Zoom = () => {
     }));
 
   const handlerMouseDown = (isZoomIn: boolean) => {
-    return (e: React.MouseEvent) => {
+    return (e: MouseEvent) => {
       if (e.button !== 0) return;
       const deltaValue = isZoomIn ? 1 : -1;
       delta.value += deltaValue;
@@ -50,13 +51,13 @@ export const Zoom = () => {
         <ZoomButton
           isZoomIn={true}
           disabled={zoomDisabled.value.zoomInDisabled}
-          handler={handlerMouseDown(true)} />)
+          handler={handlerMouseDown(true)}/>)
       }
       {compute(() =>
         <ZoomButton
           isZoomIn={false}
           disabled={zoomDisabled.value.zoomOutDisabled}
-          handler={handlerMouseDown(false)} />)
+          handler={handlerMouseDown(false)}/>)
       }
     </>
   );

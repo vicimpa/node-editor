@@ -1,7 +1,8 @@
 import s from "../../../SizeControl.module.sass";
+import {MouseEvent} from "react";
 
 type ZoomButtonProps = {
-  handler: (e: React.MouseEvent) => void
+  handler: (e: MouseEvent) => void
   isZoomIn: boolean
   disabled: boolean
 }

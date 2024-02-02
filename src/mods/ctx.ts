@@ -1,4 +1,4 @@
-import { Vec2 } from "@/library/Vec2";
+import {Vec2} from "@/library/Vec2";
 
 declare global {
   type TXY = [x: number, y: number] | [xy: Vec2];
@@ -48,15 +48,21 @@ declare global {
   }
 
   interface Path2D {
+    // A
     arc(...args: [...TXY, radius: number, ...TAngles, counterclockwise?: boolean]): void;
     arcTo(...args: [...TXY1, ...TXY2, radius: number]): void;
+    // C
     bezierCurveTo(...args: [...TCP1, ...TCP2, ...TXY]): void;
     ellipse(...args: [...TXY, ...TRadius, rotation: number, ...TAngles, counterclockwise?: boolean]): void;
+    // L
     lineTo(...args: TXY): void;
+    // M
     moveTo(...args: TXY): void;
+    // Q
     quadraticCurveTo(...args: [...TCP, ...TXY]): void;
     rect(...args: TXYWH): void;
     roundRect(...args: [...TXYWH, radii?: number | DOMPointInit | (number | DOMPointInit)[]]): void;
+    // Z - closepath
   }
 
   interface CanvasDrawImage {
@@ -148,7 +154,7 @@ const patch = <T extends (...args: any[]) => any>(func: T): T => (
 ) as T;
 
 {
-  const { prototype } = CanvasRenderingContext2D;
+  const {prototype} = CanvasRenderingContext2D;
   for (const key of methods) {
     if (key in prototype)
       Object.assign(prototype, {
@@ -158,7 +164,7 @@ const patch = <T extends (...args: any[]) => any>(func: T): T => (
 }
 
 {
-  const { prototype } = Path2D;
+  const {prototype} = Path2D;
   for (const key of methods) {
     if (key in prototype) {
       Object.assign(prototype, {

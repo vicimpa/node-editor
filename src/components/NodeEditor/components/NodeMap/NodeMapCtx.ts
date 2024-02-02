@@ -20,6 +20,7 @@ import {detectMoved} from "./lib/detectMoved";
 import {detectResize} from "./lib/detectResize";
 import {detectWheel} from "./lib/detectWheel";
 
+
 @connect([
   detectCursor,
   detectDrag,
@@ -34,6 +35,9 @@ export class NodeMapCtx {
 
   scaleMin = .1;
   scaleMax = 2;
+
+  private viewPad = 50
+  private viewOver = 4
 
   div = signalRef<HTMLDivElement>();
   svg = signalRef<SVGSVGElement>();
@@ -103,6 +107,19 @@ export class NodeMapCtx {
     start.plus(this.x, this.y);
     start.toSignals(this.x, this.y);
   }
+
+  calcViewTransitionVec(current: Vec2, dtime: number) {
+    const min = new Vec2(this.viewRect.value);
+    const max = Vec2.fromSize(this.viewRect.value).plus(min);
+    return Vec2.fromSignals(this.x, this.y)
+      .plus(
+        current
+          .cminus(min).minus(this.viewPad).cropMax(0).cropMin(-this.viewPad * this.viewOver)
+          .plus(current.cminus(max).plus(this.viewPad).cropMin(0).cropMax(this.viewPad * this.viewOver))
+          .times(dtime * .01 / this.scale.value)
+      )
+  }
+
 }
 
 export const [
