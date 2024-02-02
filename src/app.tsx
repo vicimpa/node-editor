@@ -34,6 +34,7 @@ export const App = () => {
                     <NodePort />
                     <NodePort output />
                   </Node>
+
                   <Node>
                     <h1>Test node</h1>
                     <NodePort />

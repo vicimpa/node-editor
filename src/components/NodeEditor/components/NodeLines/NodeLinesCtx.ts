@@ -16,7 +16,7 @@ import { detectMouseUp } from "./lib/detectMouseUp";
 export class NodeLinesCtx {
   map!: NodeMapCtx;
 
-  list = new ConnectList();
+  list = new ConnectList(this);
 
   mouse = signal<Vec2 | null>(null);
   active = signal<NodePortCtx | null>(null);

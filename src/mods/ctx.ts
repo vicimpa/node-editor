@@ -128,7 +128,6 @@ const methods = [
   'translate'
 ] as const;
 
-
 const mapped = (args: any[]) => {
   for (let i = 0; i < args.length; i++) {
     const element = args[i];

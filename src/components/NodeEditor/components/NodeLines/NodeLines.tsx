@@ -31,7 +31,11 @@ export class NodeLines extends Component<NodeLinesProps> {
           createElement(() => (
             ctx.list.use()
               .map((item, key) => (
-                <LinesItem {...item} key={key} />
+                createElement(() => {
+                  useConnect(item);
+
+                  return <LinesItem {...item} />;
+                }, { key })
               ))
           ))
         }

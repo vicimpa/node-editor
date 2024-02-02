@@ -7,6 +7,25 @@ export type DEM = DocumentEventMap;
 export type HEM = HTMLElementEventMap;
 export type TListener<T extends Event = Event> = (e: T) => any;
 
+export const refSvgEvent = <T extends SVGElement, K extends keyof HEM>(
+  ref: RefObject<T>,
+  key: K | K[],
+  listener: TListener<HEM[K]>
+) => {
+  if (Array.isArray(key)) {
+    const unsub = key.map(e => refSvgEvent(ref, e, listener));
+    return () => { unsub.forEach(u => u?.()); };
+  }
+
+  return effect(() => {
+    const { current: elem } = ref;
+    if (elem) {
+      elem.addEventListener(key, listener);
+      return () => { elem.removeEventListener(key, listener); };
+    }
+  });
+};
+
 export const refEvent = <T extends HTMLElement, K extends keyof HEM>(
   ref: RefObject<T>,
   key: K | K[],
