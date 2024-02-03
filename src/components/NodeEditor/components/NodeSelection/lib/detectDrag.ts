@@ -7,7 +7,8 @@ import {checkRectInRect} from "@/utils/checkInclude.ts";
 
 export const detectDrag = (select: NodeSelectionCtx) => (
   effect(() => {
-    const {selectFrom, selectTo, map, list} = select;
+    const {selectFrom, selectTo, list} = select;
+    const {map} = list
 
     const selection = makeDrag(({start, current}) => {
       map.animation.value = undefined
@@ -25,6 +26,7 @@ export const detectDrag = (select: NodeSelectionCtx) => (
             list.list.forEach(elt => {
               if (checkRectInRect(elt.rect.value, selectionZone)) {
                 console.log(elt.id)
+                select.toSelection(elt)
               }
             })
           }
@@ -40,6 +42,7 @@ export const detectDrag = (select: NodeSelectionCtx) => (
         false
         || !(e.target instanceof Element)
       ) return;
+      select.clearSelection()
       selection(e)
     });
   })

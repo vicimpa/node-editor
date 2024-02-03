@@ -2,8 +2,6 @@ import {Component, createElement, ReactNode} from "react";
 
 import {useConnect} from "@/hooks/useConnect";
 import {compute} from "@/utils/compute";
-
-import {useNodeMap} from "../NodeMap";
 import {NodeSelectionCtx, NodeSelectionProvider} from "./NodeSelectionCtx.ts";
 import {Signal} from "@preact/signals-react";
 import {Vec2} from "@/library/Vec2.ts";
@@ -25,7 +23,6 @@ export class NodeSelection extends Component<NodeSelectionProps> {
       <NodeSelectionProvider value={ctx}>
         {
           createElement(() => {
-            ctx.map = useNodeMap();
             ctx.list = useNodeList()
             useConnect(ctx);
             return null;
