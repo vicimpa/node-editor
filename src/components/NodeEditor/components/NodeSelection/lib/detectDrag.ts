@@ -3,8 +3,7 @@ import {makeDrag} from "@/utils/makeDrag";
 import {effect} from "@preact/signals-react";
 import {NodeSelectionCtx} from "@/components/NodeEditor/components/NodeSelection/NodeSelectionCtx.ts";
 import {looper} from "@/utils/looper.ts";
-import {max, min} from "@/utils/math.ts";
-import {Vec2} from "@/library/Vec2.ts";
+import {checkRectInRect} from "@/utils/checkInclude.ts";
 
 export const detectDrag = (select: NodeSelectionCtx) => (
   effect(() => {
@@ -21,19 +20,14 @@ export const detectDrag = (select: NodeSelectionCtx) => (
         current.set(newCurrent);
         selectTo.value = map.offset(newCurrent);
         return () => {
-          list.list.map(elt => {
-            const start = new Vec2(elt.rect.value)
-            const end = start.cplus(Vec2.fromSize(elt.rect.value))
-            if (
-              selectFrom.value && selectTo.value &&
-              start.x >= min(selectFrom.value.x, selectTo.value.x) &&
-              start.y >= min(selectFrom.value.y, selectTo.value.y) &&
-              end.x <= max(selectFrom.value.x, selectTo.value.x) &&
-              end.y <= max(selectFrom.value.y, selectTo.value.y)
-            ) {
-              console.log(elt.id)
-            }
-          })
+          if (selectFrom.value && selectTo.value) {
+            const selectionZone = selectFrom.value.toRect(selectTo.value)
+            list.list.forEach(elt => {
+              if (checkRectInRect(elt.rect.value, selectionZone)) {
+                console.log(elt.id)
+              }
+            })
+          }
           dispose()
           selectTo.value = undefined;
           selectFrom.value = undefined;

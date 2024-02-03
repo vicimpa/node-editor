@@ -1,5 +1,5 @@
-import { abs, cos, hypot, iters, max, min, rem, rems, sign, sin } from "@/utils/math";
-import { batch, Signal } from "@preact/signals-react";
+import {abs, cos, hypot, iters, max, min, rem, rems, sign, sin} from "@/utils/math";
+import {batch, Signal} from "@preact/signals-react";
 
 export type TMutation = (this: Vec2, x: number, y: number) => any;
 export type TPointVec2 = { x: number, y: number; };
@@ -21,14 +21,14 @@ export type TParameter = (
   | [xy: Signal<number>]
   | [x: Signal<number>, y: Signal<number>]
   | TTupleVec2
-);
+  );
 
 export class Vec2 {
   read = false;
   x: number = 0;
   y: number = 0;
 
-  *[Symbol.iterator]() {
+  * [Symbol.iterator]() {
     yield this.x;
     yield this.y;
   }
@@ -100,15 +100,11 @@ export class Vec2 {
       )
     ), []);
 
-    if (
-      false
-      || this.x < x
-      || this.y < y
-      || this.x > w + x
-      || this.y > h + y
-    ) return false;
-
-    return true;
+    return (
+      this.x >= x &&
+      this.y >= y &&
+      this.x <= w + x &&
+      this.y <= h + y);
   }
 
   cropMin(...args: TParameter) {
@@ -280,6 +276,16 @@ export class Vec2 {
       y.value = this.y;
       return this;
     });
+  }
+
+  toRect(...args: TParameter) {
+    return this.clone().mutation(args, (x, y) => {
+      const xRect = min(this.x, x)
+      const yRect = min(this.y, y)
+      const wRect = abs(max(this.x, x) - xRect)
+      const hRect = abs(max(this.y, y) - yRect)
+      return new DOMRect(xRect, yRect, wRect, hRect)
+    })
   }
 
   static fromAngle(d: number, vec = new this()) {
