@@ -1,14 +1,14 @@
-import {FC} from "react";
+import { FC } from "react";
 
-import {Vec2} from "@/library/Vec2";
-import {compute} from "@/utils/compute";
-import {forward} from "@/utils/forward";
-import {Signal} from "@preact/signals-react";
+import { Vec2 } from "@/library/Vec2";
+import { compute } from "@/utils/compute";
+import { forward } from "@/utils/forward";
+import { Signal } from "@preact/signals-react";
 
-import {useNodeLayers} from "../NodeLayers";
-import {NodePortCtx} from "../NodePort";
+import { useNodeLayers } from "../NodeLayers";
+import { NodePortCtx } from "../NodePort";
 import s from "./NodeLines.module.sass";
-import {Path2DString} from "@/library/Path2DString.ts";
+import { Path2DString } from "@/library/Path2DString.ts";
 
 export type LinesItemProps = {
   from: NodePortCtx;
@@ -17,11 +17,11 @@ export type LinesItemProps = {
 };
 
 const getPath = (f: Vec2, t: Vec2, asing: number, bsign = asing) => {
-  const path = new Path2DString()
+  const path = new Path2DString();
   const dist = f.cminus(t).abs().div(2, 4).cropMax(250, 50);
   const stepA = f.cplus(dist.ctimes(asing, 0));
   const stepB = t.cminus(dist.ctimes(bsign, 0));
-  return path.moveTo(f).cubicBezierCurve(stepA, stepB, t).toString()
+  return path.moveTo(f).cubicBezierCurve(stepA, stepB, t.cplus(0, 0.0001)).toString();
 };
 
 export const LinesItem: FC<LinesItemProps> = forward<'path', LinesItemProps>(
