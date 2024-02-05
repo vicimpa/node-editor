@@ -1,0 +1,8 @@
+{
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "javascript.format.semicolons": "insert",
+  "typescript.format.semicolons": "insert",
+  "importSorter.importStringConfiguration.quoteMark": "double",
+  "importSorter.generalConfiguration.sortOnBeforeSave": true,
+  "typescript.tsserver.experimental.enableProjectDiagnostics": true,
+}
