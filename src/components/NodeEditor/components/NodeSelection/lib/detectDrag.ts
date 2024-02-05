@@ -3,7 +3,7 @@ import {makeDrag} from "@/utils/makeDrag";
 import {effect} from "@preact/signals-react";
 import {NodeSelectionCtx} from "@/components/NodeEditor/components/NodeSelection/NodeSelectionCtx.ts";
 import {looper} from "@/utils/looper.ts";
-import {checkRectInRect} from "@/utils/checkInclude.ts";
+import {checkRectInRect} from "@/utils/domrect.ts";
 
 export const detectDrag = (select: NodeSelectionCtx) => (
   effect(() => {
@@ -25,7 +25,6 @@ export const detectDrag = (select: NodeSelectionCtx) => (
             const selectionZone = selectFrom.value.toRect(selectTo.value)
             list.list.forEach(elt => {
               if (checkRectInRect(elt.rect.value, selectionZone)) {
-                console.log(elt.id)
                 select.toSelection(elt)
               }
             })

@@ -1,11 +1,9 @@
 .node
   display: flex
   flex-direction: column
-  gap: 10px
   min-width: 100px
-  background-color: color-mix(in srgb, var(--color) 20%, rgba(0,0,0,.8))
+  background-color: color-mix(in srgb, var(--color) 20%, rgba(0, 0, 0, .8))
   border-radius: 10px
-  padding-bottom: 10px
   backdrop-filter: blur(3px)
   margin: 20px
   box-shadow: 0 0 15px #000
@@ -16,7 +14,11 @@
     color: #fff
     display: flex
     flex-direction: column
-    gap: 10px
+    padding: 10px 0
+
+    > * + *
+      margin-top: 10px
+
 
     .pins
       display: flex
@@ -41,7 +43,7 @@
 
   .head
     padding: 5px 10px
-    background-color: color-mix(in srgb, var(--color) 40%, rgba(0,0,0,0.4))
+    background-color: color-mix(in srgb, var(--color) 40%, rgba(0, 0, 0, 0.4))
     border-radius: 5px 5px 0 0
     user-select: none
     display: flex
