@@ -1,7 +1,7 @@
-import {abs, cos, hypot, iters, max, min, rem, rems, sign, sin} from "@/utils/math";
-import {batch, Signal} from "@preact/signals-react";
+import { abs, cos, hypot, iters, max, min, rem, rems, sign, sin } from "@/utils/math";
+import { batch, Signal } from "@preact/signals-react";
 
-export type TMutation = (this: Vec2, x: number, y: number) => any;
+export type TMutation = (x: number, y: number) => any;
 export type TPointVec2 = { x: number, y: number; };
 export type TTupleVec2 = [x: number, y: number];
 export type TSizeVec2 = { width: number, height: number; };
@@ -21,14 +21,36 @@ export type TParameter = (
   | [xy: Signal<number>]
   | [x: Signal<number>, y: Signal<number>]
   | TTupleVec2
-  );
+);
+
+export function mutation<F extends TMutation>(args: TParameter, mutation: F): ReturnType<F> {
+  var first = args[0] ?? 0;
+
+  if (typeof first === 'number') {
+    if (typeof args[1] === 'number')
+      return mutation.call(null, first, args[1]);
+    return mutation.call(null, first, first);
+  }
+
+  if (first instanceof Signal) {
+    if (args[1] instanceof Signal)
+      return mutation.call(null, first.peek(), args[1].peek());
+
+    return mutation.call(null, first.peek(), first.peek());
+  }
+
+  if (first && ('x' in first) && ('y' in first))
+    return mutation.call(null, first.x, first.y);
+
+  throw new Error('Unknow format');
+}
 
 export class Vec2 {
   read = false;
   x: number = 0;
   y: number = 0;
 
-  * [Symbol.iterator]() {
+  *[Symbol.iterator]() {
     yield this.x;
     yield this.y;
   }
@@ -63,30 +85,10 @@ export class Vec2 {
     this.set(...args);
   }
 
-  mutation<F extends TMutation>(args: TParameter, mutation: F): ReturnType<F> {
-    var first = args[0] ?? 0;
 
-    if (typeof first === 'number') {
-      if (typeof args[1] === 'number')
-        return mutation.call(this, first, args[1]);
-      return mutation.call(this, first, first);
-    }
-
-    if (first instanceof Signal) {
-      if (args[1] instanceof Signal)
-        return mutation.call(this, first.peek(), args[1].peek());
-
-      return mutation.call(this, first.peek(), first.peek());
-    }
-
-    if (first && ('x' in first) && ('y' in first))
-      return mutation.call(this, first.x, first.y);
-
-    throw new Error('Unknow format');
-  }
 
   equal(...args: TParameter) {
-    return this.mutation(args, (x, y) => {
+    return mutation(args, (x, y) => {
       return x === this.x && y === this.y;
     });
   }
@@ -108,7 +110,7 @@ export class Vec2 {
   }
 
   cropMin(...args: TParameter) {
-    this.mutation(args, (x, y) => {
+    mutation(args, (x, y) => {
       this.x = max(this.x, x);
       this.y = max(this.y, y);
     });
@@ -116,7 +118,7 @@ export class Vec2 {
   }
 
   cropMax(...args: TParameter) {
-    this.mutation(args, (x, y) => {
+    mutation(args, (x, y) => {
       this.x = min(this.x, x);
       this.y = min(this.y, y);
     });
@@ -124,7 +126,7 @@ export class Vec2 {
   }
 
   set(...args: TParameter) {
-    this.mutation(args, (x, y) => {
+    mutation(args, (x, y) => {
       this.x = x;
       this.y = y;
     });
@@ -132,7 +134,7 @@ export class Vec2 {
   }
 
   plus(...args: TParameter) {
-    this.mutation(args, (x, y) => {
+    mutation(args, (x, y) => {
       this.x += x;
       this.y += y;
     });
@@ -140,7 +142,7 @@ export class Vec2 {
   }
 
   minus(...args: TParameter) {
-    this.mutation(args, (x, y) => {
+    mutation(args, (x, y) => {
       this.x -= x;
       this.y -= y;
     });
@@ -148,7 +150,7 @@ export class Vec2 {
   }
 
   times(...args: TParameter) {
-    this.mutation(args, (x, y) => {
+    mutation(args, (x, y) => {
       this.x *= x;
       this.y *= y;
     });
@@ -156,7 +158,7 @@ export class Vec2 {
   }
 
   div(...args: TParameter) {
-    this.mutation(args, (x, y) => {
+    mutation(args, (x, y) => {
       this.x /= x;
       this.y /= y;
     });
@@ -164,7 +166,7 @@ export class Vec2 {
   }
 
   rem(...args: TParameter) {
-    this.mutation(args, (x, y) => {
+    mutation(args, (x, y) => {
       this.x = rem(this.x, x);
       this.y = rem(this.y, y);
     });
@@ -172,7 +174,7 @@ export class Vec2 {
   }
 
   rems(...args: TParameter) {
-    this.mutation(args, (x, y) => {
+    mutation(args, (x, y) => {
       this.x = rems(this.x, x);
       this.y = rems(this.y, y);
     });
@@ -279,13 +281,13 @@ export class Vec2 {
   }
 
   toRect(...args: TParameter) {
-    return this.clone().mutation(args, (x, y) => {
-      const xRect = min(this.x, x)
-      const yRect = min(this.y, y)
-      const wRect = abs(max(this.x, x) - xRect)
-      const hRect = abs(max(this.y, y) - yRect)
-      return new DOMRect(xRect, yRect, wRect, hRect)
-    })
+    return mutation(args, (x, y) => {
+      const xRect = min(this.x, x);
+      const yRect = min(this.y, y);
+      const wRect = abs(max(this.x, x) - xRect);
+      const hRect = abs(max(this.y, y) - yRect);
+      return new DOMRect(xRect, yRect, wRect, hRect);
+    });
   }
 
   static fromAngle(d: number, vec = new this()) {
