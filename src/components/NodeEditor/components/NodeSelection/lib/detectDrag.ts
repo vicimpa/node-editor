@@ -1,18 +1,16 @@
-import {
-    NodeSelectionCtx
-} from "@/components/NodeEditor/components/NodeSelection/NodeSelectionCtx.ts";
-import { checkRectInRect } from "@/utils/domrect.ts";
-import { windowEvent } from "@/utils/events";
-import { looper } from "@/utils/looper.ts";
-import { makeDrag } from "@/utils/makeDrag";
-import { effect } from "@preact/signals-react";
+import {NodeSelectionCtx} from "@/components/NodeEditor/components/NodeSelection/NodeSelectionCtx.ts";
+import {checkRectInRect} from "@/utils/domrect.ts";
+import {windowEvent} from "@/utils/events";
+import {looper} from "@/utils/looper.ts";
+import {makeDrag} from "@/utils/makeDrag";
+import {effect} from "@preact/signals-react";
 
 export const detectDrag = (select: NodeSelectionCtx) => (
   effect(() => {
-    const { selectFrom, selectTo, list } = select;
-    const { map } = list;
+    const {selectFrom, selectTo, list} = select;
+    const {map} = list;
 
-    const selection = makeDrag(({ start, current }) => {
+    const selection = makeDrag(({start, current}) => {
       map.animation.value = undefined;
       selectFrom.value = map.offset(start);
 
@@ -23,7 +21,7 @@ export const detectDrag = (select: NodeSelectionCtx) => (
         selectTo.value = map.offset(current);
       });
 
-      return ({ current: newCurrent }) => {
+      return ({current: newCurrent}) => {
         current.set(newCurrent);
 
         return () => {
@@ -49,7 +47,8 @@ export const detectDrag = (select: NodeSelectionCtx) => (
         false
         || !(e.target instanceof Element)
       ) return;
-      select.clearSelection();
+      if (!e.shiftKey)
+        select.clearSelection();
       selection(e);
     });
   })

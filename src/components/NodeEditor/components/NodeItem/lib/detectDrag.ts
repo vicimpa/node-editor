@@ -1,18 +1,18 @@
-import { Vec2 } from "@/library/Vec2";
-import { refEvent } from "@/utils/events";
-import { looper } from "@/utils/looper";
-import { makeDrag } from "@/utils/makeDrag";
-import { effect } from "@preact/signals-react";
+import {Vec2} from "@/library/Vec2";
+import {refEvent} from "@/utils/events";
+import {looper} from "@/utils/looper";
+import {makeDrag} from "@/utils/makeDrag";
+import {effect} from "@preact/signals-react";
 
-import { NodeItemCtx } from "../";
+import {NodeItemCtx} from "../";
 
 export const detectDrag = (item: NodeItemCtx) => (
   effect(() => {
-    const { current: ref } = item.ref;
-    const { current: div } = item.div;
-    const { map, x, y } = item;
+    const {current: ref} = item.ref;
+    const {current: div} = item.div;
+    const {map, x, y} = item;
 
-    const drag = makeDrag<HTMLElement>(({ start, current, meta }) => {
+    const drag = makeDrag<HTMLElement>(({start, current, meta}) => {
       const offset = map.offset(start);
       const correct = Vec2.fromSignals(x, y)
         .minus(offset);
@@ -26,6 +26,7 @@ export const detectDrag = (item: NodeItemCtx) => (
             .minus(offset)
         ));
 
+
       const dispose = looper((_, dtime) => {
         map.calcViewTransitionVec(current, dtime)
           .toSignals(map.x, map.y);
@@ -37,14 +38,14 @@ export const detectDrag = (item: NodeItemCtx) => (
           .toSignals(x, y);
 
         othersCorrect.forEach((correct, i) => {
-          const { x, y } = others[i];
+          const {x, y} = others[i];
 
           correct.cplus(offset)
             .toSignals(x, y);
         });
       });
 
-      return ({ current: newCurrent }) => {
+      return ({current: newCurrent}) => {
         current.set(newCurrent);
         return () => {
           dispose();
@@ -63,7 +64,12 @@ export const detectDrag = (item: NodeItemCtx) => (
       if (!ref || !div) return;
 
       item.focus();
-      item.selection.toSelection(item, e.ctrlKey || e.metaKey);
+      if (e.ctrlKey || e.metaKey) {
+        item.selection.toggleInSelection(item)
+      } else {
+        item.selection.toSelection(item);
+      }
+
 
       for (const elem of div.querySelectorAll('[data-drag]')) {
         if (

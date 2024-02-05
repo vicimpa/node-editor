@@ -1,10 +1,10 @@
-import { NodeItemCtx, NodeListCtx } from "@/components/NodeEditor";
-import { detectDrag } from "@/components/NodeEditor/components/NodeSelection/lib/detectDrag.ts";
-import { connect } from "@/decorators/connect";
-import { ReactiveSet } from "@/library/ReactiveSet";
-import { Vec2 } from "@/library/Vec2";
-import { classContext } from "@/utils/classContext.ts";
-import { signal } from "@preact/signals-react";
+import {NodeItemCtx, NodeListCtx} from "@/components/NodeEditor";
+import {detectDrag} from "@/components/NodeEditor/components/NodeSelection/lib/detectDrag.ts";
+import {connect} from "@/decorators/connect";
+import {ReactiveSet} from "@/library/ReactiveSet";
+import {Vec2} from "@/library/Vec2";
+import {classContext} from "@/utils/classContext.ts";
+import {signal} from "@preact/signals-react";
 
 @connect([detectDrag])
 export class NodeSelectionCtx {
@@ -19,13 +19,16 @@ export class NodeSelectionCtx {
   }
 
   toSelection(item: NodeItemCtx, force = false) {
-    if (force) {
-      this.items.add(item);
-      return;
-    }
-
-    if (!this.items.has(item)) {
+    if (!force && !this.items.has(item)) {
       this.items.clear();
+    }
+    this.items.add(item);
+  }
+
+  toggleInSelection(item: NodeItemCtx) {
+    if (this.items.has(item)) {
+      this.items.delete(item);
+    } else {
       this.items.add(item);
     }
   }
