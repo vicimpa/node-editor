@@ -5,4 +5,6 @@
   "importSorter.importStringConfiguration.quoteMark": "double",
   "importSorter.generalConfiguration.sortOnBeforeSave": true,
   "typescript.tsserver.experimental.enableProjectDiagnostics": true,
+  "editor.tabSize": 2,
+  "editor.indentSize": "tabSize",
 }
