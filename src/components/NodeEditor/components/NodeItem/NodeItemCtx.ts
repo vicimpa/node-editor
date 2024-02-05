@@ -10,7 +10,9 @@ import { signalRef } from "@/utils/signalRef";
 import { computed, signal } from "@preact/signals-react";
 
 import { NodeListCtx, NodeMapCtx, NodePortCtx } from "../../";
+import { NodeSelectionCtx } from "../NodeSelection";
 import { computedRect } from "./lib/computedRect";
+import { detectDoubleClick } from "./lib/detectDoubleClick";
 import { detectDrag } from "./lib/detectDrag";
 import { detectRect } from "./lib/detectRect";
 import { detectResize } from "./lib/detectResize";
@@ -23,6 +25,7 @@ export type NodeItemPortal = {
   detectResize,
   detectRect,
   detectDrag,
+  detectDoubleClick
 ])
 export class NodeItemCtx {
   ref = signalRef<SVGForeignObjectElement>();
@@ -45,7 +48,8 @@ export class NodeItemCtx {
   constructor(
     public id: string,
     public map: NodeMapCtx,
-    public list: NodeListCtx
+    public list: NodeListCtx,
+    public selection: NodeSelectionCtx,
   ) {
   }
 

@@ -10,7 +10,9 @@ export const detectConnect = (port: NodePortCtx) => (
       return;
 
     return dispose([
-      refEvent(port.ref, 'mousedown', () => {
+      refEvent(port.ref, 'mousedown', (e) => {
+        e.stopPropagation();
+        e.preventDefault();
         port.lines.from(port);
       }),
       refEvent(port.ref, 'mouseup', () => {

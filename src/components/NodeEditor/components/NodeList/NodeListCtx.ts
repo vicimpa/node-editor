@@ -1,18 +1,19 @@
-import {useId} from "react";
+import { useId } from "react";
 
-import {connect} from "@/decorators/connect";
-import {useClass} from "@/hooks/useClass";
-import {useSet} from "@/hooks/useSet";
-import {ReactiveMap} from "@/library/ReactiveMap";
-import {classContext} from "@/utils/classContext";
-import {signalRef} from "@/utils/signalRef";
-import {batch, computed, signal} from "@preact/signals-react";
+import { connect } from "@/decorators/connect";
+import { useClass } from "@/hooks/useClass";
+import { useSet } from "@/hooks/useSet";
+import { ReactiveMap } from "@/library/ReactiveMap";
+import { classContext } from "@/utils/classContext";
+import { signalRef } from "@/utils/signalRef";
+import { batch, computed, signal } from "@preact/signals-react";
 
-import {NodeItemCtx} from "../NodeItem";
-import {NodeList} from "./";
-import {computedRect} from "./lib/computedRect";
-import {detectResize} from "./lib/detectResize";
-import {detectSize} from "./lib/detectSize";
+import { NodeItemCtx } from "../NodeItem";
+import { useNodeSelection } from "../NodeSelection";
+import { NodeList } from "./";
+import { computedRect } from "./lib/computedRect";
+import { detectResize } from "./lib/detectResize";
+import { detectSize } from "./lib/detectSize";
 
 @connect([
   detectResize,
@@ -48,16 +49,18 @@ export class NodeListCtx {
     if (item) {
       batch(() => {
         this.list.delete(id) &&
-        this.list.set(id, item);
-      })
+          this.list.set(id, item);
+      });
     }
   }
 
   useItem(id?: string) {
     const reserveId = useId();
+    const selection = useNodeSelection();
+
     id = id ?? reserveId;
 
-    const item = useClass(NodeItemCtx, id, this.map, this);
+    const item = useClass(NodeItemCtx, id, this.map, this, selection);
     return useSet(this.list, id, item, [id, item]);
   }
 }
