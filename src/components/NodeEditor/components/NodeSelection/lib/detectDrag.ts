@@ -1,9 +1,9 @@
 import { NodeSelectionCtx } from "@/components/NodeEditor/components/NodeSelection/NodeSelectionCtx.ts";
-import { iDOMRect, NODE_MARGIN } from "@/utils/domrect.ts";
 import { windowEvent } from "@/utils/events";
 import { looper } from "@/utils/looper.ts";
 import { makeDrag } from "@/utils/makeDrag";
 import { effect } from "@preact/signals-react";
+import { iDOMRect, NODE_MARGIN } from "@/library/DOMRect.ts";
 
 export const detectDrag = (select: NodeSelectionCtx) => (
   effect(() => {
@@ -26,8 +26,7 @@ export const detectDrag = (select: NodeSelectionCtx) => (
 
         return () => {
           if (selectFrom.value && selectTo.value) {
-            const selectionZone = selectFrom.value.toRect(selectTo.value);
-            const zone = new iDOMRect(selectionZone);
+            const zone = new iDOMRect(selectFrom.value, selectTo.value);
             list.list.forEach(elt => {
               if (zone.wrapRect(elt.rect.value, { margin: NODE_MARGIN })) {
                 select.toSelection(elt, true);

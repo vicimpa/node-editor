@@ -24,17 +24,4 @@ export const rectIters = (a: DOMRect, b: DOMRect, i: number): DOMRect => (
     )
 );
 
-//TODO мб перенести в расчет rect item?
-export const NODE_MARGIN = 20;
-export const checkRectInRect = (rect: DOMRect, zone: DOMRect) => {
-  const { left: leftRect, top: topRect, bottom: bottomRect, right: rightRect } = rect;
-  const { left: leftZone, top: topZone, bottom: bottomZone, right: rightZone } = zone;
-  return (
-    leftRect + NODE_MARGIN >= leftZone &&
-    topRect + NODE_MARGIN >= topZone &&
-    bottomRect - NODE_MARGIN <= bottomZone &&
-    rightRect - NODE_MARGIN <= rightZone
-  );
-};
-
 

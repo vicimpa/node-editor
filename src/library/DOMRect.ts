@@ -18,6 +18,10 @@ type IterOptions = {
   timeFunction: TimeFunction
 }
 
+//TODO мб перенести в расчет rect item?
+export const NODE_MARGIN = 20;
+// let Original = globalThis.DOMRect;
+
 const rectKeys = ["x", "y", "width", "height"];
 const timeFns: TimeFnsType = {
   linear: (t) => t,
@@ -124,13 +128,47 @@ export class iDOMRect extends DOMRect {
     );
   }
 
-  set(...args: iParams): iDOMRect {
-    const rectTuple = getDOMRectTuple(args);
-    this.x = rectTuple[0];
-    this.y = rectTuple[1];
-    this.width = rectTuple[2];
-    this.height = rectTuple[3];
-    return this;
+  // intersection area
+  intersectRect(rect: iDOMRect | DOMRect): iDOMRect {
+    const x = Math.max(this.left, rect.left);
+    const y = Math.max(this.top, rect.top);
+    const right = Math.min(this.right, rect.right);
+    const bottom = Math.min(this.bottom, rect.bottom);
+    const width = Math.max(0, right - x);
+    const height = Math.max(0, bottom - y);
+    return new iDOMRect(x, y, width, height);
+  }
+
+  intersects(rect: iDOMRect | DOMRect): boolean {
+    return !(
+      rect.left > this.right ||
+      rect.right < this.left ||
+      rect.top > this.bottom ||
+      rect.bottom < this.top
+    );
+  }
+
+  distanceTo(rect: iDOMRect | DOMRect): Vec2 {
+    const dx = Math.max(rect.left - this.right, this.left - rect.right, 0);
+    const dy = Math.max(rect.top - this.bottom, this.top - rect.bottom, 0);
+    return new Vec2(dx, dy);
+  }
+
+  unionRect(rect: iDOMRect | DOMRect): iDOMRect {
+    const x = Math.min(this.left, rect.left);
+    const y = Math.min(this.top, rect.top);
+    const right = Math.max(this.right, rect.right);
+    const bottom = Math.max(this.bottom, rect.bottom);
+    const width = right - x;
+    const height = bottom - y;
+    return new iDOMRect(x, y, width, height);
+  }
+
+  scale(sx: number, sy: number = sx): iDOMRect {
+    const { x: centerX, y: centerY } = this.center();
+    const width = this.width * sx;
+    const height = this.height * sy;
+    return new iDOMRect(centerX - width / 2, centerY - height / 2, width, height);
   }
 
   static fromParams(...args: iParams) {
