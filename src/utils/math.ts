@@ -76,3 +76,14 @@ export const iters = (a: number, b: number, i: number) => (
 export const rec = (v: number) => (
   v ? 1 / v : v
 );
+
+export const precision = (v: number, n = 1) => {
+  n = max(n | 0, 0);
+  if (!n)
+    return v;
+
+  if (n === 1)
+    return v | 0;
+
+  return ((v / n) | 0) * n;
+};

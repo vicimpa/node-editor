@@ -31,8 +31,8 @@ export class NodeItemCtx {
   ref = signalRef<SVGForeignObjectElement>();
   div = signalRef<HTMLDivElement>();
 
-  x = signalCorrect(0, v => cropSize(v, this.map.xLimit, .5));
-  y = signalCorrect(0, v => cropSize(v, this.map.yLimit, .5));
+  x = signalCorrect(0, v => cropSize(v, this.map.xLimit, .5) | 0);
+  y = signalCorrect(0, v => cropSize(v, this.map.yLimit, .5) | 0);
 
   width = signal(0);
   height = signal(0);
