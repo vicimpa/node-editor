@@ -25,16 +25,16 @@ const getPath = (f: Vec2, t: Vec2, asing: number, bsign = asing) => {
 };
 
 export const LinesItem: FC<LinesItemProps> = forward<'path', LinesItemProps>(
-  ({ vec, from, to }, ref) => {
-    const { Portal } = useNodeLayers();
+  ({vec, from, to}, ref) => {
+    const {Portal} = useNodeLayers();
 
     if (to)
       return (
         <Portal isBefore>
           {
             compute(() => {
-              const { position: { value: _f }, color: { value: colorFrom }, isOutput, id: idFrom } = from;
-              const { position: { value: _t }, color: { value: colorTo }, id: idTo } = to;
+              const {position: {value: _f}, color: {value: colorFrom}, isOutput, id: idFrom} = from;
+              const {position: {value: _t}, color: {value: colorTo}, id: idTo} = to;
               const gradientId = `from-${idFrom}-to-${idTo}`;
 
               return (
@@ -44,8 +44,8 @@ export const LinesItem: FC<LinesItemProps> = forward<'path', LinesItemProps>(
                     x1={`${_f.x < _t.x ? 0 : 100}%`} y1="0%"
                     x2={`${_f.x > _t.x ? 0 : 100}%`} y2="0%"
                   >
-                    <stop offset="0%" style={{ stopColor: colorFrom, stopOpacity: 1 }} />
-                    <stop offset="100%" style={{ stopColor: colorTo, stopOpacity: 1 }} />
+                    <stop offset="0%" style={{stopColor: colorFrom, stopOpacity: 1}} />
+                    <stop offset="100%" style={{stopColor: colorTo, stopOpacity: 1}} />
                   </linearGradient>
                   <path
                     d={getPath(_f, _t, isOutput ? 1 : -1)}
@@ -66,8 +66,8 @@ export const LinesItem: FC<LinesItemProps> = forward<'path', LinesItemProps>(
         <Portal isBefore>
           {
             compute(() => {
-              const { value: _f } = from.position;
-              const { value: _t } = vec;
+              const {value: _f} = from.position;
+              const {value: _t} = vec;
 
               if (!_t)
                 return null;

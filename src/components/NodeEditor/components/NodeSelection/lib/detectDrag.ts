@@ -1,7 +1,5 @@
-import {
-    NodeSelectionCtx
-} from "@/components/NodeEditor/components/NodeSelection/NodeSelectionCtx.ts";
-import { checkRectInRect } from "@/utils/domrect.ts";
+import { NodeSelectionCtx } from "@/components/NodeEditor/components/NodeSelection/NodeSelectionCtx.ts";
+import { iDOMRect, NODE_MARGIN } from "@/utils/domrect.ts";
 import { windowEvent } from "@/utils/events";
 import { looper } from "@/utils/looper.ts";
 import { makeDrag } from "@/utils/makeDrag";
@@ -29,9 +27,9 @@ export const detectDrag = (select: NodeSelectionCtx) => (
         return () => {
           if (selectFrom.value && selectTo.value) {
             const selectionZone = selectFrom.value.toRect(selectTo.value);
-
+            const zone = new iDOMRect(selectionZone);
             list.list.forEach(elt => {
-              if (checkRectInRect(elt.rect.value, selectionZone)) {
+              if (zone.wrapRect(elt.rect.value, { margin: NODE_MARGIN })) {
                 select.toSelection(elt, true);
               }
             });

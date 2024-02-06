@@ -21,7 +21,7 @@ export type TParameter = (
   | [xy: Signal<number>]
   | [x: Signal<number>, y: Signal<number>]
   | TTupleVec2
-);
+  );
 
 export function mutation<F extends TMutation>(args: TParameter, mutation: F): ReturnType<F> {
   var first = args[0] ?? 0;
@@ -42,7 +42,7 @@ export function mutation<F extends TMutation>(args: TParameter, mutation: F): Re
   if (first && ('x' in first) && ('y' in first))
     return mutation.call(null, first.x, first.y);
 
-  throw new Error('Unknow format');
+  throw new Error('Unknown format');
 }
 
 export class Vec2 {
@@ -50,7 +50,7 @@ export class Vec2 {
   x: number = 0;
   y: number = 0;
 
-  *[Symbol.iterator]() {
+  * [Symbol.iterator]() {
     yield this.x;
     yield this.y;
   }
@@ -84,8 +84,6 @@ export class Vec2 {
   constructor(...args: TParameter) {
     this.set(...args);
   }
-
-
 
   equal(...args: TParameter) {
     return mutation(args, (x, y) => {
