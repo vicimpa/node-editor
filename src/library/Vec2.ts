@@ -6,6 +6,7 @@ export type TPointVec2 = { x: number, y: number; };
 export type TTupleVec2 = [x: number, y: number];
 export type TSizeVec2 = { width: number, height: number; };
 export type TPageXY = { pageX: number, pageY: number; };
+export type TOffsetXY = { offsetX: number, offsetY: number; };
 export type TDeltaXY = { deltaX: number, deltaY: number; };
 export type TRect2 = [
   ...([x: number, y: number] | [xy: Vec2]),
@@ -310,6 +311,10 @@ export class Vec2 {
 
   static fromSignals(x: Signal<number>, y: Signal<number>, vec = new this()) {
     return vec.set(x.value, y.value);
+  }
+
+  static fromOffsetXY(offset: TOffsetXY, vec = new this()) {
+    return vec.set(offset.offsetX, offset.offsetY);
   }
 
   static fromOffsetSize(elem: HTMLElement, vec = new this()) {
