@@ -18,7 +18,7 @@ type IterOptions = {
   timeFunction: TimeFunction
 }
 
-// let Original = globalThis.DOMRect;
+//let Original = globalThis.DOMRect;
 const rectKeys = ["x", "y", "width", "height"];
 const timeFns: TimeFnsType = {
   linear: (t) => t,

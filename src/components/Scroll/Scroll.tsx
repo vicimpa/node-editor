@@ -1,16 +1,19 @@
-import {Vec2} from "@/library/Vec2";
-import {computed, useComputed} from "@preact/signals-react";
-
-import {Debug} from "../Debug";
-import {useNodeHud, useNodeList} from "../NodeEditor";
+import { Vec2 } from "@/library/Vec2";
+import { computed, ReadonlySignal, useComputed } from "@preact/signals-react";
+import { MouseEvent, useCallback } from "react";
+import { Debug } from "../Debug";
+import { useNodeList, useNodeMap } from "../NodeEditor";
 import s from "./Scroll.module.sass";
+import { NodeHudWrapper } from "@/components/NodeEditor/components/NodeHud/NodeHudWrapper.tsx";
+import { makeDrag } from "@/utils/makeDrag.ts";
+import { looper } from "@/utils/looper.ts";
+import { rectCenter } from "@/utils/domrect.ts";
 
 export const Scroll = () => {
-  const hud = useNodeHud();
   const list = useNodeList();
 
   const sizes = useComputed(() => {
-    const {value: rect} = list.rect;
+    const { value: rect } = list.rect;
     const viewRect = list.map.rect.value;
     const viewSize = Vec2.fromSize(viewRect);
     const biggerSize = Vec2.fromSize(rect).plus(rect)
@@ -29,40 +32,11 @@ export const Scroll = () => {
     };
   });
 
-  const horizontal = useComputed(() => {
-    const size = sizes.value.viewSize.x;
-    const left = sizes.value.lowerSize.x + '%';
-    const right = sizes.value.biggerSize.x + '%';
-
-    return (
-      <div
-        className={s.item}
-        data-show={(size !== 100) || undefined}
-        style={{left, right}}/>
-    );
-  });
-
-  const vertical = useComputed(() => {
-    const size = sizes.value.viewSize.y;
-    const top = sizes.value.lowerSize.y + '%';
-    const bottom = sizes.value.biggerSize.y + '%';
-
-    return (
-      <div
-        className={s.item}
-        data-show={(size !== 100) || undefined}
-        style={{bottom, top}}/>
-    );
-  });
-
   return (
     <>
-      <hud.Portal>
-        {/* <div className={s.top}>{horizontal}</div> */}
-        <div className={s.bottom}>{horizontal}</div>
-        <div className={s.left}>{vertical}</div>
-        {/* <div className={s.right}>{vertical}</div> */}
-      </hud.Portal>
+      <NodeHudWrapper>
+        <ScrollLines sizes={sizes} />
+      </NodeHudWrapper>
 
       <Debug title="Scroll">
         {{
@@ -73,5 +47,86 @@ export const Scroll = () => {
         }}
       </Debug>
     </>
+  );
+};
+
+type ScrollProps = {
+  sizes: ReadonlySignal<{ viewSize: Vec2, lowerSize: Vec2, biggerSize: Vec2 }>
+}
+const ScrollLines = ({ sizes }: ScrollProps) => {
+  const map = useNodeMap();
+
+  const drag = makeDrag(({ delta, meta }) => {
+    map.animation.value = undefined;
+    const dispose = looper(() => {
+      const vecDelta = delta.cdiv(-20).plus(rectCenter(map.rect.value));
+      if (meta === "x" && sizes.value.viewSize.x !== 100)
+        map.x.value = vecDelta.x;
+      else if (meta === "y" && sizes.value.viewSize.y !== 100)
+        map.y.value = vecDelta.y;
+    });
+    return ({ delta: newDelta }) => {
+      delta.set(newDelta);
+
+      return () => {
+        dispose();
+      };
+    };
+  });
+
+  const onMouseDown = useCallback((e: MouseEvent, type: "x" | "y") => {
+    drag(e, type);
+  }, []);
+
+  const horizontal = useComputed(() => {
+    const size = sizes.value.viewSize.x;
+    const left = sizes.value.lowerSize.x + '%';
+    const right = sizes.value.biggerSize.x + '%';
+
+    return (
+      <div
+        onMouseDown={(e) => onMouseDown(e, "x")}
+        className={s.item}
+        data-show={(size !== 100) || undefined}
+        style={{ left, right }} />
+    );
+  });
+
+  const vertical = useComputed(() => {
+    const size = sizes.value.viewSize.y;
+    const top = sizes.value.lowerSize.y + '%';
+    const bottom = sizes.value.biggerSize.y + '%';
+
+    return (
+      <div
+        onMouseDown={(e) => onMouseDown(e, "y")}
+        className={s.item}
+        data-show={(size !== 100) || undefined}
+        style={{ bottom, top }} />
+    );
+  });
+  const lines = [
+    {
+      className: s.bottom,
+      elt: horizontal
+    },
+    {
+      className: s.left,
+      elt: vertical
+    },
+    // {
+    //   className: s.top,
+    //   elt: horizontal
+    // },
+    // {
+    //   className: s.right,
+    //   elt: vertical
+    // },
+  ];
+
+  return (
+    lines.map(({ className, elt }, i) => (
+      <div className={className} key={i}>{elt}</div>
+    ))
   );
 };
