@@ -18,10 +18,7 @@ type IterOptions = {
   timeFunction: TimeFunction
 }
 
-//TODO мб перенести в расчет rect item?
-export const NODE_MARGIN = 20;
 // let Original = globalThis.DOMRect;
-
 const rectKeys = ["x", "y", "width", "height"];
 const timeFns: TimeFnsType = {
   linear: (t) => t,
@@ -66,6 +63,13 @@ export class iDOMRect extends DOMRect {
     super(...getDOMRectTuple(args));
   }
 
+  * [Symbol.iterator]() {
+    yield this.x;
+    yield this.y;
+    yield this.width;
+    yield this.height;
+  }
+
   get start() {
     return new Vec2(this.left, this.top);
   }
@@ -86,6 +90,12 @@ export class iDOMRect extends DOMRect {
   }
   get bottomRight() {
     return new Vec2(this.right, this.bottom);
+  }
+  get tuple(): RectTuple {
+    return getDOMRectTuple([this]);
+  }
+  get vecTuple(): VecTuple {
+    return [this.topLeft, this.bottomRight];
   }
 
   private _checkInRect(_rect: iDOMRect | DOMRect, inThis: boolean, options?: InRectOptions) {
@@ -128,7 +138,6 @@ export class iDOMRect extends DOMRect {
     );
   }
 
-  // intersection area
   intersectRect(rect: iDOMRect | DOMRect): iDOMRect {
     const x = Math.max(this.left, rect.left);
     const y = Math.max(this.top, rect.top);

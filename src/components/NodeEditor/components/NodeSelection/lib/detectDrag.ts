@@ -3,7 +3,8 @@ import { windowEvent } from "@/utils/events";
 import { looper } from "@/utils/looper.ts";
 import { makeDrag } from "@/utils/makeDrag";
 import { effect } from "@preact/signals-react";
-import { iDOMRect, NODE_MARGIN } from "@/library/DOMRect.ts";
+import { iDOMRect } from "@/library/DOMRect.ts";
+import { NODE_MARGIN } from "@/components/NodeEditor";
 
 export const detectDrag = (select: NodeSelectionCtx) => (
   effect(() => {

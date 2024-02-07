@@ -1,16 +1,23 @@
 import {
-    createContext, createElement, FC, Fragment, ReactNode, useContext, useEffect, useId,
-    useLayoutEffect
+  createContext,
+  createElement,
+  FC,
+  Fragment,
+  ReactNode,
+  useContext,
+  useEffect,
+  useId,
+  useLayoutEffect
 } from "react";
 import { boolean } from "valibot";
 
 import { useClass } from "@/hooks/useClass";
-import { useShortcut } from "@/hooks/useShortcut";
 import { useValistore } from "@/hooks/useValistore";
 import { ReactiveMap } from "@/library/ReactiveMap";
 
 import { useNodeHud } from "../NodeEditor";
 import s from "./Debug.module.sass";
+import { useShortcut } from "@/hooks/useShortcut.ts";
 
 export type TDebugCTXValue = Record<string, ReactNode>;
 

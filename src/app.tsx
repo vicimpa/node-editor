@@ -3,12 +3,11 @@ import { NodeSelection } from "@/components/NodeEditor/components/NodeSelection"
 import { DebugProvider } from "./components/Debug";
 import { MainLayout } from "./components/Layout";
 import { Node } from "./components/Node";
-import {
-    NodeBack, NodeHud, NodeLayers, NodeList, NodeMap, NodePort
-} from "./components/NodeEditor";
+import { NodeBack, NodeHud, NodeLayers, NodeList, NodeMap, NodePort } from "./components/NodeEditor";
 import { NodeLines } from "./components/NodeEditor/components/NodeLines";
 import { Scroll } from "./components/Scroll";
 import { SizeControl } from "./components/SizeControl";
+import { MiniMap } from "@/components/MiniMap";
 
 export const App = () => {
   return (
@@ -28,15 +27,16 @@ export const App = () => {
                   <NodeSelection>
                     <Scroll />
                     <SizeControl />
+                    <MiniMap />
 
-                    <Node>
+                    <Node color={"#17f"}>
                       <h1>Test node</h1>
                       <NodePort />
                       <NodePort />
                       <NodePort output />
                     </Node>
 
-                    <Node>
+                    <Node color={"#f71"}>
                       <h1>Test node</h1>
                       <NodePort />
                       <NodePort />

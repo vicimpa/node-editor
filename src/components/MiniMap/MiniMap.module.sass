@@ -1,0 +1,11 @@
+.map
+  position: absolute
+  right: 10px
+  bottom: 70px
+  border: 1px solid grey
+  background: hsla(0, 0%, 50%, 0.8)
+  transition: transform 0.3s
+  transform: translateX(calc(100% + 10px))
+
+  &[data-show]
+    transform: translateX(0px)
