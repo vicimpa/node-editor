@@ -1,13 +1,15 @@
-import { Vec2 } from "@/library/Vec2";
-import { computed, ReadonlySignal, useComputed } from "@preact/signals-react";
 import { MouseEvent, useCallback } from "react";
+
+import { NodeHudWrapper } from "@/components/NodeEditor/components/NodeHud/NodeHudWrapper.tsx";
+import { useDrag } from "@/hooks/useDrag";
+import { Vec2 } from "@/library/Vec2";
+import { rectCenter } from "@/utils/domrect.ts";
+import { looper } from "@/utils/looper.ts";
+import { computed, ReadonlySignal, useComputed } from "@preact/signals-react";
+
 import { Debug } from "../Debug";
 import { useNodeList, useNodeMap } from "../NodeEditor";
 import s from "./Scroll.module.sass";
-import { NodeHudWrapper } from "@/components/NodeEditor/components/NodeHud/NodeHudWrapper.tsx";
-import { makeDrag } from "@/utils/makeDrag.ts";
-import { looper } from "@/utils/looper.ts";
-import { rectCenter } from "@/utils/domrect.ts";
 
 export const Scroll = () => {
   const list = useNodeList();
@@ -51,26 +53,31 @@ export const Scroll = () => {
 };
 
 type ScrollProps = {
-  sizes: ReadonlySignal<{ viewSize: Vec2, lowerSize: Vec2, biggerSize: Vec2 }>
-}
+  sizes: ReadonlySignal<{ viewSize: Vec2, lowerSize: Vec2, biggerSize: Vec2; }>;
+};
 const ScrollLines = ({ sizes }: ScrollProps) => {
   const map = useNodeMap();
 
-  const drag = makeDrag(({ delta, meta }) => {
+  const drag = useDrag(({ delta, meta }) => {
     map.animation.value = undefined;
+
     const dispose = looper(() => {
-      const vecDelta = delta.cdiv(-20).plus(rectCenter(map.rect.value));
-      if (meta === "x" && sizes.value.viewSize.x !== 100)
+      const center = rectCenter(map.rect.value);
+
+      const vecDelta = delta
+        .cdiv(-20)
+        .plus(center);
+
+      if (meta === "x")
         map.x.value = vecDelta.x;
-      else if (meta === "y" && sizes.value.viewSize.y !== 100)
+
+      if (meta === "y")
         map.y.value = vecDelta.y;
     });
+
     return ({ delta: newDelta }) => {
       delta.set(newDelta);
-
-      return () => {
-        dispose();
-      };
+      return dispose;
     };
   });
 
@@ -105,6 +112,7 @@ const ScrollLines = ({ sizes }: ScrollProps) => {
         style={{ bottom, top }} />
     );
   });
+
   const lines = [
     {
       className: s.bottom,

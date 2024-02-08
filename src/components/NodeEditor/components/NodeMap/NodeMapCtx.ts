@@ -1,25 +1,26 @@
-import {MouseEvent as ReactMouseEvent} from "react";
+import { MouseEvent as ReactMouseEvent } from "react";
 
-import {connect} from "@/decorators/connect";
-import {Vec2} from "@/library/Vec2";
-import {classContext} from "@/utils/classContext";
-import {rectCenter} from "@/utils/domrect.ts";
-import {fv, TFV} from "@/utils/fv";
-import {runLoop} from "@/utils/looper";
-import {cropSize, min, minMax} from "@/utils/math";
-import {signalCorrect} from "@/utils/signalCorrect";
-import {signalRef} from "@/utils/signalRef";
-import {batch, computed, signal} from "@preact/signals-react";
+import { connect } from "@/decorators/connect";
+import { Vec2 } from "@/library/Vec2";
+import { classContext } from "@/utils/classContext";
+import { rectCenter } from "@/utils/domrect.ts";
+import { fv, TFV } from "@/utils/fv";
+import { runLoop } from "@/utils/looper";
+import { cropSize, min, minMax } from "@/utils/math";
+import { signalCorrect } from "@/utils/signalCorrect";
+import { signalRef } from "@/utils/signalRef";
+import { batch, computed, signal } from "@preact/signals-react";
 
-import {computedRect} from "./lib/computedRect";
-import {computedViewRect} from "./lib/computedViewRect";
-import {detectAnimation} from "./lib/detectAnimation";
-import {detectCursor} from "./lib/detectCursor";
-import {detectDrag} from "./lib/detectDrag";
-import {detectMoved} from "./lib/detectMoved";
-import {detectResize} from "./lib/detectResize";
-import {detectWheel} from "./lib/detectWheel";
+import { computedRect } from "./lib/computedRect";
+import { computedViewRect } from "./lib/computedViewRect";
+import { detectAnimation } from "./lib/detectAnimation";
+import { detectCursor } from "./lib/detectCursor";
+import { detectDrag } from "./lib/detectDrag";
+import { detectMoved } from "./lib/detectMoved";
+import { detectResize } from "./lib/detectResize";
+import { detectWheel } from "./lib/detectWheel";
 
+export type MapAnimation = ((time: number, dtime: number) => any) | undefined;
 
 @connect([
   detectCursor,
@@ -36,8 +37,8 @@ export class NodeMapCtx {
   scaleMin = .1;
   scaleMax = 2;
 
-  private viewPad = 50
-  private viewOver = 4
+  private viewPad = 50;
+  private viewOver = 4;
 
   div = signalRef<HTMLDivElement>();
   svg = signalRef<SVGSVGElement>();
@@ -46,7 +47,7 @@ export class NodeMapCtx {
   y = signalCorrect(0, v => cropSize(v, this.yLimit, .5));
   scale = signalCorrect(1, v => minMax(v, this.scaleMin, this.scaleMax));
 
-  animation = signal<((time: number, dtime: number) => any) | undefined>(undefined);
+  animation = signal<MapAnimation>(undefined);
 
   top = signal(0);
   left = signal(0);
@@ -92,8 +93,8 @@ export class NodeMapCtx {
     if (!(vec instanceof Vec2))
       return this.offset(Vec2.fromPageXY(vec));
 
-    const {value: rect} = this.rect;
-    const {value: viewRect} = this.viewRect;
+    const { value: rect } = this.rect;
+    const { value: viewRect } = this.viewRect;
 
     return vec.cminus(viewRect).div(this.scale).plus(rect);
   }
@@ -115,7 +116,7 @@ export class NodeMapCtx {
           .cminus(min).minus(this.viewPad).cropMax(0).cropMin(-this.viewPad * this.viewOver)
           .plus(current.cminus(max).plus(this.viewPad).cropMin(0).cropMax(this.viewPad * this.viewOver))
           .times(dtime * .01 / this.scale.value)
-      )
+      );
   }
 
 }

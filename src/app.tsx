@@ -1,13 +1,15 @@
+import { MiniMap } from "@/components/MiniMap";
 import { NodeSelection } from "@/components/NodeEditor/components/NodeSelection";
 
 import { DebugProvider } from "./components/Debug";
 import { MainLayout } from "./components/Layout";
 import { Node } from "./components/Node";
-import { NodeBack, NodeHud, NodeLayers, NodeList, NodeMap, NodePort } from "./components/NodeEditor";
+import {
+    NodeBack, NodeHud, NodeLayers, NodeList, NodeMap, NodePort
+} from "./components/NodeEditor";
 import { NodeLines } from "./components/NodeEditor/components/NodeLines";
 import { Scroll } from "./components/Scroll";
 import { SizeControl } from "./components/SizeControl";
-import { MiniMap } from "@/components/MiniMap";
 
 export const App = () => {
   return (
