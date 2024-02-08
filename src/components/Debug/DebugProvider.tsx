@@ -1,23 +1,17 @@
 import {
-  createContext,
-  createElement,
-  FC,
-  Fragment,
-  ReactNode,
-  useContext,
-  useEffect,
-  useId,
-  useLayoutEffect
+    createContext, createElement, FC, Fragment, ReactNode, useContext, useEffect, useId,
+    useLayoutEffect
 } from "react";
 import { boolean } from "valibot";
 
 import { useClass } from "@/hooks/useClass";
+import { useShortcut } from "@/hooks/useShortcut.ts";
+import { useSubEmit } from "@/hooks/useSubEmit";
 import { useValistore } from "@/hooks/useValistore";
 import { ReactiveMap } from "@/library/ReactiveMap";
 
 import { useNodeHud } from "../NodeEditor";
 import s from "./Debug.module.sass";
-import { useShortcut } from "@/hooks/useShortcut.ts";
 
 export type TDebugCTXValue = Record<string, ReactNode>;
 
@@ -53,9 +47,12 @@ export const schema = boolean();
 export const DebugProvider: FC<{ children?: ReactNode; }> = ({ children }) => {
   const showDebug = useValistore('SHOW_DEBUG', schema, false);
 
-  const list = useClass(ReactiveMap<string, TDebugCTXValue>).use();
-  const titles = useClass(ReactiveMap<string, string>).use();
+  const list = useClass(ReactiveMap<string, TDebugCTXValue>);
+  const titles = useClass(ReactiveMap<string, string>);
   const hud = useNodeHud();
+
+  useSubEmit(list);
+  useSubEmit(titles);
 
   useShortcut('`', () => {
     showDebug.value = !showDebug.value;

@@ -1,5 +1,7 @@
 import { Component, createElement, ReactNode } from "react";
 
+import { useSubEmit } from "@/hooks/useSubEmit";
+
 import { NodeLayersCtx, NodeLayersItem, NodeLayersProvider } from "./";
 
 export type NodeLayersProps = {
@@ -23,7 +25,7 @@ export class NodeLayers extends Component<NodeLayersProps> {
       <NodeLayersProvider value={this.ctx}>
         {
           createElement(() => (
-            before.use().map(this.renderItem)
+            useSubEmit(before).map(this.renderItem)
           ))
         }
 
@@ -31,7 +33,7 @@ export class NodeLayers extends Component<NodeLayersProps> {
 
         {
           createElement(() => (
-            after.use().map(this.renderItem)
+            useSubEmit(after).map(this.renderItem)
           ))
         }
       </NodeLayersProvider>

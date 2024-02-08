@@ -1,6 +1,7 @@
 import { Component, createElement, ReactNode } from "react";
 
 import { useConnect } from "@/hooks/useConnect";
+import { useSubEmit } from "@/hooks/useSubEmit";
 import { compute } from "@/utils/compute";
 
 import { useNodeMap } from "../NodeMap";
@@ -29,7 +30,7 @@ export class NodeLines extends Component<NodeLinesProps> {
         {this.props.children}
         {
           createElement(() => (
-            ctx.list.use()
+            useSubEmit(ctx.list)
               .map((item, key) => (
                 createElement(() => (
                   useConnect(item),

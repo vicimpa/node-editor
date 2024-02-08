@@ -1,12 +1,14 @@
 import { createElement, ReactNode } from "react";
+
+import { useSelection } from "@/components/NodeEditor/components/NodeSelection/lib/useSelection.ts";
+import { useSubEmit } from "@/hooks/useSubEmit";
+import { compute } from "@/utils/compute.ts";
 import { v } from "@/utils/styleVar";
+import { useComputed } from "@preact/signals-react";
 
 import { makeNodeItem, useNodeItem } from "../NodeEditor";
 import { Port } from "./components/Port";
 import s from "./Node.module.sass";
-import { useSelection } from "@/components/NodeEditor/components/NodeSelection/lib/useSelection.ts";
-import { useComputed } from "@preact/signals-react";
-import { compute } from "@/utils/compute.ts";
 
 export type TNodeProps = {
   title?: string;
@@ -39,7 +41,7 @@ export const Node = makeNodeItem<TNodeProps>(
             <div className={s.input}>
               {
                 createElement(() => (
-                  item.input.use()
+                  useSubEmit(item.input)
                     .map((ctx, key) => (
                       <Port {...{ ctx, key }} />
                     ))
@@ -49,7 +51,7 @@ export const Node = makeNodeItem<TNodeProps>(
             <div className={s.output}>
               {
                 createElement(() => (
-                  item.output.use()
+                  useSubEmit(item.output)
                     .map((ctx, key) => (
                       <Port {...{ ctx, key }} />
                     ))
