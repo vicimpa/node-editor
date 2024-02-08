@@ -17,7 +17,8 @@ export type TDragStart<T = {}> = (e: TDragEvent<T>) => void | TDragMove<T>;
 
 export const makeDrag = <T = {}>(
   dragStart: TDragStart<T>,
-  btn = 0
+  btn = 0,
+  fromOffset = false
 ) => (e: MouseEvent | ReactMouseEvent, meta?: T) => {
   if (e.button !== btn)
     return;
@@ -25,15 +26,23 @@ export const makeDrag = <T = {}>(
   e.preventDefault();
   e.stopPropagation();
 
-  const start = Vec2.fromPageXY(e);
+  const start = fromOffset ? Vec2.fromOffsetXY(e as MouseEvent) : Vec2.fromPageXY(e);
   const current = start.clone();
   const delta = new Vec2(0);
 
   const event = {
-    get start() { return start.clone(); },
-    get current() { return current.clone(); },
-    get delta() { return delta.clone(); },
-    get meta() { return meta ?? undefined; },
+    get start() {
+      return start.clone();
+    },
+    get current() {
+      return current.clone();
+    },
+    get delta() {
+      return delta.clone();
+    },
+    get meta() {
+      return meta ?? undefined;
+    },
     target: e.target
   };
 
@@ -56,7 +65,10 @@ export const makeDrag = <T = {}>(
       unsub.forEach(u => u?.());
     }),
     windowEvent('mousemove', (e) => {
-      Vec2.fromPageXY(e, current);
+      if (fromOffset)
+        Vec2.fromOffsetXY(e, current);
+      else
+        Vec2.fromPageXY(e, current);
       delta.set(start).minus(current);
       update();
     }),

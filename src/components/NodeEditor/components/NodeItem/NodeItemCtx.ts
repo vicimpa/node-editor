@@ -21,6 +21,9 @@ export type NodeItemPortal = {
   children?: ReactNode;
 };
 
+//TODO мб перенести в расчет rect item?
+export const NODE_MARGIN = 20;
+
 @connect([
   detectResize,
   detectRect,
@@ -33,6 +36,7 @@ export class NodeItemCtx {
 
   x = signalCorrect(0, v => cropSize(v, this.map.xLimit, .5) | 0);
   y = signalCorrect(0, v => cropSize(v, this.map.yLimit, .5) | 0);
+  color = signal("");
 
   width = signal(0);
   height = signal(0);
@@ -43,7 +47,9 @@ export class NodeItemCtx {
   input = new ReactiveMap<string, NodePortCtx>();
   output = new ReactiveMap<string, NodePortCtx>();
 
-  focus() { this.list.focus(this); }
+  focus() {
+    this.list.focus(this);
+  }
 
   constructor(
     public id: string,

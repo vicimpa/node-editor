@@ -6,6 +6,7 @@ export type TPointVec2 = { x: number, y: number; };
 export type TTupleVec2 = [x: number, y: number];
 export type TSizeVec2 = { width: number, height: number; };
 export type TPageXY = { pageX: number, pageY: number; };
+export type TOffsetXY = { offsetX: number, offsetY: number; };
 export type TDeltaXY = { deltaX: number, deltaY: number; };
 export type TRect2 = [
   ...([x: number, y: number] | [xy: Vec2]),
@@ -21,7 +22,7 @@ export type TParameter = (
   | [xy: Signal<number>]
   | [x: Signal<number>, y: Signal<number>]
   | TTupleVec2
-);
+  );
 
 export function mutation<F extends TMutation>(args: TParameter, mutation: F): ReturnType<F> {
   var first = args[0] ?? 0;
@@ -42,7 +43,7 @@ export function mutation<F extends TMutation>(args: TParameter, mutation: F): Re
   if (first && ('x' in first) && ('y' in first))
     return mutation.call(null, first.x, first.y);
 
-  throw new Error('Unknow format');
+  throw new Error('Unknown format');
 }
 
 export class Vec2 {
@@ -50,7 +51,7 @@ export class Vec2 {
   x: number = 0;
   y: number = 0;
 
-  *[Symbol.iterator]() {
+  * [Symbol.iterator]() {
     yield this.x;
     yield this.y;
   }
@@ -84,8 +85,6 @@ export class Vec2 {
   constructor(...args: TParameter) {
     this.set(...args);
   }
-
-
 
   equal(...args: TParameter) {
     return mutation(args, (x, y) => {
@@ -312,6 +311,10 @@ export class Vec2 {
 
   static fromSignals(x: Signal<number>, y: Signal<number>, vec = new this()) {
     return vec.set(x.value, y.value);
+  }
+
+  static fromOffsetXY(offset: TOffsetXY, vec = new this()) {
+    return vec.set(offset.offsetX, offset.offsetY);
   }
 
   static fromOffsetSize(elem: HTMLElement, vec = new this()) {

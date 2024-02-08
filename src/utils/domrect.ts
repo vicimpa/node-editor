@@ -1,6 +1,6 @@
-import {Vec2} from "@/library/Vec2";
+import { Vec2 } from "@/library/Vec2";
 
-import {iters, minMax} from "./math";
+import { iters, minMax } from "./math";
 
 export const rectToString = (rect: DOMRect) => (
   `${rect.x} ${rect.y} ${rect.width} ${rect.height}`
@@ -24,15 +24,4 @@ export const rectIters = (a: DOMRect, b: DOMRect, i: number): DOMRect => (
     )
 );
 
-//TODO мб перенести в расчет rect item?
-const NODE_MARGIN = 20
-export const checkRectInRect = (rect: DOMRect, zone: DOMRect) => {
-  const {x: xRect, y: yRect, height: hRect, width: wRect} = rect
-  const {x: xZone, y: yZone, height: hZone, width: wZone} = zone
-  return (
-    xRect + NODE_MARGIN >= xZone &&
-    yRect + NODE_MARGIN >= yZone &&
-    xRect + wRect - NODE_MARGIN <= xZone + wZone &&
-    yRect + hRect - NODE_MARGIN <= yZone + hZone
-  )
-}
+
