@@ -44,8 +44,8 @@ export class ConnectList extends ReactiveSet<Connect> {
     try {
       if (
         false
-        || from.onConnect?.(to) === false
-        || to.onConnect?.(from) === false
+        || (from.onConnect && !from.onConnect?.(to))
+        || (to.onConnect && !to.onConnect?.(from))
       ) return;
 
       this.add(new Connect(from, to, this));
