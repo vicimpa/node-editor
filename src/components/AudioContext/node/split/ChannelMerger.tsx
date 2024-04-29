@@ -10,8 +10,8 @@ export class ChannelMerger extends BaseNode {
 
   ports = [
     new AudioPort('out', this.node),
-    new AudioPort('in', this.left),
-    new AudioPort('in', this.right)
+    new AudioPort('in', this.left, 'left'),
+    new AudioPort('in', this.right, 'right')
   ];
 
   test = [

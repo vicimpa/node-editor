@@ -1,4 +1,5 @@
 import { BaseNode } from "./library/BaseNode";
+import { Mixer } from "./node/control/Mixer";
 import { Destination } from "./node/destination/Destination";
 import { BQuadFilter } from "./node/effect/BQuadFilter";
 import { Convolver } from "./node/effect/Convolver";
@@ -11,7 +12,9 @@ import { Oscillator } from "./node/source/Oscillator";
 import { ChannelMerger } from "./node/split/ChannelMerger";
 import { ChannelSplitter } from "./node/split/ChannelSplitter";
 import { ChannelSwapper } from "./node/split/ChannelSwapper";
+import { Distortion } from "./node/tone/Distortion";
 import { PitchShift } from "./node/tone/PitchShift";
+import { Reverb } from "./node/tone/Reverb";
 
 export type TNodeCollection = {
   name: string;
@@ -53,7 +56,15 @@ export const NodeCollection: TNodeCollectionList = [
       {
         name: 'Tone.js',
         children: [
-          PitchShift
+          PitchShift,
+          Reverb,
+          Distortion,
+        ]
+      },
+      {
+        name: 'Controlls',
+        children: [
+          Mixer,
         ]
       },
       Destination,

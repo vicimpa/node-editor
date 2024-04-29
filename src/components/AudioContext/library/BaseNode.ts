@@ -18,8 +18,10 @@ export abstract class BaseNode {
     return Object.getPrototypeOf(this).constructor.name;
   };
 
-  abstract ports: BasePort[];
-  abstract render(): ReactNode;
+  ports: BasePort[] = [];
+  render(): ReactNode {
+    return null;
+  }
 
   get Render() {
     return this.#memo ?? (

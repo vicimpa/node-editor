@@ -1,4 +1,5 @@
 import { FC, useRef } from "react";
+import { Signal } from "tone";
 
 import { compute } from "@/utils/compute";
 import { useSignal, useSignalEffect } from "@preact/signals-react";
@@ -7,23 +8,41 @@ import { CustomAudioParam } from "../../library/CustomAudioParam";
 import s from "./Range.module.sass";
 
 export type RangeProps = {
-  param: AudioParam | CustomAudioParam<any>;
+  param: AudioParam | CustomAudioParam<any> | Signal<any>;
   label?: string;
   postfix?: string;
   minValue?: number;
   maxValue?: number;
   accuracy?: number;
   onChange?: () => void;
+  batch?: number;
 };
 
 export const Range: FC<RangeProps> = (props) => {
-  const value = useSignal(props.param.defaultValue);
+  const defaultValue = 'defaultValue' in props.param
+    ? props.param.defaultValue
+    : props.param.value;
+
+  const value = useSignal(defaultValue);
   const accuracy = props.accuracy ?? 0;
   const step = 1 / (10 ** accuracy);
   const ref = useRef<HTMLSpanElement>(null);
+  const batch = useRef(setTimeout(() => { }));
 
   useSignalEffect(() => {
-    props.param.value = value.value;
+    if (typeof props.batch === 'number') {
+      clearTimeout(batch.current);
+      Object.assign(batch, {
+        current: setTimeout(() => {
+
+          props.param.value = value.value;
+        }, props.batch)
+      });
+    } else {
+      props.param.value = value.value;
+    }
+
+
     if (ref.current) {
       ref.current.innerText = value.value.toFixed(accuracy);
     }
@@ -78,7 +97,7 @@ export const Range: FC<RangeProps> = (props) => {
           onContextMenu={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            value.value = props.param.defaultValue;
+            value.value = defaultValue;
             props.onChange?.();
           }}
           step={step}

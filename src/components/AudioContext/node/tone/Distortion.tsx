@@ -1,29 +1,31 @@
-import { PitchShift as PitchShiftNode } from "tone";
+import { ReactNode } from "react";
+import { Distortion as DistortionNode } from "tone";
 
 import { Range } from "../../components/Range";
 import { baseToneNode } from "../../library/BaseToneNode";
 import { CustomAudioParam } from "../../library/CustomAudioParam";
 import { AudioPort } from "../../port/AudioPort";
 
-export class PitchShift extends baseToneNode(PitchShiftNode) {
-  pitch = new CustomAudioParam(this.node, 'pitch', -14, 14);
+export class Distortion extends baseToneNode(DistortionNode) {
+  distortion = new CustomAudioParam(this.node, 'distortion', 0, 1);
 
   ports = [
     new AudioPort('in', this.input),
     new AudioPort('out', this.output),
   ];
 
-  render() {
+  render(): ReactNode {
     return (
       <>
         <Range
-          param={this.pitch}
-          label="Pitch"
-          accuracy={2}
+          param={this.distortion}
+          label="Discortion"
+          accuracy={3}
         />
         <Range
           param={this.node.wet}
           label="Wet"
+          accuracy={3}
         />
       </>
     );

@@ -6,7 +6,7 @@ export abstract class BasePort {
   id = `#${getId()}`;
 
   output = false;
-  title = 'port';
+  get title() { return 'port'; }
   color = '#999';
   multy = false;
 

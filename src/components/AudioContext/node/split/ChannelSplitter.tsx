@@ -10,8 +10,8 @@ export class ChannelSplitter extends BaseNode {
 
   ports = [
     new AudioPort('in', this.node),
-    new AudioPort('out', this.left),
-    new AudioPort('out', this.right)
+    new AudioPort('out', this.left, 'left'),
+    new AudioPort('out', this.right, 'right')
   ];
 
   test = [

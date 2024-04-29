@@ -1,13 +1,15 @@
 import { BasePort } from "../library/BasePort";
 
 export class AudioPort extends BasePort {
-  title = 'audio';
   color = '#4444aa';
   multy = true;
 
+  get title() { return this.name ?? 'audio'; };
+
   constructor(
     public type: 'in' | 'out',
-    public node: AudioNode
+    public node: AudioNode,
+    public name?: string
   ) {
     super();
 

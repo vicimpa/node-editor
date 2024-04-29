@@ -6,7 +6,8 @@ import { ReactiveSet } from "@/library/ReactiveSet";
 import { compute } from "@/utils/compute";
 
 import { Node } from "../Node";
-import { NodePort, useNodeHud, useNodeMap } from "../NodeEditor";
+import { useNodeHud, useNodeMap } from "../NodeEditor";
+import { AudioContextPort } from "./AudioContextPort";
 import { ContextMenu, TContextMenuItem } from "./components/ContextMenu";
 import { DeleteButton } from "./components/DeleteButton";
 import { BaseNode } from "./library/BaseNode";
@@ -63,19 +64,7 @@ export const AudioContext = () => {
               <node.Render />
 
               {node.ports.map((port) => (
-                <NodePort
-                  id={port.id}
-                  key={port.id}
-                  output={port.output}
-                  title={port.title}
-                  color={port.color}
-                  meta={port}
-                  onConnect={e => {
-                    return port.onConnect(e.meta);
-                  }}
-                  onDisconnect={e => {
-                    return port.onDisconnect(e.meta);
-                  }} />
+                <AudioContextPort key={port.id} port={port} />
               ))}
             </Node>
           ))

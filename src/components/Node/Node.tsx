@@ -36,33 +36,34 @@ export const Node = makeNodeItem<TNodeProps>(
             {title}
           </span>
         </div>
+
         <div className={s.content}>
-          <div className={s.pins}>
-            <div className={s.input} key="input">
-              {
-                compute(() => (
-                  useSubEmit(item.input)
-                    .map((ctx) => (
-                      <Port key={ctx.id} ctx={ctx} />
-                    ))
-                ))
-              }
-            </div>
-            <div className={s.output} key="output">
-              {
-                compute(() => (
-                  useSubEmit(item.output)
-                    .map((ctx) => (
-                      <Port key={ctx.id} ctx={ctx} />
-                    ))
-                ))
-              }
-            </div>
+          <div className={s.input} key="input">
+            {
+              compute(() => (
+                useSubEmit(item.input)
+                  .map((ctx) => (
+                    <Port key={ctx.id} ctx={ctx} />
+                  ))
+              ))
+            }
           </div>
           <div className={s.center}>
             {children}
           </div>
+
+          <div className={s.output} key="output">
+            {
+              compute(() => (
+                useSubEmit(item.output)
+                  .map((ctx) => (
+                    <Port key={ctx.id} ctx={ctx} />
+                  ))
+              ))
+            }
+          </div>
         </div>
+
       </div>
     ));
   }

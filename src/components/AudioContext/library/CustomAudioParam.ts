@@ -8,14 +8,16 @@ export class CustomAudioParam<T extends object> {
     public key: TNumberKeys<T>,
     public minValue = 0,
     public maxValue = 0,
-    public defaultValue: number = (target as any)[key],
-  ) { }
+    public defaultValue: number = (target as any)[key] ?? (target as any)[`_${key as any}`],
+  ) {
+    this.value = defaultValue;
+  }
 
-  get value() {
-    return (this.target as any)[this.key] as number;
+  get value(): number {
+    return Reflect.get(this.target, this.key) as number;
   }
 
   set value(v) {
-    (this.target as any)[this.key] = v;
+    Reflect.set(this.target, this.key, v);
   }
 }
