@@ -1,6 +1,7 @@
 import { Component, createElement, ReactNode } from "react";
 
 import { useSubEmit } from "@/hooks/useSubEmit";
+import { compute } from "@/utils/compute";
 import { useSignals } from "@preact/signals-react/runtime";
 
 import { NodeHudCtx, NodeHudProvider } from "./";
@@ -24,7 +25,7 @@ export class NodeHud extends Component<NodeHudProps> {
 
           <div className={s.hud}>
             {
-              createElement(() => (
+              compute(() => (
                 useSubEmit(ctx.list)
                   .map((item, key) => (
                     createElement(() => (

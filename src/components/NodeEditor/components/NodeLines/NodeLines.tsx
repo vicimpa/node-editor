@@ -21,7 +21,7 @@ export class NodeLines extends Component<NodeLinesProps> {
     return (
       <NodeLinesProvider value={ctx}>
         {
-          createElement(() => {
+          compute(() => {
             ctx.map = useNodeMap();
             useConnect(ctx);
             return null;
@@ -29,7 +29,7 @@ export class NodeLines extends Component<NodeLinesProps> {
         }
         {this.props.children}
         {
-          createElement(() => (
+          compute(() => (
             useSubEmit(ctx.list)
               .map((item, key) => (
                 createElement(() => (

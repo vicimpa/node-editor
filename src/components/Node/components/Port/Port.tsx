@@ -11,18 +11,20 @@ export type PortProps = {
 };
 
 export const Port: FC<PortProps> = ({ ctx }) => {
-  const { color, title, isOutput, ref } = ctx;
+  const { color, title, isOutput } = ctx;
+
   return (
     <>
       {
         compute(() => (
           <div
             className={s.port}
+            key="port"
             data-output={isOutput || undefined}
             style={{ [v`color`]: color.value }}
           >
             <span
-              ref={ref}
+              ref={ctx.ref}
               className={s.circle} />
             <span>{title}</span>
           </div>

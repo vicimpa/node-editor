@@ -1,15 +1,12 @@
 import { ReactNode } from "react";
 
-import { signal, useSignalEffect } from "@preact/signals-react";
-
 import { Range } from "../components/Range";
 import { context } from "../context";
+import { BaseNode } from "../library/BaseNode";
 import { AudioPort } from "../port/AudioPort";
-import { BaseNode } from "./BaseNode";
 
-export class GainAudioNode extends BaseNode {
+export class Gain extends BaseNode {
   node = context.createGain();
-  gain = signal(1);
 
   ports = [
     new AudioPort('in', this.node),
@@ -17,13 +14,14 @@ export class GainAudioNode extends BaseNode {
   ];
 
   render(): ReactNode {
-    useSignalEffect(() => {
-      this.node.gain.value = this.gain.value;
-    });
-
     return (
       <>
-        <Range value={this.gain} min={0} max={10} step={0.01} />
+        <Range
+          param={this.node.gain}
+          minValue={0}
+          maxValue={10}
+          accuracy={2}
+          label="Gain" />
       </>
     );
   }

@@ -1,4 +1,4 @@
-import { createElement, ReactNode } from "react";
+import { ReactNode } from "react";
 
 import { useSelection } from "@/components/NodeEditor/components/NodeSelection/lib/useSelection.ts";
 import { useSubEmit } from "@/hooks/useSubEmit";
@@ -30,7 +30,7 @@ export const Node = makeNodeItem<TNodeProps>(
     );
 
     return compute(() => (
-      <div className={s.node} style={{ [v`color`]: item.color.value, ...selectionStyles.value }}>
+      <div key="node" className={s.node} style={{ [v`color`]: item.color.value, ...selectionStyles.value }}>
         <div data-drag className={s.head}>
           <span className={s.text}>
             {title}
@@ -38,22 +38,22 @@ export const Node = makeNodeItem<TNodeProps>(
         </div>
         <div className={s.content}>
           <div className={s.pins}>
-            <div className={s.input}>
+            <div className={s.input} key="input">
               {
-                createElement(() => (
+                compute(() => (
                   useSubEmit(item.input)
-                    .map((ctx, key) => (
-                      <Port key={key} ctx={ctx} />
+                    .map((ctx) => (
+                      <Port key={ctx.id} ctx={ctx} />
                     ))
                 ))
               }
             </div>
-            <div className={s.output}>
+            <div className={s.output} key="output">
               {
-                createElement(() => (
+                compute(() => (
                   useSubEmit(item.output)
-                    .map((ctx, key) => (
-                      <Port key={key} ctx={ctx} />
+                    .map((ctx) => (
+                      <Port key={ctx.id} ctx={ctx} />
                     ))
                 ))
               }

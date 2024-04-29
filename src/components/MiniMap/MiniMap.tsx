@@ -1,4 +1,4 @@
-import { Component, createElement } from "react";
+import { Component } from "react";
 
 import { schema } from "@/components/Debug";
 import { MiniMapCtx, MiniMapProvider } from "@/components/MiniMap/MiniMapCtx.ts";
@@ -27,11 +27,11 @@ class MiniMapClass extends Component {
     return (
       <MiniMapProvider value={ctx}>
         {
-          createElement(
+          compute(
             () => (
               ctx.list = useNodeList(),
               useConnect(ctx),
-              compute(() => <MiniMapComponent ctx={ctx} />)
+              <MiniMapComponent ctx={ctx} />
             )
           )
         }

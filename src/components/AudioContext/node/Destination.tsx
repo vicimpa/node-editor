@@ -1,14 +1,17 @@
 import { ReactNode } from "react";
 
 import { context } from "../context";
+import { BaseNode } from "../library/BaseNode";
+import { BasePort } from "../library/BasePort";
 import { AudioPort } from "../port/AudioPort";
-import { BasePort } from "../port/BasePort";
-import { BaseNode } from "./BaseNode";
 
-export class DestinationNode extends BaseNode {
+export class Destination extends BaseNode {
+  single = true;
+
   ports: BasePort[] = [
     new AudioPort('in', context.destination)
   ];
+
 
   render(): ReactNode {
     return null;

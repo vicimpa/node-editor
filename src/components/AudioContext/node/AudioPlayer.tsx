@@ -1,14 +1,14 @@
 import { ReactNode } from "react";
 
-import { signal } from "@preact/signals-react";
+import { effect, signal } from "@preact/signals-react";
 
-import { AudioPlayer } from "../components/AudioPlayer";
+import { AudioPlayer as AudioPlayerComponent } from "../components/AudioPlayer";
 import { context } from "../context";
+import { BaseNode } from "../library/BaseNode";
 import { openFile } from "../library/openFile";
 import { AudioPort } from "../port/AudioPort";
-import { BaseNode } from "./BaseNode";
 
-export class AudioPlayerNode extends BaseNode {
+export class AudioPlayer extends BaseNode {
   audio = new Audio();
   node = context.createMediaElementSource(this.audio);
   file = signal<File | null>(null);
@@ -16,6 +16,14 @@ export class AudioPlayerNode extends BaseNode {
   ports = [
     new AudioPort('out', this.node)
   ];
+
+  constructor() {
+    super();
+    effect(() => {
+      if (this.file.value)
+        this.audio.src = URL.createObjectURL(this.file.value);
+    });
+  }
 
   render(): ReactNode {
     return (
@@ -32,9 +40,8 @@ export class AudioPlayerNode extends BaseNode {
         >
           Browse file
         </button>
-        <AudioPlayer audio={this.audio} file={this.file} />
+        <AudioPlayerComponent audio={this.audio} file={this.file} />
       </>
-
     );
   }
 }

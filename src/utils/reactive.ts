@@ -15,8 +15,8 @@ export const subscribe = (obj: object, listener: () => any) => {
 
   return (
     REACTIVE.add(call),
-      () => {
-        REACTIVE.delete(call);
-      }
+    () => {
+      REACTIVE.delete(call);
+    }
   );
 };

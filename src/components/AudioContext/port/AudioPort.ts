@@ -1,5 +1,5 @@
 
-import { BasePort } from "./BasePort";
+import { BasePort } from "../library/BasePort";
 
 export class AudioPort extends BasePort {
   title = 'audio';

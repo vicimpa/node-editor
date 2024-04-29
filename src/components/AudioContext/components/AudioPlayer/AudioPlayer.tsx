@@ -3,7 +3,7 @@ import { FC, useMemo } from "react";
 import { useCalc } from "@/hooks/useCalc";
 import { compute } from "@/utils/compute";
 import { MaybeSignal, unsignal } from "@/utils/unsignal";
-import { useComputed, useSignalEffect } from "@preact/signals-react";
+import { useComputed } from "@preact/signals-react";
 
 import s from "./AudioPlayer.module.sass";
 import { Marquee } from "./components/Marquee";
@@ -29,11 +29,6 @@ export const AudioPlayer: FC<AudioPlayerProps> = (props) => {
   });
 
   const played = useCalc(() => !audio.paused);
-
-  useSignalEffect(() => {
-    if (file.value)
-      audio.src = URL.createObjectURL(file.value);
-  });
 
   return (
     <div className={s.player}>
@@ -65,6 +60,14 @@ export const AudioPlayer: FC<AudioPlayerProps> = (props) => {
           </>
         ))}
         <Progress audio={audio} file={file} />
+      </div>
+      <div className={s.buttons}>
+        <label className={s.check}>
+          <input defaultChecked={audio.loop} type="checkbox" onChange={(e) => {
+            audio.loop = e.currentTarget.checked;
+          }} />
+          Loop
+        </label>
       </div>
     </div>
   );
