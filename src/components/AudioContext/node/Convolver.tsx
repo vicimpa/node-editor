@@ -10,7 +10,7 @@ import { BaseNode } from "../library/BaseNode";
 import { openFile } from "../library/openFile";
 import { AudioPort } from "../port/AudioPort";
 
-export class Consolver extends BaseNode {
+export class Convolver extends BaseNode {
   ref = createRef<HTMLSelectElement>();
   node = context.createConvolver();
   sounds = new ReactiveMap<string, Promise<AudioBuffer>>([
@@ -69,7 +69,7 @@ export class Consolver extends BaseNode {
               });
           }}
         >
-          Load file
+          Upload file
         </button>
       </>
     );

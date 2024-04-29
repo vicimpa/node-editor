@@ -4,7 +4,7 @@ import { BQuadFilter } from "./node/BQuadFilter";
 import { ChannelMerger } from "./node/ChannelMerger";
 import { ChannelShufler } from "./node/ChannelShufler";
 import { ChannelSplitter } from "./node/ChannelSplitter";
-import { Consolver } from "./node/Consolver";
+import { Convolver } from "./node/Convolver";
 import { Delay } from "./node/Delay";
 import { Destination } from "./node/Destination";
 import { DynamicsCompressor } from "./node/DynamicsCompressor";
@@ -37,7 +37,7 @@ export const NodeCollection: TNodeCollectionList = [
           Delay,
           DynamicsCompressor,
           BQuadFilter,
-          Consolver,
+          Convolver,
           StereoPanner,
         ]
       },

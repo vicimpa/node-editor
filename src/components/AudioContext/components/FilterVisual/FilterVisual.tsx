@@ -63,15 +63,15 @@ export const FilterVisual = forwardRef<FilterVisualRender, FilterVisualProps>(({
     ref.current.appendChild(can);
     atts.value;
 
-    can.width = size.width;
-    can.height = size.height;
+    can.width = size.width * 2;
+    can.height = size.height * 2;
 
     ctx.clearRect(0, 0, can.width, can.height);
     node.getFrequencyResponse(freq, out, outPhase);
 
     ctx.textAlign = 'center';
     ctx.textBaseline = 'top';
-    ctx.font = '7px Arial';
+    ctx.font = '14px Arial';
 
     ctx.strokeStyle = '#333';
     ctx.lineWidth = 1;
