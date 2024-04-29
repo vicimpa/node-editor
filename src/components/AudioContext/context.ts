@@ -1,4 +1,6 @@
-export const context = new AudioContext();
+import { getContext } from "tone";
+
+export const context = getContext();
 
 let active = false;
 onmousedown = onmouseup = onfocus = onblur = onkeydown = onkeyup = () => {

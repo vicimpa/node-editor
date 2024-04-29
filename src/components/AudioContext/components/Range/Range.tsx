@@ -3,10 +3,11 @@ import { FC, useRef } from "react";
 import { compute } from "@/utils/compute";
 import { useSignal, useSignalEffect } from "@preact/signals-react";
 
+import { CustomAudioParam } from "../../library/CustomAudioParam";
 import s from "./Range.module.sass";
 
 export type RangeProps = {
-  param: AudioParam;
+  param: AudioParam | CustomAudioParam<any>;
   label?: string;
   postfix?: string;
   minValue?: number;

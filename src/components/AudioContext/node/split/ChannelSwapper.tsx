@@ -1,6 +1,6 @@
-import { context } from "../context";
-import { BaseNode } from "../library/BaseNode";
-import { AudioPort } from "../port/AudioPort";
+import { context } from "../../context";
+import { BaseNode } from "../../library/BaseNode";
+import { AudioPort } from "../../port/AudioPort";
 
 export class ChannelSwapper extends BaseNode {
   color = '#631547';

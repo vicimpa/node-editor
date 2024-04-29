@@ -5,10 +5,10 @@ import { ReactiveMap } from "@/library/ReactiveMap";
 import { compute } from "@/utils/compute";
 import { signal, useSignalEffect } from "@preact/signals-react";
 
-import { context } from "../context";
-import { BaseNode } from "../library/BaseNode";
-import { openFile } from "../library/openFile";
-import { AudioPort } from "../port/AudioPort";
+import { context } from "../../context";
+import { BaseNode } from "../../library/BaseNode";
+import { openFile } from "../../library/openFile";
+import { AudioPort } from "../../port/AudioPort";
 
 export class Convolver extends BaseNode {
   ref = createRef<HTMLSelectElement>();
@@ -16,7 +16,7 @@ export class Convolver extends BaseNode {
   sounds = new ReactiveMap<string, Promise<AudioBuffer>>([
     [
       'irHall.ogg',
-      import('../sound/irHall.ogg')
+      import('../../sound/irHall.ogg')
         .then(url => fetch(url.default))
         .then(res => res.arrayBuffer())
         .then(buffer => context.decodeAudioData(buffer))

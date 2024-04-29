@@ -2,11 +2,11 @@ import { ReactNode } from "react";
 
 import { effect, signal } from "@preact/signals-react";
 
-import { AudioPlayer as AudioPlayerComponent } from "../components/AudioPlayer";
-import { context } from "../context";
-import { BaseNode } from "../library/BaseNode";
-import { openFile } from "../library/openFile";
-import { AudioPort } from "../port/AudioPort";
+import { AudioPlayer as AudioPlayerComponent } from "../../components/AudioPlayer";
+import { context } from "../../context";
+import { BaseNode } from "../../library/BaseNode";
+import { openFile } from "../../library/openFile";
+import { AudioPort } from "../../port/AudioPort";
 
 export class AudioPlayer extends BaseNode {
   color = '#fff';

@@ -3,11 +3,11 @@ import { ReactNode } from "react";
 import { compute } from "@/utils/compute";
 import { signal } from "@preact/signals-react";
 
-import { Range } from "../components/Range";
-import { context } from "../context";
-import { BaseNode } from "../library/BaseNode";
-import { frequencies } from "../library/frequencies";
-import { AudioPort } from "../port/AudioPort";
+import { Range } from "../../components/Range";
+import { context } from "../../context";
+import { BaseNode } from "../../library/BaseNode";
+import { frequencies } from "../../library/frequencies";
+import { AudioPort } from "../../port/AudioPort";
 
 const types = [
   "custom",

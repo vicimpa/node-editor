@@ -1,7 +1,7 @@
-import { Range } from "../components/Range";
-import { context } from "../context";
-import { BaseNode } from "../library/BaseNode";
-import { AudioPort } from "../port/AudioPort";
+import { Range } from "../../components/Range";
+import { context } from "../../context";
+import { BaseNode } from "../../library/BaseNode";
+import { AudioPort } from "../../port/AudioPort";
 
 export class StereoPanner extends BaseNode {
   color = '#aa5858';

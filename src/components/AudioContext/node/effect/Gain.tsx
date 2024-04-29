@@ -1,9 +1,9 @@
 import { ReactNode } from "react";
 
-import { Range } from "../components/Range";
-import { context } from "../context";
-import { BaseNode } from "../library/BaseNode";
-import { AudioPort } from "../port/AudioPort";
+import { Range } from "../../components/Range";
+import { context } from "../../context";
+import { BaseNode } from "../../library/BaseNode";
+import { AudioPort } from "../../port/AudioPort";
 
 export class Gain extends BaseNode {
   color = '#0f0';

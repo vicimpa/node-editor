@@ -1,10 +1,10 @@
 import { createRef, ReactNode } from "react";
 
-import { FilterVisual, FilterVisualRender } from "../components/FilterVisual/FilterVisual";
-import { Range } from "../components/Range";
-import { context } from "../context";
-import { BaseNode } from "../library/BaseNode";
-import { AudioPort } from "../port/AudioPort";
+import { FilterVisual, FilterVisualRender } from "../../components/FilterVisual/FilterVisual";
+import { Range } from "../../components/Range";
+import { context } from "../../context";
+import { BaseNode } from "../../library/BaseNode";
+import { AudioPort } from "../../port/AudioPort";
 
 const types = [
   "allpass",
