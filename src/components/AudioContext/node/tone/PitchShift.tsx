@@ -24,6 +24,7 @@ export class PitchShift extends baseToneNode(PitchShiftNode) {
         <Range
           param={this.node.wet}
           label="Wet"
+          accuracy={3}
         />
       </>
     );
