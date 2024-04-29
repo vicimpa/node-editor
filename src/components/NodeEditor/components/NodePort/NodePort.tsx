@@ -11,14 +11,16 @@ export type NodePortProps = {
   output?: boolean;
   meta?: any;
   onConnect?: (ctx: NodePortCtx) => any;
+  onDisconnect?: (ctx: NodePortCtx) => any;
 };
 
-export const NodePort: FC<NodePortProps> = ({ id, output, title, color, meta, onConnect }) => {
+export const NodePort: FC<NodePortProps> = ({ id, output, title, color, meta, onConnect, onDisconnect }) => {
   const reserveId = useId();
   const port = NodePortCtx.usePort(id ?? reserveId, output);
 
   port.meta = meta;
   port.onConnect = onConnect;
+  port.onDisconnect = onDisconnect;
 
   useEffect(() => {
     port.title.value = title ?? port.title.peek();

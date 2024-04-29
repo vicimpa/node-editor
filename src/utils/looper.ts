@@ -1,4 +1,4 @@
-export type TLoop = (time: number, deltaTime: number) => any;
+export type TLoop<T = any> = (time: number, deltaTime: number) => T;
 
 var LOOPS = new Set<TLoop>();
 

@@ -24,6 +24,7 @@ export class NodePortCtx {
 
   meta?: any;
   onConnect?: (ctx: NodePortCtx) => any;
+  onDisconnect?: (ctx: NodePortCtx) => any;
 
   constructor(
     public id: string,

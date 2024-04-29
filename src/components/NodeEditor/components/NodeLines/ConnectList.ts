@@ -5,8 +5,9 @@ import { signalRef } from "@/utils/signalRef";
 import { NodePortCtx } from "../NodePort";
 import { NodeLinesCtx } from "./";
 import { detectReconnect } from "./lib/detectReconnect";
+import { detectRemove } from "./lib/detectRemove";
 
-@connect([detectReconnect])
+@connect([detectReconnect, detectRemove])
 export class Connect {
   ref = signalRef<SVGPathElement>();
 
@@ -24,6 +25,18 @@ export class ConnectList extends ReactiveSet<Connect> {
 
   constructor(public lines: NodeLinesCtx) {
     super();
+  }
+
+  delete(value: Connect): boolean {
+    const { from, to } = value;
+
+    if (
+      false
+      || (from.onDisconnect && !from.onDisconnect?.(to))
+      || (to.onDisconnect && !to.onDisconnect?.(from))
+    ) return false;
+
+    return super.delete(value);
   }
 
   connect(from: NodePortCtx, to: NodePortCtx) {

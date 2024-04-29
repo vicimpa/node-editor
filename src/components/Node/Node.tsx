@@ -43,7 +43,7 @@ export const Node = makeNodeItem<TNodeProps>(
                 createElement(() => (
                   useSubEmit(item.input)
                     .map((ctx, key) => (
-                      <Port {...{ ctx, key }} />
+                      <Port key={key} ctx={ctx} />
                     ))
                 ))
               }
@@ -53,7 +53,7 @@ export const Node = makeNodeItem<TNodeProps>(
                 createElement(() => (
                   useSubEmit(item.output)
                     .map((ctx, key) => (
-                      <Port {...{ ctx, key }} />
+                      <Port key={key} ctx={ctx} />
                     ))
                 ))
               }
