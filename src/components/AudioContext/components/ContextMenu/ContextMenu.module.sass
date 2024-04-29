@@ -10,8 +10,23 @@
   left: 10px
   color: #333
 
-  button
+  .btn
+    position: relative
     cursor: pointer
+    text-align: left
+    display: flex
+    justify-content: space-between
 
+    .sub
+      display: none
+      position: absolute
+      top: -20px
+      right: 20px
+      z-index: 1
+
+  .btn:hover
+    background: rgba(0,0,0,0.1)
+    .sub
+      display: block
   h5
     border-bottom: 1px solid #999

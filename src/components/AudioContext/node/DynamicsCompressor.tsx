@@ -6,6 +6,7 @@ import { BaseNode } from "../library/BaseNode";
 import { AudioPort } from "../port/AudioPort";
 
 export class DynamicsCompressor extends BaseNode {
+  color = '#0f6f8c';
   node = context.createDynamicsCompressor();
 
   ports = [

@@ -6,14 +6,15 @@ import { BasePort } from "../library/BasePort";
 import { AudioPort } from "../port/AudioPort";
 
 export class Destination extends BaseNode {
+  color = '#33f';
   single = true;
 
   ports: BasePort[] = [
     new AudioPort('in', context.destination)
   ];
 
-
   render(): ReactNode {
+
     return null;
   }
 }

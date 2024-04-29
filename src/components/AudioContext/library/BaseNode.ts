@@ -1,5 +1,6 @@
 import { FC, memo, ReactNode } from "react";
 
+import { Vec2 } from "@/library/Vec2";
 import { counter } from "@/utils/counter";
 
 import { BasePort } from "./BasePort";
@@ -11,6 +12,7 @@ export abstract class BaseNode {
   id = `#${getId()}`;
   color = '#999';
   single = false;
+  start = new Vec2();
 
   get title() {
     return Object.getPrototypeOf(this).constructor.name;

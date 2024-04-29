@@ -6,6 +6,7 @@ import { BaseNode } from "../library/BaseNode";
 import { AudioPort } from "../port/AudioPort";
 
 export class Gain extends BaseNode {
+  color = '#0f0';
   node = context.createGain();
 
   ports = [

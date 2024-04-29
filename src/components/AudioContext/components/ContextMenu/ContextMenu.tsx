@@ -27,9 +27,15 @@ export const ContextMenu: FC<ContextMenuProps> = ({
       )}
 
       {sortMenu.map((item, key) => (
-        <button onClick={item.onClick} key={key}>
-          {item.name}
-        </button>
+        <div className={s.btn} onClick={item.onClick} key={key}>
+          <span>{item.name}</span>
+          <span>{item.children ? ">" : ''}</span>
+          {item.children && (
+            <div className={s.sub}>
+              <ContextMenu menu={item.children ?? []} />
+            </div>
+          )}
+        </div>
       ))}
     </div>
   );

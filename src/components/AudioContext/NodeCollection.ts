@@ -5,6 +5,7 @@ import { Delay } from "./node/Delay";
 import { Destination } from "./node/Destination";
 import { DynamicsCompressor } from "./node/DynamicsCompressor";
 import { Gain } from "./node/Gain";
+import { Oscillator } from "./node/Oscillator";
 
 export type TNodeCollection = {
   name: string;
@@ -14,10 +15,21 @@ export type TNodeCollection = {
 export type TNodeCollectionList = (typeof BaseNode | TNodeCollection)[];
 
 export const NodeCollection: TNodeCollectionList = [
-  AudioPlayer,
-  Gain,
-  Delay,
+  {
+    name: 'Source',
+    children: [
+      AudioPlayer,
+      Oscillator,
+    ]
+  },
+  {
+    name: 'Effect',
+    children: [
+      Gain,
+      Delay,
+      DynamicsCompressor,
+      BQuadFilter,
+    ]
+  },
   Destination,
-  DynamicsCompressor,
-  BQuadFilter,
 ];

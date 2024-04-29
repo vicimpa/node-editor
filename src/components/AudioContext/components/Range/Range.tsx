@@ -25,12 +25,43 @@ export const Range: FC<RangeProps> = (props) => {
     props.param.value = value.value;
   });
 
+  const inEdit = (span: HTMLSpanElement) => {
+    span.setAttribute('contenteditable', '');
+    span.focus();
+  };
+
+  const offEdit = (span: HTMLSpanElement) => {
+    span.removeAttribute('contenteditable');
+    const val = +span.innerText;
+    if (!isNaN(val)) {
+      value.value = val;
+      props.onChange?.();
+    }
+  };
+
   return (
     <div className={s.range}>
       <div className={s.label}>
         <span>{props.label ?? 'Label'}</span>
         <span data-grow />
-        <span>{fixed(value, accuracy)}</span>
+        <span
+          onKeyDown={e => {
+            if (e.code !== 'Enter')
+              return;
+            e.preventDefault();
+            e.stopPropagation();
+
+            offEdit(e.currentTarget);
+          }}
+          onBlur={e => {
+            offEdit(e.currentTarget);
+          }}
+          onMouseDown={e => {
+            inEdit(e.currentTarget);
+          }}
+        >
+          {fixed(value, accuracy)}
+        </span>
         <span>{props.postfix}</span>
       </div>
       {compute(() => (

@@ -18,6 +18,7 @@ const types = [
 ];
 
 export class BQuadFilter extends BaseNode {
+  color = '#195e40';
   ref = createRef<FilterVisualRender>();
   node = context.createBiquadFilter();
 
@@ -52,7 +53,7 @@ export class BQuadFilter extends BaseNode {
         <Range
           param={this.node.Q}
           label="Q"
-          minValue={1}
+          minValue={-100}
           maxValue={100}
           accuracy={1}
           onChange={() => this.ref.current?.render()}
@@ -61,6 +62,9 @@ export class BQuadFilter extends BaseNode {
         <Range
           param={this.node.detune}
           label="Detune"
+          postfix="cents"
+          minValue={-1200}
+          maxValue={1200}
           onChange={() => this.ref.current?.render()}
         />
 

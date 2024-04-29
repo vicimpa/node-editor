@@ -6,7 +6,7 @@ import { ReactiveSet } from "@/library/ReactiveSet";
 import { compute } from "@/utils/compute";
 
 import { Node } from "../Node";
-import { NodePort, useNodeHud } from "../NodeEditor";
+import { NodePort, useNodeHud, useNodeMap } from "../NodeEditor";
 import { ContextMenu, TContextMenuItem } from "./components/ContextMenu";
 import { DeleteButton } from "./components/DeleteButton";
 import { BaseNode } from "./library/BaseNode";
@@ -15,6 +15,7 @@ import { NodeCollection, TNodeCollectionList } from "./NodeCollection";
 export const AudioContext = () => {
   const nodes = useClass(ReactiveSet<BaseNode>);
   const HUD = useNodeHud().useItem();
+  const map = useNodeMap();
 
   const menu = useMemo(() => {
     const toMenu = (col: TNodeCollectionList): TContextMenuItem[] => {
@@ -27,8 +28,9 @@ export const AudioContext = () => {
               if (f.single && f instanceof item)
                 return;
             }
-
-            nodes.add(new (item as any)());
+            const node: BaseNode = new (item as any)();
+            node.start.set(map.x.value, map.y.value);
+            nodes.add(node);
           }
         } : {
           children: toMenu(item.children)
@@ -51,6 +53,8 @@ export const AudioContext = () => {
             <Node
               id={node.id}
               key={node.id}
+              x={node.start.x}
+              y={node.start.y}
               color={node.color}
               title={`${node.id} ${node.title}`}
             >
