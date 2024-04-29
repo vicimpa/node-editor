@@ -44,7 +44,7 @@ export const AudioContext = () => {
   return (
     <>
       <HUD.Portal>
-        <ContextMenu head="Append node" menu={menu} />
+        <ContextMenu menu={menu} />
       </HUD.Portal>
       {
         compute(() => (

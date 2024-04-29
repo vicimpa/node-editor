@@ -7,7 +7,7 @@
   gap: 5px
   position: absolute
   top: 10px
-  left: 10px
+  left: 30px
   color: #333
 
   .btn
@@ -16,17 +16,22 @@
     text-align: left
     display: flex
     justify-content: space-between
+    gap: 10px
+
+    .menu
+      top: 0px
+      left: 0px
 
     .sub
       display: none
       position: absolute
-      top: -20px
-      right: 20px
+      top: 0px
+      right: 0px
       z-index: 1
 
   .btn:hover
     background: rgba(0,0,0,0.1)
-    .sub
+    & > .sub
       display: block
   h5
     border-bottom: 1px solid #999

@@ -1,6 +1,7 @@
 import { BaseNode } from "./library/BaseNode";
 import { AudioPlayer } from "./node/AudioPlayer";
 import { BQuadFilter } from "./node/BQuadFilter";
+import { Consolver } from "./node/Consolver";
 import { Delay } from "./node/Delay";
 import { Destination } from "./node/Destination";
 import { DynamicsCompressor } from "./node/DynamicsCompressor";
@@ -16,20 +17,26 @@ export type TNodeCollectionList = (typeof BaseNode | TNodeCollection)[];
 
 export const NodeCollection: TNodeCollectionList = [
   {
-    name: 'Source',
+    name: 'Append node',
     children: [
-      AudioPlayer,
-      Oscillator,
+      {
+        name: 'Source',
+        children: [
+          AudioPlayer,
+          Oscillator,
+        ]
+      },
+      {
+        name: 'Effect',
+        children: [
+          Gain,
+          Delay,
+          DynamicsCompressor,
+          BQuadFilter,
+          Consolver,
+        ]
+      },
+      Destination,
     ]
-  },
-  {
-    name: 'Effect',
-    children: [
-      Gain,
-      Delay,
-      DynamicsCompressor,
-      BQuadFilter,
-    ]
-  },
-  Destination,
+  }
 ];

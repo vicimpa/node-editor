@@ -1,7 +1,6 @@
-import { FC } from "react";
+import { FC, useRef } from "react";
 
 import { compute } from "@/utils/compute";
-import { fixed } from "@/utils/fixed";
 import { useSignal, useSignalEffect } from "@preact/signals-react";
 
 import s from "./Range.module.sass";
@@ -20,9 +19,13 @@ export const Range: FC<RangeProps> = (props) => {
   const value = useSignal(props.param.defaultValue);
   const accuracy = props.accuracy ?? 0;
   const step = 1 / (10 ** accuracy);
+  const ref = useRef<HTMLSpanElement>(null);
 
   useSignalEffect(() => {
     props.param.value = value.value;
+    if (ref.current) {
+      ref.current.innerText = value.value.toFixed(accuracy);
+    }
   });
 
   const inEdit = (span: HTMLSpanElement) => {
@@ -45,6 +48,7 @@ export const Range: FC<RangeProps> = (props) => {
         <span>{props.label ?? 'Label'}</span>
         <span data-grow />
         <span
+          ref={ref}
           onKeyDown={e => {
             if (e.code !== 'Enter')
               return;
@@ -59,9 +63,7 @@ export const Range: FC<RangeProps> = (props) => {
           onMouseDown={e => {
             inEdit(e.currentTarget);
           }}
-        >
-          {fixed(value, accuracy)}
-        </span>
+        />
         <span>{props.postfix}</span>
       </div>
       {compute(() => (
