@@ -2,8 +2,8 @@ import { BaseNode } from "./library/BaseNode";
 import { AudioPlayer } from "./node/AudioPlayer";
 import { BQuadFilter } from "./node/BQuadFilter";
 import { ChannelMerger } from "./node/ChannelMerger";
-import { ChannelShufler } from "./node/ChannelShufler";
 import { ChannelSplitter } from "./node/ChannelSplitter";
+import { ChannelSwapper } from "./node/ChannelSwapper";
 import { Convolver } from "./node/Convolver";
 import { Delay } from "./node/Delay";
 import { Destination } from "./node/Destination";
@@ -46,7 +46,7 @@ export const NodeCollection: TNodeCollectionList = [
         children: [
           ChannelSplitter,
           ChannelMerger,
-          ChannelShufler,
+          ChannelSwapper,
         ]
       },
       Destination,
