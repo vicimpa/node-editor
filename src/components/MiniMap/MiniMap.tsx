@@ -1,4 +1,4 @@
-import { Component, createElement } from "react";
+import { Component, useEffect } from "react";
 
 import { schema } from "@/components/Debug";
 import { MiniMapCtx, MiniMapProvider } from "@/components/MiniMap/MiniMapCtx.ts";
@@ -9,7 +9,8 @@ import { useShortcut } from "@/hooks/useShortcut.ts";
 import { useValistore } from "@/hooks/useValistore.ts";
 import { Vec2 } from "@/library/Vec2.ts";
 import { compute } from "@/utils/compute.ts";
-import { effect } from "@preact/signals-react";
+import { subscribe } from "@/utils/reactive";
+import { effect, useSignal } from "@preact/signals-react";
 
 import s from "./MiniMap.module.sass";
 
@@ -27,11 +28,11 @@ class MiniMapClass extends Component {
     return (
       <MiniMapProvider value={ctx}>
         {
-          createElement(
+          compute(
             () => (
               ctx.list = useNodeList(),
               useConnect(ctx),
-              compute(() => <MiniMapComponent ctx={ctx} />)
+              <MiniMapComponent ctx={ctx} />
             )
           )
         }
@@ -47,6 +48,8 @@ const MiniMapComponent = ({ ctx }: MiniMapComponent) => {
   const { list, canvas, height, width } = ctx;
   const { map } = list;
   const showMap = useValistore('SHOW_MAP', schema, false);
+  const atts = useSignal(0);
+
 
   effect(() => {
     if (!canvas || !canvas.current) return;
@@ -59,6 +62,7 @@ const MiniMapComponent = ({ ctx }: MiniMapComponent) => {
     const mapSizeCorrect = new Vec2(mapWidth, mapHeight).div(2);
 
     miniCtx.clearRect(0, 0, width, height);
+    atts.value;
 
     list.list.forEach(node => {
       miniCtx.fillStyle = node.color.value;
@@ -75,6 +79,10 @@ const MiniMapComponent = ({ ctx }: MiniMapComponent) => {
       Vec2.fromSize(map.viewRect.value).times(scale).div(map.scale.value)
     );
   });
+
+  useEffect(() => subscribe(list.list, () => {
+    atts.value++;
+  }));
 
   useShortcut('m', () => {
     showMap.value = !showMap.value;

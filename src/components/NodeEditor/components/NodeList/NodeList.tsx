@@ -1,8 +1,9 @@
-import { Component, createElement, ReactNode } from "react";
+import { Component, ReactNode } from "react";
 
 import { Debug } from "@/components/Debug";
 import { useConnect } from "@/hooks/useConnect";
 import { useSubEmit } from "@/hooks/useSubEmit";
+import { compute } from "@/utils/compute";
 import { fixed } from "@/utils/fixed";
 
 import { NodeItem, NodeItemCtx } from "../NodeItem";
@@ -24,7 +25,7 @@ export class NodeList extends Component<NodeListProps> {
     return (
       <NodeListProvider value={ctx}>
         {
-          createElement(() => (
+          compute(() => (
             this.map = useNodeMap(),
             useConnect(ctx),
             <>
@@ -32,7 +33,7 @@ export class NodeList extends Component<NodeListProps> {
 
               <g ref={ctx.ref}>
                 {
-                  createElement(() => {
+                  compute(() => {
                     useSubEmit(ctx.list);
                     var last: NodeItemCtx | undefined;
 

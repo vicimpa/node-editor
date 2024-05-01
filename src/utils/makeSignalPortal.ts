@@ -1,7 +1,7 @@
-import { createElement, ReactNode, RefObject } from "react";
+import { ReactNode, RefObject } from "react";
 import { createPortal } from "react-dom";
 
-import { useSignals } from "@preact/signals-react/runtime";
+import { compute } from "./compute";
 
 export type SignalPortalProps = {
   children?: ReactNode;
@@ -11,8 +11,7 @@ export type SignalPortalProps = {
 export const makeSignalPortal = (
   <T extends Element>(signal: RefObject<T>) => (
     ({ children }: SignalPortalProps) => (
-      createElement(() => (
-        useSignals(),
+      compute(() => (
         signal.current &&
         createPortal(children, signal.current)
       ))

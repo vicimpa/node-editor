@@ -1,4 +1,4 @@
-import { createElement, ReactNode } from "react";
+import { ReactNode } from "react";
 
 import { useSelection } from "@/components/NodeEditor/components/NodeSelection/lib/useSelection.ts";
 import { useSubEmit } from "@/hooks/useSubEmit";
@@ -30,39 +30,40 @@ export const Node = makeNodeItem<TNodeProps>(
     );
 
     return compute(() => (
-      <div className={s.node} style={{ [v`color`]: item.color.value, ...selectionStyles.value }}>
+      <div key="node" className={s.node} style={{ [v`color`]: item.color.value, ...selectionStyles.value }}>
         <div data-drag className={s.head}>
           <span className={s.text}>
             {title}
           </span>
         </div>
+
         <div className={s.content}>
-          <div className={s.pins}>
-            <div className={s.input}>
-              {
-                createElement(() => (
-                  useSubEmit(item.input)
-                    .map((ctx, key) => (
-                      <Port key={key} ctx={ctx} />
-                    ))
-                ))
-              }
-            </div>
-            <div className={s.output}>
-              {
-                createElement(() => (
-                  useSubEmit(item.output)
-                    .map((ctx, key) => (
-                      <Port key={key} ctx={ctx} />
-                    ))
-                ))
-              }
-            </div>
+          <div className={s.input} key="input">
+            {
+              compute(() => (
+                useSubEmit(item.input)
+                  .map((ctx) => (
+                    <Port key={ctx.id} ctx={ctx} />
+                  ))
+              ))
+            }
           </div>
           <div className={s.center}>
             {children}
           </div>
+
+          <div className={s.output} key="output">
+            {
+              compute(() => (
+                useSubEmit(item.output)
+                  .map((ctx) => (
+                    <Port key={ctx.id} ctx={ctx} />
+                  ))
+              ))
+            }
+          </div>
         </div>
+
       </div>
     ));
   }

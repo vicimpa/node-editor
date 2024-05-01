@@ -1,15 +1,19 @@
+import { MouseEventHandler } from "react";
+
 import { useVariID } from "@/hooks/useVariId";
 import { Vec2 } from "@/library/Vec2";
 import { compute } from "@/utils/compute";
 
 import { useNodeMap } from "../..";
 import { CircleBack } from "./lib/CircleBack";
+import { ClearBack } from "./lib/ClearBack";
 import { CustomBack } from "./lib/CustomBack";
 import s from "./NodeBack.module.sass";
 
 const patterns = {
   'circle': CircleBack,
-  'custom': CustomBack
+  'custom': CustomBack,
+  'clear': ClearBack,
 } as const;
 
 type PATTERNS = typeof patterns;
@@ -31,6 +35,9 @@ type BASE_PROPS = {
   height?: number;
   anchorX?: number;
   anchorY?: number;
+  onClick?: MouseEventHandler;
+  onMouseDown?: MouseEventHandler;
+  onContextMenu?: MouseEventHandler;
   back?: Omit<
     JSX.IntrinsicElements['rect'],
     'x' | 'y' | 'width' | 'height'
@@ -49,6 +56,9 @@ export const NodeBack = <T extends PATTERN_KEY>({
   anchorX = 0.5,
   anchorY = 0.5,
   back,
+  onClick,
+  onMouseDown,
+  onContextMenu,
   ...params
 }: NodeBackProps<T>) => {
   const ctx = useNodeMap();
@@ -71,7 +81,7 @@ export const NodeBack = <T extends PATTERN_KEY>({
         </pattern>
       </defs>
 
-      <g>
+      <g >
         {back && (
           <rect
             className={s.back}

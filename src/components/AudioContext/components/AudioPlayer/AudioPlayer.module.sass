@@ -1,0 +1,46 @@
+@import url(fonts/pb-v1.0/style.scss)
+
+@keyframes marquee
+  from
+    translate: calc(100% + 1px) 0
+  to
+    translate: calc(-100% - 1px) 0
+
+.player
+  width: 200px
+  display: flex
+  flex-direction: column
+  background: #aaa
+  color: #000
+  font-weight: 600
+
+  [role=button]
+    cursor: pointer
+
+  .buttons
+    display: flex
+    align-items: center
+    gap: 2.5px
+    padding: 2.5px
+
+    button
+      background: none
+      padding: 1px
+      font-size: 18px
+      border: none
+      color: #000
+
+      &:disabled
+        opacity: 0.5
+
+      &:not(:disabled)
+        cursor: pointer
+
+  .check
+    display: flex
+    align-items: center
+    gap: 2.5px
+
+  .progress
+    width: 100%
+    cursor: pointer

@@ -7,6 +7,7 @@ export const computeCorrect = (port: NodePortCtx) => {
   const { current: span } = port.ref;
   const { item } = port;
   const { map } = item;
+
   if (!span)
     return new Vec2();
 

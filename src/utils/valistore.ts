@@ -15,8 +15,6 @@ export const valistore = <T>(
   initial: T
 ) => {
   if (MAPPED_SCHEMA.has(key)) {
-    if (MAPPED_SCHEMA.get(key) !== schema)
-      throw new Error(`The key "${key}" has already been used with another scheme`);
   } else {
     MAPPED_SCHEMA.set(key, schema);
   }

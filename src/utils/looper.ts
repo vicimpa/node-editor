@@ -23,7 +23,18 @@ export const runLoop = <T extends TLoop>(loop: T): ReturnType<T> => {
   return loop(time, deltaTime);
 };
 
-export const looper = <T extends TLoop>(loop: T) => (
-  LOOPS.add(loop),
-  () => { LOOPS.delete(loop); }
-);
+export const looper = <T extends TLoop>(loop: T, skip?: number) => {
+  var i = skip ?? 0;
+  const skipLoop = skip ? ((...args) => {
+    if ((i++) > skip) {
+
+      loop(...args);
+      i = 0;
+    }
+  }) as T : loop;
+
+  return (
+    LOOPS.add(skipLoop),
+    () => { LOOPS.delete(skipLoop); }
+  );
+};

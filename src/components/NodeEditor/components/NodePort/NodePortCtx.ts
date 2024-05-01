@@ -31,13 +31,14 @@ export class NodePortCtx {
     public isOutput = false,
     public item: NodeItemCtx,
     public lines: NodeLinesCtx,
-  ) { }
+  ) {
+  }
 
   static usePort(id: string, isOutput = false) {
     const item = useNodeItem();
     const lines = useNodeLines();
     const port = useClass(this, id, isOutput, item, lines);
     const list = isOutput ? item.output : item.input;
-    return useSet(list, id, port, [id, port]);
+    return useSet(list, id, port, [id, port, list]);
   }
 }
