@@ -12,15 +12,16 @@ import s from "./Mixer.module.sass";
 export class MixItem {
   constructor(
     public num: number,
-    public mix: GainNode,
+    public mixer: Mixer,
   ) {
     for (const port of this.ports)
       port.name = `#${num}`;
 
+    this.mixer.mixIn.connect(this.input);
     this.input.connect(this.pan);
     this.pan.connect(this.mute);
     this.mute.connect(this.output);
-    this.output.connect(this.mix);
+    this.output.connect(this.mixer.mixOut);
   }
 
   input = context.createGain();
@@ -35,13 +36,15 @@ export class MixItem {
 }
 
 export class Mixer extends BaseNode {
-  mix = context.createGain();
+  mixIn = context.createGain();
+  mixOut = context.createGain();
 
-  mixPort = new AudioPort('out', this.mix, 'mix');
+  mixInPort = new AudioPort('in', this.mixIn, 'mixIn');
+  mixOutPort = new AudioPort('out', this.mixOut, 'mixOut');
   maxLines = 8;
   lines = signal([
-    new MixItem(0, this.mix),
-    new MixItem(1, this.mix)
+    new MixItem(0, this),
+    new MixItem(1, this),
   ]);
 
   append() {
@@ -49,20 +52,21 @@ export class Mixer extends BaseNode {
       return;
     this.lines.value = [
       ...this.lines.value,
-      new MixItem(this.lines.value.length, this.mix)
+      new MixItem(this.lines.value.length, this)
     ];
   }
 
   remove() {
     const remove = this.lines.value.splice(-1);
-    remove.forEach(e => e.output.disconnect(this.mix));
+    remove.forEach(e => e.output.disconnect(this.mixOut));
     this.lines.value = [...this.lines.value];
   }
 
   render() {
     return (
       <>
-        <AudioContextPort port={this.mixPort} />
+        <AudioContextPort port={this.mixInPort} />
+        <AudioContextPort port={this.mixOutPort} />
         <div className={s.mixer}>
           {compute(() => (
             this.lines.value.map((item, i) => (
