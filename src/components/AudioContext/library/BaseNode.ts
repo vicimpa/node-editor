@@ -17,7 +17,8 @@ export abstract class BaseNode {
   static showName = 'BaseNode';
 
   get title() {
-    return Object.getPrototypeOf(this).constructor.name;
+    const obj = Object.getPrototypeOf(this).constructor;
+    return obj.showName ?? obj.name;
   };
 
   ports: BasePort[] = [];
