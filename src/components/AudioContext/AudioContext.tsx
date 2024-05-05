@@ -45,7 +45,7 @@ export const AudioContext = () => {
   return (
     <>
       <HUD.Portal>
-        <ContextMenu menu={menu} />
+        <ContextMenu menu={[...menu, { name: 'Open GitHub', onClick() { window.open('https://github.com/vicimpa/node-editor'); } }]} />
       </HUD.Portal>
       {
         compute(() => (
