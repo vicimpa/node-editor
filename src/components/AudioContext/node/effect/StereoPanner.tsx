@@ -4,6 +4,7 @@ import { BaseNode } from "../../library/BaseNode";
 import { AudioPort } from "../../port/AudioPort";
 
 export class StereoPanner extends BaseNode {
+  static showName = 'StereoPanner';
   color = '#aa5858';
   node = context.createStereoPanner();
   ports = [

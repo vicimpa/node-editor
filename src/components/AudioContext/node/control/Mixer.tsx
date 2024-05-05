@@ -36,6 +36,7 @@ export class MixItem {
 }
 
 export class Mixer extends BaseNode {
+  static showName = 'Mixer';
   mixIn = context.createGain();
   mixOut = context.createGain();
 

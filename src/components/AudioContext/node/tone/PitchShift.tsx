@@ -6,6 +6,7 @@ import { CustomAudioParam } from "../../library/CustomAudioParam";
 import { AudioPort } from "../../port/AudioPort";
 
 export class PitchShift extends baseToneNode(PitchShiftNode) {
+  static showName = 'PitchShift';
   pitch = new CustomAudioParam(this.node, 'pitch', -14, 14);
 
   ports = [

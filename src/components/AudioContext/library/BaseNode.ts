@@ -14,6 +14,8 @@ export abstract class BaseNode {
   single = false;
   start = new Vec2();
 
+  static showName = 'BaseNode';
+
   get title() {
     return Object.getPrototypeOf(this).constructor.name;
   };

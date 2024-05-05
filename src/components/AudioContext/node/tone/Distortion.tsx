@@ -7,6 +7,7 @@ import { CustomAudioParam } from "../../library/CustomAudioParam";
 import { AudioPort } from "../../port/AudioPort";
 
 export class Distortion extends baseToneNode(DistortionNode) {
+  static showName = 'Distortion';
   distortion = new CustomAudioParam(this.node, 'distortion', 0, 1);
 
   ports = [

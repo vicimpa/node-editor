@@ -6,6 +6,7 @@ import { CustomAudioParam } from "../../library/CustomAudioParam";
 import { AudioPort } from "../../port/AudioPort";
 
 export class Reverb extends baseToneNode(ReverbNode) {
+  static showName = 'Reverb';
   decay = new CustomAudioParam(this.node, 'decay' as any, 0.001, 50);
   preDelay = new CustomAudioParam(this.node, 'preDelay' as any, 0, 10);
 

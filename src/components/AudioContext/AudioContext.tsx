@@ -22,7 +22,7 @@ export const AudioContext = () => {
     const toMenu = (col: TNodeCollectionList): TContextMenuItem[] => {
 
       return col.map((item) => ({
-        name: item.name,
+        name: 'showName' in item ? item.showName : item.name,
         ...(typeof item === 'function' ? {
           onClick() {
             for (const f of nodes) {

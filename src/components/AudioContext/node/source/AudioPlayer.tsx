@@ -9,6 +9,7 @@ import { openFile } from "../../library/openFile";
 import { AudioPort } from "../../port/AudioPort";
 
 export class AudioPlayer extends BaseNode {
+  static showName = 'AudioPlayer';
   color = '#fff';
   audio = new Audio();
   node = context.createMediaElementSource(this.audio);

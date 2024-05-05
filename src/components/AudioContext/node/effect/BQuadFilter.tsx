@@ -18,6 +18,7 @@ const types = [
 ];
 
 export class BQuadFilter extends BaseNode {
+  static showName = 'BQuadFilter';
   color = '#195e40';
   ref = createRef<FilterVisualRender>();
   node = context.createBiquadFilter();

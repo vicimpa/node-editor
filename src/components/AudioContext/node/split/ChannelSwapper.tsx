@@ -3,6 +3,7 @@ import { BaseNode } from "../../library/BaseNode";
 import { AudioPort } from "../../port/AudioPort";
 
 export class ChannelSwapper extends BaseNode {
+  static showName = 'ChannelSwapper';
   color = '#631547';
   input = context.createChannelSplitter(2);
   output = context.createChannelMerger();

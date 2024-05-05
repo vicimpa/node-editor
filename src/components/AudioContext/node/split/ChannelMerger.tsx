@@ -3,6 +3,7 @@ import { BaseNode } from "../../library/BaseNode";
 import { AudioPort } from "../../port/AudioPort";
 
 export class ChannelMerger extends BaseNode {
+  static showName = 'ChannelMerger';
   color = '#632470';
   node = context.createChannelMerger(2);
   left = context.createGain();

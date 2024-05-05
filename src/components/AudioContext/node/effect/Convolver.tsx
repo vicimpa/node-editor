@@ -11,6 +11,7 @@ import { openFile } from "../../library/openFile";
 import { AudioPort } from "../../port/AudioPort";
 
 export class Convolver extends BaseNode {
+  static showName = 'Convolver';
   ref = createRef<HTMLSelectElement>();
   node = context.createConvolver();
   sounds = new ReactiveMap<string, Promise<AudioBuffer>>([

@@ -7,6 +7,7 @@ import { BasePort } from "../../library/BasePort";
 import { AudioPort } from "../../port/AudioPort";
 
 export class Destination extends BaseNode {
+  static showName = 'Destination';
   color = '#33f';
   single = true;
   dest = context.createGain();

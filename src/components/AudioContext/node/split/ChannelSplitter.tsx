@@ -3,6 +3,7 @@ import { BaseNode } from "../../library/BaseNode";
 import { AudioPort } from "../../port/AudioPort";
 
 export class ChannelSplitter extends BaseNode {
+  static showName = 'ChannelSplitter';
   color = '#748320';
   node = context.createChannelSplitter(2);
   left = context.createGain();

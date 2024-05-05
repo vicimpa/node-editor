@@ -6,6 +6,7 @@ import { BaseNode } from "../../library/BaseNode";
 import { AudioPort } from "../../port/AudioPort";
 
 export class Delay extends BaseNode {
+  static showName = 'Delay';
   color = '#f33';
   node = context.createDelay(10);
 

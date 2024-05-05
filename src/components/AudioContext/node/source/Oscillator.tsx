@@ -18,6 +18,7 @@ const types = [
 ];
 
 export class Oscillator extends BaseNode {
+  static showName = 'Oscillator';
   color = '#df3';
   gain = context.createGain();
   node = context.createOscillator();
