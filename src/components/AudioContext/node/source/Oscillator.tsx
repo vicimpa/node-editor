@@ -20,6 +20,19 @@ const types = [
   "triangle"
 ];
 
+const names = ['A', 'A#', 'B', 'B#', 'C', 'D', 'D#', 'E', 'E#', 'F', 'F#', 'G'];
+
+function convertToFrequency(n: number) {
+  const baseFrequency = 440;
+  const semitoneRatio = Math.pow(2, 1 / 12);
+  return baseFrequency * Math.pow(semitoneRatio, n);
+}
+
+const notes = Array.from({ length: 5 * 12 }, (_, i) => ({
+  freq: convertToFrequency(i - 36),
+  name: names[i % names.length] + `(${i / 12 | 0})`
+}));
+
 export class Oscillator extends BaseNode {
   static showName = 'Oscillator';
   color = '#df3';
@@ -29,6 +42,8 @@ export class Oscillator extends BaseNode {
   activate = signal(false);
   keydown = signal('');
   register = false;
+  freq = signal('');
+  baseFreq = signal(0);
 
   ports = [
     new AudioPort('out', this.gain)
@@ -77,6 +92,13 @@ export class Oscillator extends BaseNode {
           this.gain.gain.value = 0;
         }
       }),
+      effect(() => {
+        if (this.freq.value === '')
+          return;
+        this.node.frequency.value = +this.freq.value;
+        this.node.detune.value = 0;
+
+      }),
       windowEvent('keydown', e => this.keyDown(e)),
       windowEvent('keyup', e => this.keyUp(e))
     ]);
@@ -100,22 +122,35 @@ export class Oscillator extends BaseNode {
           ))}
         </select>
 
-        <Range
-          param={this.node.frequency}
-          label="Frequency"
-          postfix="HZ"
-          accuracy={2}
-          minValue={frequencies.at(0)}
-          maxValue={frequencies.at(-1)}
-        />
+        <rsp.select bind-value={this.freq}>
+          <option value={''}>Manual settings</option>
+          {notes.map((note, i) => {
+            return <option key={i} value={note.freq}>{note.name}</option>;
+          })}
+        </rsp.select>
 
-        <Range
-          param={this.node.detune}
-          label="Detune"
-          postfix="cents"
-          minValue={-1200}
-          maxValue={1200}
-        />
+        {compute(() => (
+          this.freq.value === '' &&
+          <>
+            <Range
+              param={this.node.frequency}
+              label="Frequency"
+              postfix="HZ"
+              accuracy={2}
+              minValue={frequencies.at(0)}
+              maxValue={frequencies.at(-1)}
+            />
+            <Range
+              param={this.node.detune}
+              label="Detune"
+              postfix="cents"
+              minValue={-1200}
+              maxValue={1200}
+            />
+          </>
+
+        ))}
+
 
         {
           compute(() => (
