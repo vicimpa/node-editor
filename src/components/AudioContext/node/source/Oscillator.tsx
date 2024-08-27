@@ -59,6 +59,7 @@ export class Oscillator extends BaseNode {
           param={this.node.frequency}
           label="Frequency"
           postfix="HZ"
+          accuracy={2}
           minValue={frequencies.at(0)}
           maxValue={frequencies.at(-1)}
         />
