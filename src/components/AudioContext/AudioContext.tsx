@@ -12,7 +12,6 @@ import { AudioContextPort } from "./AudioContextPort";
 import { ContextMenu, TContextMenuItem } from "./components/ContextMenu";
 import { DeleteButton } from "./components/DeleteButton";
 import { BaseNode } from "./library/BaseNode";
-import { Oscillator } from "./node/source/Oscillator";
 import { NodeCollection, TNodeCollectionList } from "./NodeCollection";
 
 const BaseNodeLifecycle = ({ node, children }: PropsWithChildren<{ node: BaseNode; }>) => {
@@ -24,7 +23,7 @@ const BaseNodeLifecycle = ({ node, children }: PropsWithChildren<{ node: BaseNod
 };
 
 export const AudioContext = () => {
-  const nodes = useClass(ReactiveSet<BaseNode>, [new Oscillator()]);
+  const nodes = useClass(ReactiveSet<BaseNode>);
   const HUD = useNodeHud().useItem();
   const map = useNodeMap();
 
