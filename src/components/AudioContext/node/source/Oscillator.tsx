@@ -1,7 +1,9 @@
-import { ReactNode } from "react";
+import { createElement, ReactNode, useEffect } from "react";
 
+import { useWindowEvent } from "@/hooks/useWindowEvent";
 import { compute } from "@/utils/compute";
-import { signal } from "@preact/signals-react";
+import { effect, signal } from "@preact/signals-react";
+import rsp from "@vicimpa/rsp";
 
 import { Range } from "../../components/Range";
 import { context } from "../../context";
@@ -23,25 +25,75 @@ export class Oscillator extends BaseNode {
   gain = context.createGain();
   node = context.createOscillator();
   playing = signal(false);
+  activate = signal(false);
+  keydown = signal('');
+  register = false
 
   ports = [
     new AudioPort('out', this.gain)
   ];
 
+
+
+  keyDown(e: KeyboardEvent) {
+    if(this.register) {
+      this.playing.value = false;
+      this.keydown.value = e.code
+      this.register = false
+      return;
+    }
+
+    if (this.activate.peek() && e.code === this.keydown.value) {
+      e.preventDefault()
+      this.playing.value = true;
+
+    }
+  }
+
+  keyUp(e: KeyboardEvent) {
+    if (e.code === this.keydown.value) {
+      e.preventDefault()
+      this.playing.value = false;
+    }
+  }
+  
   test = [
-    this.node.start()
+    this.node.connect(this.gain),
+    this.node.start(),
+    this.gain.gain.value = 0,
+    effect(() => {
+      this.activate.value;
+      if (this.playing.peek())
+        this.playing.value = false 
+    }),
+    effect(() => {
+      if (this.playing.value) {
+        this.gain.gain.value = 1;
+      } else {
+        this.gain.gain.value = 0;
+      }
+    }),
+    useWindowEvent('keydown', e => this.keyDown(e)),
+    useWindowEvent('keyup', e => this.keyUp(e))
   ];
 
   toggle() {
     this.playing.value = !this.playing.value;
-    if (this.playing.value) {
-      this.node.connect(this.gain);
-    } else {
-      this.node.disconnect(this.gain);
-    }
   }
 
   render(): ReactNode {
+    {createElement(() => {
+      useEffect(() => {
+        return () => {
+          this.test.forEach(test => {
+            if(test instanceof Function)
+              test()
+          })
+        }
+      }, [])
+      return null;
+    })}
+
     return (
       <>
         <select
@@ -74,9 +126,17 @@ export class Oscillator extends BaseNode {
 
         {
           compute(() => (
-            <button onClick={() => this.toggle()}>{this.playing.value ? 'Stop' : 'Start'}</button>
+            <rsp.button disabled={this.activate} onClick={() => this.toggle()}>{this.playing.value ? 'Stop' : 'Start'}</rsp.button>
           ))
         }
+
+        <label>
+          <rsp.input type="checkbox" bind-checked={this.activate} />
+          {' '}
+          Key activate: "{compute(() => (this.keydown.value || 'Unknow'))}"
+        </label>
+
+        <button onClick={() => {this.register = true}}>Change</button>
       </>
     );
   }
