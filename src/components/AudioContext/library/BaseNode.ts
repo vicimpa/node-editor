@@ -26,6 +26,9 @@ export abstract class BaseNode {
     return null;
   }
 
+  mount(): void | (() => void) { }
+  destroy() { }
+
   get Render() {
     return this.#memo ?? (
       this.#memo = memo(() => {

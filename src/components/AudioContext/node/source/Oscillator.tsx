@@ -1,7 +1,8 @@
-import { createElement, ReactNode, useEffect } from "react";
+import { ReactNode } from "react";
 
-import { useWindowEvent } from "@/hooks/useWindowEvent";
 import { compute } from "@/utils/compute";
+import { dispose } from "@/utils/dispose";
+import { windowEvent } from "@/utils/events";
 import { effect, signal } from "@preact/signals-react";
 import rsp from "@vicimpa/rsp";
 
@@ -27,24 +28,22 @@ export class Oscillator extends BaseNode {
   playing = signal(false);
   activate = signal(false);
   keydown = signal('');
-  register = false
+  register = false;
 
   ports = [
     new AudioPort('out', this.gain)
   ];
 
-
-
   keyDown(e: KeyboardEvent) {
-    if(this.register) {
+    if (this.register) {
       this.playing.value = false;
-      this.keydown.value = e.code
-      this.register = false
+      this.keydown.value = e.code;
+      this.register = false;
       return;
     }
 
     if (this.activate.peek() && e.code === this.keydown.value) {
-      e.preventDefault()
+      e.preventDefault();
       this.playing.value = true;
 
     }
@@ -52,48 +51,42 @@ export class Oscillator extends BaseNode {
 
   keyUp(e: KeyboardEvent) {
     if (e.code === this.keydown.value) {
-      e.preventDefault()
+      e.preventDefault();
       this.playing.value = false;
     }
   }
-  
-  test = [
-    this.node.connect(this.gain),
-    this.node.start(),
-    this.gain.gain.value = 0,
-    effect(() => {
-      this.activate.value;
-      if (this.playing.peek())
-        this.playing.value = false 
-    }),
-    effect(() => {
-      if (this.playing.value) {
-        this.gain.gain.value = 1;
-      } else {
-        this.gain.gain.value = 0;
-      }
-    }),
-    useWindowEvent('keydown', e => this.keyDown(e)),
-    useWindowEvent('keyup', e => this.keyUp(e))
-  ];
+
+  mount(): void | (() => void) {
+    this.node.start();
+    this.gain.gain.value = 0;
+    this.node.connect(this.gain);
+
+    return dispose([
+      () => {
+        this.node.disconnect(this.gain);
+      },
+      effect(() => {
+        this.activate.value;
+        if (this.playing.peek())
+          this.playing.value = false;
+      }),
+      effect(() => {
+        if (this.playing.value) {
+          this.gain.gain.value = 1;
+        } else {
+          this.gain.gain.value = 0;
+        }
+      }),
+      windowEvent('keydown', e => this.keyDown(e)),
+      windowEvent('keyup', e => this.keyUp(e))
+    ]);
+  }
 
   toggle() {
     this.playing.value = !this.playing.value;
   }
 
   render(): ReactNode {
-    {createElement(() => {
-      useEffect(() => {
-        return () => {
-          this.test.forEach(test => {
-            if(test instanceof Function)
-              test()
-          })
-        }
-      }, [])
-      return null;
-    })}
-
     return (
       <>
         <select
@@ -136,7 +129,7 @@ export class Oscillator extends BaseNode {
           Key activate: "{compute(() => (this.keydown.value || 'Unknow'))}"
         </label>
 
-        <button onClick={() => {this.register = true}}>Change</button>
+        <button onClick={() => { this.register = true; }}>Change</button>
       </>
     );
   }

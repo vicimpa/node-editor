@@ -1,9 +1,10 @@
-import { useMemo } from "react";
+import { PropsWithChildren, useEffect, useMemo } from "react";
 
 import { useClass } from "@/hooks/useClass";
 import { useSubEmit } from "@/hooks/useSubEmit";
 import { ReactiveSet } from "@/library/ReactiveSet";
 import { compute } from "@/utils/compute";
+import { dispose } from "@/utils/dispose";
 
 import { Node } from "../Node";
 import { useNodeHud, useNodeMap } from "../NodeEditor";
@@ -12,6 +13,14 @@ import { ContextMenu, TContextMenuItem } from "./components/ContextMenu";
 import { DeleteButton } from "./components/DeleteButton";
 import { BaseNode } from "./library/BaseNode";
 import { NodeCollection, TNodeCollectionList } from "./NodeCollection";
+
+const BaseNodeLifecycle = ({ node, children }: PropsWithChildren<{ node: BaseNode; }>) => {
+  useEffect(() => dispose([
+    node.mount(),
+    () => node.destroy()
+  ]), []);
+  return children;
+};
 
 export const AudioContext = () => {
   const nodes = useClass(ReactiveSet<BaseNode>);
@@ -50,23 +59,26 @@ export const AudioContext = () => {
       {
         compute(() => (
           useSubEmit(nodes),
-          [...nodes].map(node => (
-            <Node
-              id={node.id}
-              key={node.id}
-              x={node.start.x}
-              y={node.start.y}
-              color={node.color}
-              title={`${node.id} ${node.title}`}
-            >
-              <DeleteButton onClick={() => nodes.delete(node)} />
+          [...nodes].map((node) => (
+            <BaseNodeLifecycle
+              key={node.id} node={node} >
+              <Node
+                id={node.id}
+                key={node.id}
+                x={node.start.x}
+                y={node.start.y}
+                color={node.color}
+                title={`${node.id} ${node.title}`}
+              >
+                <DeleteButton onClick={() => nodes.delete(node)} />
 
-              <node.Render />
+                <node.Render />
 
-              {node.ports.map((port) => (
-                <AudioContextPort key={port.id} port={port} />
-              ))}
-            </Node>
+                {node.ports.map((port) => (
+                  <AudioContextPort key={port.id} port={port} />
+                ))}
+              </Node>
+            </BaseNodeLifecycle>
           ))
         ))}
     </>
