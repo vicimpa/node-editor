@@ -20,7 +20,7 @@ const types = [
   "triangle"
 ];
 
-const names = ['A', 'A#', 'B', 'B#', 'C', 'D', 'D#', 'E', 'E#', 'F', 'F#', 'G'];
+const names = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#'];
 
 function convertToFrequency(n: number) {
   const baseFrequency = 440;
@@ -28,10 +28,12 @@ function convertToFrequency(n: number) {
   return baseFrequency * Math.pow(semitoneRatio, n);
 }
 
-const notes = Array.from({ length: 5 * 12 }, (_, i) => ({
+const notes = Array.from({ length: 4 * 12 }, (_, i) => ({
   freq: convertToFrequency(i - 36),
-  name: names[i % names.length] + `(${i / 12 | 0})`
+  name: names[i % names.length] + `(${(i / 12 | 0) + 2})`
 }));
+
+console.log(JSON.stringify(notes, null, 2));
 
 export class Oscillator extends BaseNode {
   static showName = 'Oscillator';
